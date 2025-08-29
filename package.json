@@ -10,10 +10,38 @@
     "test": "jest"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^5.2.3",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-community/datetimepicker": "^8.4.4",
+    "@react-native/new-app-screen": "0.81.0",
+    "@react-navigation/bottom-tabs": "^7.4.6",
+    "@react-navigation/material-top-tabs": "^7.3.6",
+    "@react-navigation/native": "^7.1.17",
+    "@react-navigation/native-stack": "^7.3.25",
+    "@react-navigation/stack": "^7.4.7",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@types/react-native-vector-icons": "^6.4.18",
     "react": "19.1.0",
     "react-native": "0.81.0",
-    "@react-native/new-app-screen": "0.81.0",
-    "react-native-safe-area-context": "^5.5.2"
+    "react-native-device-info": "^14.0.4",
+    "react-native-gesture-handler": "^2.28.0",
+    "react-native-haptic-feedback": "^2.3.3",
+    "react-native-iap": "^13.0.4",
+    "react-native-keychain": "^10.0.0",
+    "react-native-linear-gradient": "^2.8.3",
+    "react-native-localize": "^3.5.2",
+    "react-native-mmkv": "^3.3.0",
+    "react-native-modal": "^14.0.0-rc.1",
+    "react-native-permissions": "^5.4.2",
+    "react-native-push-notification": "^8.1.1",
+    "react-native-reanimated": "^3.15.4",
+    "react-native-safe-area-context": "^5.6.1",
+    "react-native-screens": "^4.15.4",
+    "react-native-share": "^12.2.0",
+    "react-native-svg": "^15.12.1",
+    "react-native-vector-icons": "^10.3.0",
+    "react-native-worklets-core": "^1.6.2",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -37,5 +65,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "packageManager": "yarn@4.1.1+sha512.ec40d0639bb307441b945d9467139cbb88d14394baac760b52eca038b330d16542d66fef61574271534ace5a200518dabf3b53a85f1f9e4bfa37141b538a9590"
 }

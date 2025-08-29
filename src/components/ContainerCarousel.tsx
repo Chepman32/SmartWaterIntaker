@@ -1,0 +1,135 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../state/store';
+import { addEvent } from '../state/slices/intakeSlice';
+import { IntakeEvent } from '../types/models';
+
+interface ContainerCarouselProps {
+  textColor: string;
+}
+
+export default function ContainerCarousel({ textColor }: ContainerCarouselProps) {
+  const dispatch = useDispatch();
+  const containers = useSelector((state: RootState) => state.containers.items);
+  const favoriteContainers = containers.filter((c: any) => c.favorite);
+
+  const handleContainerPress = (container: any) => {
+    const intakeEvent: IntakeEvent = {
+      id: Date.now().toString(),
+      timestamp: Date.now(),
+      amountMl: container.sizeMl,
+      source: 'container',
+      containerId: container.id,
+      note: `${container.name} (${container.sizeMl}ml)`,
+    };
+    
+    dispatch(addEvent(intakeEvent));
+  };
+
+  if (favoriteContainers.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={[styles.emptyText, { color: textColor }]}>
+          Add favorite containers to see them here
+        </Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={[styles.title, { color: textColor }]}>Favorites</Text>
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {favoriteContainers.map((container) => (
+          <TouchableOpacity
+            key={container.id}
+            style={[
+              styles.containerItem,
+              { backgroundColor: container.color + '20', borderColor: container.color }
+            ]}
+            onPress={() => handleContainerPress(container)}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.iconContainer, { backgroundColor: container.color }]}>
+              <Text style={styles.iconText}>{container.icon}</Text>
+            </View>
+            <Text style={[styles.containerName, { color: textColor }]} numberOfLines={1}>
+              {container.name}
+            </Text>
+            <Text style={[styles.containerSize, { color: textColor }]}>
+              {container.sizeMl}ml
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 16,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+    paddingHorizontal: 16,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  containerItem: {
+    width: 100,
+    padding: 12,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  iconText: {
+    fontSize: 20,
+    color: '#FFFFFF',
+  },
+  containerName: {
+    fontSize: 12,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 2,
+  },
+  containerSize: {
+    fontSize: 11,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  emptyContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 14,
+    opacity: 0.6,
+    textAlign: 'center',
+  },
+});
