@@ -65,7 +65,7 @@ function MainTabNavigator() {
               iconName = focused ? 'water' : 'water-outline';
               break;
             case 'History':
-              iconName = focused ? 'calendar' : 'calendar-outline';
+              iconName = focused ? 'list' : 'list-outline';
               break;
             case 'Stats':
               iconName = focused ? 'analytics' : 'analytics-outline';
