@@ -95,6 +95,8 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   const lastDeltaNorm = useSharedValue(0);
   // device tilt (roll)
   const rotation = useAnimatedSensor(SensorType.ROTATION, { interval: 16 });
+  // global time for bubbles
+  const bubblesTime = useSharedValue(0);
   
   // Previous progress for detecting changes
   const prevProgress = useRef(progress);
@@ -117,6 +119,15 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     if (shouldReduceMotion) return;
     breath.value = withRepeat(
       withTiming(2 * Math.PI, { duration: 2400, easing: Easing.linear }),
+      -1
+    );
+  }, [shouldReduceMotion]);
+
+  // Bubbles time driver (slow loop)
+  useEffect(() => {
+    const dur = shouldReduceMotion ? 16000 : 10000;
+    bubblesTime.value = withRepeat(
+      withTiming(2 * Math.PI, { duration: dur, easing: Easing.linear }),
       -1
     );
   }, [shouldReduceMotion]);
@@ -207,6 +218,7 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     const height = size;
     const numPoints = 80;
     const k = idleFrequency * Math.PI; // spatial frequency factor over -1..1
+    const perspective = 0.35; // 0..1, reduces amplitude near edges for 3D look
     // Idle amplitude with subtle breathing
     const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value)));
     // Splash impulse envelope
@@ -233,9 +245,10 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
       // Wave function: y = waterLevel + slope * x + amplitude * sin(frequency * x + phase)
       // waterLevel should be from bottom (height) to top (0), so we invert the progress
       const waterLevel = height - (baseLevel.value * height);
+      const ampFactor = 1 - perspective * (normalizedX * normalizedX); // smaller at edges
       const waveY = waterLevel + 
                    slopeTotal * normalizedX * height / 2 +
-                   A_total * Math.sin(k * normalizedX + phase.value);
+                   (A_total * ampFactor) * Math.sin(k * normalizedX + phase.value);
       
       const clampedY = Math.max(0, Math.min(height, waveY));
       
@@ -258,6 +271,7 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     const height = size;
     const numPoints = 80;
     const k = (idleFrequency * 0.9) * Math.PI;
+    const perspective = 0.4;
     const A_idle = scaledIdleAmplitude * 0.7 * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value + 0.6)));
     const t = splashT.value * (scaledSplashDurationMs / 1000);
     const tau = (scaledSplashDurationMs / 1000) / 2.2;
@@ -280,9 +294,10 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
       // Wave function: y = waterLevel + slope * x + amplitude * sin(frequency * x + phase)
       // waterLevel should be from bottom (height) to top (0), so we invert the progress
       const waterLevel = height - (baseLevel.value * height);
+      const ampFactor = 1 - perspective * (normalizedX * normalizedX);
       const waveY = waterLevel + 
                    slopeTotal * 0.8 * normalizedX * height / 2 +
-                   A_total * Math.sin(k * normalizedX + phase.value + 0.3);
+                   (A_total * ampFactor) * Math.sin(k * normalizedX + phase.value + 0.3);
       
       const clampedY = Math.max(0, Math.min(height, waveY));
       
@@ -298,6 +313,42 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     
     return path;
   });
+
+  // Crest-only path for a subtle specular highlight (top of the front wave)
+  const crestPath = useDerivedValue(() => {
+    'worklet';
+    const width = size;
+    const height = size;
+    const numPoints = 80;
+    const k = idleFrequency * Math.PI;
+    const perspective = 0.35;
+
+    // Same amplitude and slope as front
+    const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value)));
+    const t = splashT.value * (scaledSplashDurationMs / 1000);
+    const tau = (scaledSplashDurationMs / 1000) / 2.2;
+    const f_splash = 2.2;
+    const A_impulse = A_peak.value * Math.exp(-t / tau) * Math.cos(2 * Math.PI * f_splash * t);
+    const A_total = Math.max(0, A_idle + A_impulse);
+    const tau_s = 0.8;
+    const f_slosh = 1.4;
+    const slopeImpulse = shouldReduceMotion ? 0 : (S_peak.value * Math.exp(-(t) / tau_s) * Math.sin(2 * Math.PI * f_slosh * t));
+    const roll = rotation.sensor.value ? rotation.sensor.value.roll : 0;
+    const tiltSlope = enableTilt && !shouldReduceMotion ? clamp(roll * 0.08, -0.25, 0.25) : 0;
+    const slopeTotal = clamp(slopeImpulse + tiltSlope, -0.25, 0.25);
+
+    let path = '';
+    for (let i = 0; i <= numPoints; i++) {
+      const x = (i / numPoints) * width;
+      const normalizedX = (x - width / 2) / (width / 2);
+      const waterLevel = height - (baseLevel.value * height);
+      const ampFactor = 1 - perspective * (normalizedX * normalizedX);
+      const waveY = waterLevel + slopeTotal * normalizedX * height / 2 + (A_total * ampFactor) * Math.sin(k * normalizedX + phase.value);
+      const y = Math.max(0, Math.min(height, waveY - 1)); // slight upward offset for highlight
+      if (i === 0) path += `M ${x} ${y}`; else path += ` L ${x} ${y}`;
+    }
+    return path;
+  });
   
   // Animated props for SVG paths
   const frontWaveAnimatedProps = useAnimatedProps(() => ({
@@ -307,6 +358,36 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   const backWaveAnimatedProps = useAnimatedProps(() => ({
     d: backWavePath.value,
   }));
+  const crestAnimatedProps = useAnimatedProps(() => ({
+    d: crestPath.value,
+  }));
+
+  // Animated bubble props factory (each bubble is a small circle)
+  const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+  const makeBubbleProps = (seed: { id: number; x: number; y: number; r: number; speed: number; drift: number; phase: number; }) =>
+    useAnimatedProps(() => {
+      'worklet';
+      const width = size;
+      const height = size;
+      const waterLevel = height - (baseLevel.value * height);
+      const bottom = height - strokeWidth * 0.9;
+      const travel = Math.max(10, bottom - waterLevel - 6);
+      // progress 0..1 per bubble based on global time + unique phase
+      const t = (0.5 + (bubblesTime.value * seed.speed + seed.phase) / (2 * Math.PI)) % 1;
+      const y = bottom - t * travel;
+      // only show when under the surface
+      const isVisible = y > waterLevel + 3;
+      const drift = Math.sin(phase.value * 0.8 + seed.phase) * (4 * seed.drift * (width / 240));
+      const cx = (0.18 + 0.64 * seed.x) * width + drift;
+      const cy = y;
+      const rr = Math.max(0.8, seed.r * (width / 240) * (0.7 + 0.6 * (1 - t)));
+      return {
+        cx,
+        cy,
+        r: rr,
+        opacity: isVisible ? 0.12 + 0.25 * (t * t) : 0,
+      } as any;
+    });
   
   // Theme colors
   const getThemeColors = () => {
@@ -329,6 +410,26 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   };
   
   const colors = getThemeColors();
+
+  // Bubbles setup (lightweight, deterministic seeds)
+  const bubbleCount = Math.max(8, Math.round(14 * scaleFactor));
+  const bubbleSeeds = React.useMemo(() => {
+    const rng = (seed: number) => () => {
+      // LCG for deterministic pseudo-random
+      seed = (1664525 * seed + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+    const r = rng(123456);
+    return new Array(bubbleCount).fill(0).map((_, i) => ({
+      id: i,
+      x: r(), // 0..1
+      y: r(), // 0..1
+      r: 1.4 + r() * 2.6, // px @240
+      speed: 0.18 + r() * 0.55,
+      drift: 0.6 + r() * 1.2,
+      phase: r() * Math.PI * 2,
+    }));
+  }, [bubbleCount]);
   
   // Accessibility label
   const accessibilityLabel = `Water level ${valueMl} milliliters, ${Math.round(progress * 100)} percent of goal ${goalMl} milliliters`;
@@ -344,8 +445,38 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
             <Stop offset="0%" stopColor={colors.waterGradient[0]} stopOpacity={1} />
             <Stop offset="100%" stopColor={colors.waterGradient[1]} stopOpacity={1} />
           </LinearGradient>
+          {/* Horizontal edge darkening for perspective */}
+          <LinearGradient id="edgeVignette" x1="0" y1="0" x2="1" y2="0">
+            <Stop offset="0%" stopColor="#000000" stopOpacity={0.08} />
+            <Stop offset="30%" stopColor="#000000" stopOpacity={0.0} />
+            <Stop offset="70%" stopColor="#000000" stopOpacity={0.0} />
+            <Stop offset="100%" stopColor="#000000" stopOpacity={0.08} />
+          </LinearGradient>
+          {/* Glass rim gradient */}
+          <LinearGradient id="rimGrad" x1="0" y1="0" x2="1" y2="1">
+            <Stop offset="0%" stopColor="#FFFFFF" stopOpacity={0.55} />
+            <Stop offset="40%" stopColor="#FFFFFF" stopOpacity={0.15} />
+            <Stop offset="60%" stopColor="#1e4b6b" stopOpacity={0.18} />
+            <Stop offset="100%" stopColor="#0b3350" stopOpacity={0.28} />
+          </LinearGradient>
+          {/* Top-left inner highlight (gloss) */}
+          <LinearGradient id="glassHighlightGrad" x1="0" y1="0" x2="0" y2="1">
+            <Stop offset="0%" stopColor="#FFFFFF" stopOpacity={0.35} />
+            <Stop offset="100%" stopColor="#FFFFFF" stopOpacity={0} />
+          </LinearGradient>
         </Defs>
-        
+
+        {/* Drop shadow (pseudo) */}
+        <Circle
+          cx={center}
+          cy={center + 3 * scaleFactor}
+          r={radius}
+          stroke="#000000"
+          strokeOpacity={0.08}
+          strokeWidth={strokeWidth * 1.15}
+          fill="none"
+        />
+
         {/* Back wave layer (darker, more transparent) */}
         <AnimatedPath
           animatedProps={backWaveAnimatedProps}
@@ -361,14 +492,55 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
           clipPath="url(#waterClip)"
         />
 
+        {/* Perspective edge darkening overlay within water */}
+        <AnimatedPath
+          animatedProps={frontWaveAnimatedProps}
+          fill="url(#edgeVignette)"
+          opacity={0.55}
+          clipPath="url(#waterClip)"
+        />
+
+        {/* Subtle specular highlight on the front crest */}
+        <AnimatedPath
+          animatedProps={crestAnimatedProps}
+          stroke="#FFFFFF"
+          strokeOpacity={0.25}
+          strokeWidth={Math.max(1, 1.25 * scaleFactor)}
+          fill="none"
+          clipPath="url(#waterClip)"
+        />
+
+        {/* Rising bubbles */}
+        {bubbleSeeds.map((b) => {
+          const props = makeBubbleProps(b);
+          return (
+            <AnimatedCircle
+              key={`b-${b.id}`}
+              animatedProps={props}
+              fill="#FFFFFF"
+              clipPath="url(#waterClip)"
+            />
+          );
+        })}
+
         {/* Ring on top to remain visible above water */}
         <Circle
           cx={center}
           cy={center}
           r={radius}
-          stroke={colors.ring}
+          stroke="url(#rimGrad)"
           strokeWidth={strokeWidth}
           fill="transparent"
+        />
+
+        {/* Inner glass highlight */}
+        <Circle
+          cx={center - radius * 0.25}
+          cy={center - radius * 0.3}
+          r={radius * 0.9}
+          fill="url(#glassHighlightGrad)"
+          opacity={0.18}
+          clipPath="url(#waterClip)"
         />
       </Svg>
       
