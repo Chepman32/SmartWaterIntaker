@@ -10,6 +10,7 @@ import HistoryScreen from '../screens/HistoryScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import PurchaseScreen from '../screens/PurchaseScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import WaterRingDemoScreen from '../screens/WaterRingDemoScreen';
 import { Colors } from '../constants/colors';
 import {
   UnitsScreen,
@@ -39,6 +40,7 @@ export type MainTabParamList = {
   Home: undefined;
   History: undefined;
   Stats: undefined;
+  Demo: undefined;
   Profile: undefined;
 };
 
@@ -69,6 +71,9 @@ function MainTabNavigator() {
               break;
             case 'Stats':
               iconName = focused ? 'analytics' : 'analytics-outline';
+              break;
+            case 'Demo':
+              iconName = focused ? 'flask' : 'flask-outline';
               break;
             case 'Profile':
               iconName = focused ? 'settings' : 'settings-outline';
@@ -106,6 +111,11 @@ function MainTabNavigator() {
         name="Stats" 
         component={StatsScreen} 
         options={{ title: 'Statistics' }}
+      />
+      <Tab.Screen 
+        name="Demo" 
+        component={WaterRingDemoScreen} 
+        options={{ title: 'Water Ring Demo' }}
       />
       <Tab.Screen 
         name="Profile" 

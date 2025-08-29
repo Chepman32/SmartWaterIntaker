@@ -10,8 +10,7 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
-import ProgressRing from '../components/ProgressRing';
-import WaveAnimation from '../components/WaveAnimation';
+import WaterRing from '../components/WaterRing';
 import QuickAddChip from '../components/QuickAddChip';
 import ContainerCarousel from '../components/ContainerCarousel';
 import WaterLoggingBottomSheet from '../components/WaterLoggingBottomSheet';
@@ -40,21 +39,18 @@ export default function HomeScreen() {
         <Text style={[styles.title, { color: theme.text }]}>Today</Text>
         
         <View style={styles.progressContainer}>
-          <ProgressRing
-            progress={progress}
+          <WaterRing
             size={280}
             strokeWidth={12}
-            color={theme.primary}
-            backgroundColor={theme.progressTrack}
-            textColor={theme.text}
-            current={todayTotalMl}
-            goal={dailyGoalMl}
-            unit="ml"
-          />
-          <WaveAnimation
             progress={progress}
-            size={280}
-            color={theme.primary + '40'}
+            valueMl={todayTotalMl}
+            goalMl={dailyGoalMl}
+            theme={isDark ? 'dark' : 'light'}
+            idleAmplitude={6}
+            idleFrequency={1.8}
+            splashAmplitudeMax={18}
+            splashDurationMs={900}
+            levelRiseDurationMs={450}
           />
         </View>
         
