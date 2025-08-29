@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
 import Slider from '@react-native-community/slider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../constants/colors';
-import WaterRing from '../components/WaterRing';
+import WaterRing, { WaterRingRef } from '../components/WaterRing';
 
 export default function WaterRingDemoScreen() {
   const isDark = useColorScheme() === 'dark';
@@ -58,6 +58,12 @@ export default function WaterRingDemoScreen() {
     setProgress(newProgress);
     setValueMl(newValueMl);
   }, [progress, goalMl]);
+
+  // Direct splash trigger via ref
+  const ringRef = useRef<WaterRingRef>(null);
+  const handleImpulseOnly = useCallback(() => {
+    ringRef.current?.triggerSplash(0.12);
+  }, []);
   
   const handleAnimationEnd = useCallback(() => {
     console.log('Water ring animation completed');
@@ -88,6 +94,7 @@ export default function WaterRingDemoScreen() {
         {/* Main Water Ring Display */}
         <View style={styles.ringContainer}>
           <WaterRing
+            ref={ringRef}
             size={size}
             strokeWidth={strokeWidth}
             progress={progress}
@@ -132,6 +139,14 @@ export default function WaterRingDemoScreen() {
             activeOpacity={0.8}
           >
             <Text style={styles.randomButtonText}>🎲 Random Splash</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.randomButton, { backgroundColor: themeColors.secondary, marginTop: 8 }]}
+            onPress={handleImpulseOnly}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.randomButtonText}>🌊 Impulse Only</Text>
           </TouchableOpacity>
         </View>
         

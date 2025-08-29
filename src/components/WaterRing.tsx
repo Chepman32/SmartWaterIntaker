@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { View, Text, StyleSheet, AccessibilityInfo } from 'react-native';
-import Svg, { Path, ClipPath, Circle, Defs } from 'react-native-svg';
+import Svg, { Path, ClipPath, Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 import Animated, {
   useSharedValue,
   useDerivedValue,
@@ -12,6 +12,8 @@ import Animated, {
   useAnimatedProps,
   interpolate,
   Easing,
+  useAnimatedSensor,
+  SensorType,
 } from 'react-native-reanimated';
 
 
@@ -36,7 +38,17 @@ export interface WaterRingProps {
   onAnimationEnd?: () => void;   // fired after level change completes
 }
 
-export default function WaterRing({
+export type WaterRingRef = {
+  setProgress: (p: number) => void;
+  triggerSplash: (deltaFraction?: number) => void; // delta as fraction of goal (0..1)
+};
+
+function clamp(n: number, min: number, max: number) {
+  'worklet';
+  return Math.max(min, Math.min(max, n));
+}
+
+const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   size = 240,
   strokeWidth = 14,
   progress,
@@ -52,7 +64,7 @@ export default function WaterRing({
   levelRiseDurationMs = 450,
   reduceMotion = false,
   onAnimationEnd,
-}: WaterRingProps) {
+}, ref) {
   const radius = (size - strokeWidth) / 2;
   const center = size / 2;
   
@@ -66,22 +78,28 @@ export default function WaterRing({
   
   // Scale amplitudes and speeds based on size and reduce motion
   const scaleFactor = size / 240;
-  const scaledIdleAmplitude = shouldReduceMotion ? idleAmplitude * 0.5 * scaleFactor : idleAmplitude * scaleFactor;
-  const scaledSplashAmplitudeMax = shouldReduceMotion ? splashAmplitudeMax * 0.5 * scaleFactor : splashAmplitudeMax * scaleFactor;
+  const scaledIdleAmplitude = (shouldReduceMotion ? idleAmplitude * 0.5 : idleAmplitude) * scaleFactor;
+  const scaledSplashAmplitudeMax = (shouldReduceMotion ? splashAmplitudeMax * 0.5 : splashAmplitudeMax) * scaleFactor;
   const scaledIdlePeriodMs = shouldReduceMotion ? idlePeriodMs * 2 : idlePeriodMs;
   const scaledLevelRiseDurationMs = shouldReduceMotion ? levelRiseDurationMs * 2 : levelRiseDurationMs;
   const scaledSplashDurationMs = shouldReduceMotion ? splashDurationMs * 2 : splashDurationMs;
   
   // Animation state
-  const phase = useSharedValue(0);
-  const amplitude = useSharedValue(scaledIdleAmplitude);
-  const slope = useSharedValue(0);
-  const baseLevel = useSharedValue(progress);
-  const splashActive = useSharedValue(false);
-  const splashStartTime = useSharedValue(0);
+  const phase = useSharedValue(0); // wave motion
+  const breath = useSharedValue(0); // breathing of idle amplitude
+  const baseLevel = useSharedValue(progress); // 0..1
+  // Impulse envelope progress: 0 -> 1 over splashDurationMs
+  const splashT = useSharedValue(1);
+  const A_peak = useSharedValue(0);
+  const S_peak = useSharedValue(0);
+  const lastDeltaNorm = useSharedValue(0);
+  // device tilt (roll)
+  const rotation = useAnimatedSensor(SensorType.ROTATION, { interval: 16 });
   
   // Previous progress for detecting changes
   const prevProgress = useRef(progress);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingIncrease = useRef(0); // accumulate delta fraction
   
   // Idle wave animation
   useEffect(() => {
@@ -96,82 +114,91 @@ export default function WaterRing({
   
   // Optional breathing effect for idle amplitude
   useEffect(() => {
-    if (!shouldReduceMotion) {
-      amplitude.value = withRepeat(
-        withSequence(
-          withTiming(scaledIdleAmplitude * 1.2, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
-          withTiming(scaledIdleAmplitude * 0.8, { duration: 1200, easing: Easing.inOut(Easing.ease) })
-        ),
-        -1
-      );
-    }
-  }, [shouldReduceMotion, scaledIdleAmplitude]);
+    if (shouldReduceMotion) return;
+    breath.value = withRepeat(
+      withTiming(2 * Math.PI, { duration: 2400, easing: Easing.linear }),
+      -1
+    );
+  }, [shouldReduceMotion]);
+
+  // Imperative API
+  useImperativeHandle(ref, () => ({
+    setProgress: (p: number) => {
+      const clamped = clamp(p ?? 0, 0, 1);
+      const delta = clamped - baseLevel.value;
+      if (delta >= 0) {
+        baseLevel.value = withTiming(clamped, {
+          duration: scaledLevelRiseDurationMs,
+          easing: Easing.out(Easing.cubic),
+        }, (finished) => {
+          if (finished && onAnimationEnd) onAnimationEnd();
+        });
+      } else {
+        baseLevel.value = withTiming(clamped, {
+          duration: scaledLevelRiseDurationMs,
+          easing: Easing.out(Easing.cubic),
+        }, (finished) => {
+          if (finished && onAnimationEnd) onAnimationEnd();
+        });
+      }
+    },
+    triggerSplash: (deltaFraction?: number) => {
+      // Restart envelope with new peak based on delta
+      const d = clamp(deltaFraction ?? 0.05, 0, 1);
+      const mappedLinear = 6 + ((scaledSplashAmplitudeMax - 6) * Math.min(d, 0.2)) / 0.2;
+      const mapped = clamp(mappedLinear, 4, scaledSplashAmplitudeMax);
+      // merge with remaining envelope strength
+      const remaining = 1 - splashT.value; // 0..1 left
+      const combined = clamp(mapped + lastDeltaNorm.value * remaining * scaledSplashAmplitudeMax, 0, scaledSplashAmplitudeMax);
+      A_peak.value = combined;
+      // slosh peak: up to 0.15 slope
+      const sPeak = d >= 0.2 ? 0.15 : d * 0.75;
+      S_peak.value = shouldReduceMotion ? 0 : sPeak;
+      lastDeltaNorm.value = d;
+      splashT.value = 0;
+      splashT.value = withTiming(1, { duration: scaledSplashDurationMs, easing: Easing.linear });
+    },
+  }));
   
   // Handle progress changes
   useEffect(() => {
-    const delta = progress - prevProgress.current;
-    
-    if (delta > 0 && !splashActive.value) {
-      // Trigger splash animation
-      splashActive.value = true;
-      splashStartTime.value = Date.now();
-      
-      // Calculate splash parameters based on delta
-      const normalizedDelta = Math.min(delta, 0.2); // Cap at 20% of goal
-      const splashPeak = Math.max(4, Math.min(
-        interpolate(normalizedDelta, [0, 0.2], [6, scaledSplashAmplitudeMax]),
-        scaledSplashAmplitudeMax
-      ));
-      
-      // Level rise animation
-      baseLevel.value = withTiming(progress, {
-        duration: scaledLevelRiseDurationMs,
-        easing: Easing.out(Easing.cubic),
-      }, (finished) => {
-        if (finished && onAnimationEnd) {
-          onAnimationEnd();
-        }
-      });
-      
-      // Splash amplitude burst
-      amplitude.value = withSequence(
-        withTiming(splashPeak, { duration: 150, easing: Easing.out(Easing.cubic) }),
-        withTiming(scaledIdleAmplitude, { duration: scaledSplashDurationMs - 150, easing: Easing.out(Easing.cubic) })
-      );
-      
-      // Slosh tilt animation
-      const sloshPeak = normalizedDelta >= 0.2 ? 0.15 : normalizedDelta * 0.75;
-      slope.value = withSequence(
-        withTiming(sloshPeak, { duration: 200, easing: Easing.out(Easing.cubic) }),
-        withTiming(-sloshPeak * 0.3, { duration: 300, easing: Easing.inOut(Easing.cubic) }),
-        withTiming(0, { duration: 300, easing: Easing.out(Easing.cubic) })
-      );
-      
-      // Reset splash state after animation
-      setTimeout(() => {
-        splashActive.value = false;
-      }, scaledSplashDurationMs);
-      
-    } else if (delta < 0) {
-      // Decrease - no splash, just animate level down
-      baseLevel.value = withTiming(progress, {
-        duration: scaledLevelRiseDurationMs,
-        easing: Easing.out(Easing.cubic),
-      }, (finished) => {
-        if (finished && onAnimationEnd) {
-          onAnimationEnd();
-        }
-      });
-      
-      // Ease amplitude back to idle
-      amplitude.value = withTiming(scaledIdleAmplitude, {
-        duration: 300,
-        easing: Easing.out(Easing.cubic),
-      });
+    const clampedNext = Math.max(0, Math.min(1, progress ?? 0));
+    const delta = clampedNext - prevProgress.current;
+
+    // Always animate base level to target
+    baseLevel.value = withTiming(clampedNext, {
+      duration: scaledLevelRiseDurationMs,
+      easing: Easing.out(Easing.cubic),
+    }, (finished) => {
+      if (finished && onAnimationEnd) {
+        onAnimationEnd();
+      }
+    });
+
+    if (delta > 0) {
+      // Debounce/merge rapid increases within 120ms
+      pendingIncrease.current += delta;
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+      debounceTimer.current = setTimeout(() => {
+        const accumulated = pendingIncrease.current;
+        pendingIncrease.current = 0;
+        // Map to peak amplitude and slosh, restart envelope
+        const d = Math.min(accumulated, 0.4); // bound merging to avoid excess
+        const peakLinear = 6 + ((scaledSplashAmplitudeMax - 6) * Math.min(d, 0.2)) / 0.2;
+        const peak = clamp(peakLinear, 4, scaledSplashAmplitudeMax);
+        const sPeak = d >= 0.2 ? 0.15 : d * 0.75;
+        A_peak.value = peak;
+        S_peak.value = shouldReduceMotion ? 0 : sPeak;
+        lastDeltaNorm.value = d;
+        splashT.value = 0;
+        splashT.value = withTiming(1, { duration: scaledSplashDurationMs, easing: Easing.linear });
+      }, 120);
     }
-    
-    prevProgress.current = progress;
-  }, [progress, scaledLevelRiseDurationMs, scaledSplashDurationMs, scaledIdleAmplitude, scaledSplashAmplitudeMax]);
+
+    prevProgress.current = clampedNext;
+  }, [progress, scaledLevelRiseDurationMs, scaledSplashDurationMs, scaledSplashAmplitudeMax, shouldReduceMotion]);
   
   // Animated wave paths for front and back layers
   const frontWavePath = useDerivedValue(() => {
@@ -179,7 +206,24 @@ export default function WaterRing({
     const width = size;
     const height = size;
     const numPoints = 80;
-    
+    const k = idleFrequency * Math.PI; // spatial frequency factor over -1..1
+    // Idle amplitude with subtle breathing
+    const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value)));
+    // Splash impulse envelope
+    const t = splashT.value * (scaledSplashDurationMs / 1000);
+    const tau = (scaledSplashDurationMs / 1000) / 2.2;
+    const f_splash = 2.2; // Hz
+    const A_impulse = A_peak.value * Math.exp(-t / tau) * Math.cos(2 * Math.PI * f_splash * t);
+    const A_total = Math.max(0, A_idle + A_impulse);
+    // Slosh tilt impulse + optional device tilt
+    const tau_s = 0.8; // seconds
+    const f_slosh = 1.4; // Hz
+    const slopeImpulse = shouldReduceMotion ? 0 : (S_peak.value * Math.exp(-(t) / tau_s) * Math.sin(2 * Math.PI * f_slosh * t));
+    // Device roll to slope
+    const roll = rotation.sensor.value ? rotation.sensor.value.roll : 0;
+    const tiltSlope = enableTilt && !shouldReduceMotion ? clamp(roll * 0.08, -0.25, 0.25) : 0;
+    const slopeTotal = clamp(slopeImpulse + tiltSlope, -0.25, 0.25);
+
     let path = `M 0 ${height}`;
     
     for (let i = 0; i <= numPoints; i++) {
@@ -190,8 +234,8 @@ export default function WaterRing({
       // waterLevel should be from bottom (height) to top (0), so we invert the progress
       const waterLevel = height - (baseLevel.value * height);
       const waveY = waterLevel + 
-                   slope.value * normalizedX * height / 2 +
-                   amplitude.value * Math.sin(idleFrequency * Math.PI * normalizedX + phase.value);
+                   slopeTotal * normalizedX * height / 2 +
+                   A_total * Math.sin(k * normalizedX + phase.value);
       
       const clampedY = Math.max(0, Math.min(height, waveY));
       
@@ -213,7 +257,20 @@ export default function WaterRing({
     const width = size;
     const height = size;
     const numPoints = 80;
-    
+    const k = (idleFrequency * 0.9) * Math.PI;
+    const A_idle = scaledIdleAmplitude * 0.7 * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value + 0.6)));
+    const t = splashT.value * (scaledSplashDurationMs / 1000);
+    const tau = (scaledSplashDurationMs / 1000) / 2.2;
+    const f_splash = 2.2;
+    const A_impulse = (A_peak.value * 0.6) * Math.exp(-t / tau) * Math.cos(2 * Math.PI * f_splash * t + 0.3);
+    const A_total = Math.max(0, A_idle + A_impulse);
+    const tau_s = 0.8;
+    const f_slosh = 1.4;
+    const slopeImpulse = shouldReduceMotion ? 0 : (S_peak.value * 0.7 * Math.exp(-(t) / tau_s) * Math.sin(2 * Math.PI * f_slosh * t + 0.2));
+    const roll = rotation.sensor.value ? rotation.sensor.value.roll : 0;
+    const tiltSlope = enableTilt && !shouldReduceMotion ? clamp(roll * 0.08, -0.25, 0.25) : 0;
+    const slopeTotal = clamp(slopeImpulse + tiltSlope, -0.25, 0.25);
+
     let path = `M 0 ${height}`;
     
     for (let i = 0; i <= numPoints; i++) {
@@ -224,8 +281,8 @@ export default function WaterRing({
       // waterLevel should be from bottom (height) to top (0), so we invert the progress
       const waterLevel = height - (baseLevel.value * height);
       const waveY = waterLevel + 
-                   slope.value * 0.8 * normalizedX * height / 2 +
-                   amplitude.value * 0.7 * Math.sin(idleFrequency * Math.PI * normalizedX + phase.value + 0.3);
+                   slopeTotal * 0.8 * normalizedX * height / 2 +
+                   A_total * Math.sin(k * normalizedX + phase.value + 0.3);
       
       const clampedY = Math.max(0, Math.min(height, waveY));
       
@@ -283,22 +340,16 @@ export default function WaterRing({
           <ClipPath id="waterClip">
             <Circle cx={center} cy={center} r={radius} />
           </ClipPath>
+          <LinearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+            <Stop offset="0%" stopColor={colors.waterGradient[0]} stopOpacity={1} />
+            <Stop offset="100%" stopColor={colors.waterGradient[1]} stopOpacity={1} />
+          </LinearGradient>
         </Defs>
-        
-        {/* Background ring */}
-        <Circle
-          cx={center}
-          cy={center}
-          r={radius}
-          stroke={colors.ring}
-          strokeWidth={strokeWidth}
-          fill="transparent"
-        />
         
         {/* Back wave layer (darker, more transparent) */}
         <AnimatedPath
           animatedProps={backWaveAnimatedProps}
-          fill={colors.waterGradient[1]}
+          fill="url(#waterGrad)"
           opacity={0.6}
           clipPath="url(#waterClip)"
         />
@@ -306,8 +357,18 @@ export default function WaterRing({
         {/* Front wave layer */}
         <AnimatedPath
           animatedProps={frontWaveAnimatedProps}
-          fill={colors.waterGradient[0]}
+          fill="url(#waterGrad)"
           clipPath="url(#waterClip)"
+        />
+
+        {/* Ring on top to remain visible above water */}
+        <Circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={colors.ring}
+          strokeWidth={strokeWidth}
+          fill="transparent"
         />
       </Svg>
       
@@ -328,7 +389,7 @@ export default function WaterRing({
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -365,3 +426,5 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
+export default WaterRing;
