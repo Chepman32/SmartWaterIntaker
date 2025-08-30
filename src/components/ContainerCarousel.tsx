@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RootState } from '../state/store';
@@ -11,6 +11,7 @@ interface ContainerCarouselProps {
 }
 
 export default function ContainerCarousel({ textColor }: ContainerCarouselProps) {
+  const glassImage = require('../../assets/images/Glass.png');
   const dispatch = useDispatch();
   const containers = useSelector((state: RootState) => state.containers.items);
   const favoriteContainers = containers.filter((c: any) => c.favorite);
@@ -60,7 +61,15 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
             activeOpacity={0.7}
           >
             <View style={[styles.iconContainer, { backgroundColor: container.color }]}>
-              <Text style={styles.iconText}>{container.icon}</Text>
+              {(container.id?.startsWith('glass') || container.name === 'Glass') ? (
+                <Image
+                  source={glassImage}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              ) : (
+                <Text style={styles.iconText}>{container.icon}</Text>
+              )}
             </View>
             <Text style={[styles.containerName, { color: textColor }]} numberOfLines={1}>
               {container.name}
@@ -115,6 +124,10 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 40,
     color: '#FFFFFF',
+  },
+  iconImage: {
+    width: 72,
+    height: 72,
   },
   containerName: {
     fontSize: 24,

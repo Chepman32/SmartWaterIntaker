@@ -8,7 +8,7 @@ import { Colors } from '../constants/colors';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { RootState } from '../state/store';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { setTheme, setHaptics, setSounds } from '../state/slices/settingsSlice';
+import { setTheme, setHaptics, setSounds, setUnit } from '../state/slices/settingsSlice';
 import { usePurchases } from '../hooks/usePurchases';
 
 type SettingsScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -187,24 +187,31 @@ const SettingsScreen: React.FC = () => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Settings</Text>
-        {isProUnlocked && (
-          <View style={styles.proBadge}>
-            <Icon name="star" size={16} color="#FFD700" />
-            <Text style={styles.proText}>Pro</Text>
-          </View>
-        )}
-      </View>
-      
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profile Info */}
-        <View style={[styles.profileCard, { backgroundColor: theme.card }]}>
-          <View style={styles.profileInfo}>
-            <Text style={[styles.profileTitle, { color: theme.text }]}>Profile</Text>
-            <Text style={[styles.profileDetail, { color: theme.textSecondary }]}>Unit: {profile.unit}</Text>
-            <Text style={[styles.profileDetail, { color: theme.textSecondary }]}>Activity: {profile.activityLevel}</Text>
-            <Text style={[styles.profileDetail, { color: theme.textSecondary }]}>Climate: {profile.climate}</Text>
+        {/* Unit selector */}
+        <View style={[styles.unitCard, { backgroundColor: theme.card, borderColor: theme.border }]}>          
+          <Text style={[styles.unitLabel, { color: theme.textSecondary }]}>Measure Unit</Text>
+          <View style={styles.unitPillsRow}>
+            <TouchableOpacity
+              onPress={() => dispatch(setUnit('ml'))}
+              style={[styles.unitPill, { 
+                backgroundColor: profile.unit === 'ml' ? theme.primary + '20' : 'transparent',
+                borderColor: profile.unit === 'ml' ? theme.primary : theme.border,
+              }]}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.unitPillText, { color: profile.unit === 'ml' ? theme.primaryDark : theme.textSecondary }]}>ml</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => dispatch(setUnit('oz'))}
+              style={[styles.unitPill, { 
+                backgroundColor: profile.unit === 'oz' ? theme.primary + '20' : 'transparent',
+                borderColor: profile.unit === 'oz' ? theme.primary : theme.border,
+              }]}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.unitPillText, { color: profile.unit === 'oz' ? theme.primaryDark : theme.textSecondary }]}>pint</Text>
+            </TouchableOpacity>
           </View>
         </View>
         
@@ -229,54 +236,37 @@ const getStyles = (theme: any) => StyleSheet.create({
     flex: 1,
     backgroundColor: theme.background,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.border,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: theme.text,
-  },
-  proBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFD700' + '20',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  proText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#FFD700',
-    marginLeft: 4,
-  },
+  
   content: {
     flex: 1,
     paddingHorizontal: 20,
   },
-  profileCard: {
+  unitCard: {
     marginTop: 20,
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
   },
-  profileInfo: {
-    alignItems: 'center',
-  },
-  profileTitle: {
-    fontSize: 18,
+  unitLabel: {
+    fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
-  profileDetail: {
+  unitPillsRow: {
+    flexDirection: 'row',
+  },
+  unitPill: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginRight: 10,
+  },
+  unitPillText: {
     fontSize: 14,
-    marginBottom: 4,
+    fontWeight: '600',
   },
   section: {
     marginTop: 32,
