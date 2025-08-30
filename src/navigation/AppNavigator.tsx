@@ -2,15 +2,16 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useColorScheme } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import StatisticsScreen from '../screens/StatisticsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import PurchaseScreen from '../screens/PurchaseScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { Colors } from '../constants/colors';
+import { useThemeColors, useTheme } from '../hooks/useThemeColors';
 import {
   UnitsScreen,
   WeightActivityScreen,
@@ -45,14 +46,10 @@ export type MainTabParamList = {
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const Stack = createStackNavigator<RootStackParamList>();
 
-// Placeholder screens
-function StatsScreen() {
-  return null; // TODO: Implement
-}
+// Removed inline placeholder for Stats
 
 function MainTabNavigator() {
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? Colors.dark : Colors.light;
+  const theme = useThemeColors();
 
   return (
     <Tab.Navigator
@@ -104,7 +101,7 @@ function MainTabNavigator() {
       />
       <Tab.Screen 
         name="Stats" 
-        component={StatsScreen} 
+        component={StatisticsScreen} 
         options={{ title: 'Statistics' }}
       />
       <Tab.Screen 
@@ -117,13 +114,12 @@ function MainTabNavigator() {
 }
 
 export default function AppNavigator() {
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? Colors.dark : Colors.light;
+  const { theme, mode } = useTheme();
 
   return (
     <NavigationContainer
       theme={{
-        dark: isDark,
+        dark: mode === 'dark',
         colors: {
           primary: theme.primary,
           background: theme.background,

@@ -1,23 +1,15 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  useColorScheme,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
+import { useThemeColors } from '../hooks/useThemeColors';
 import { deleteEvent } from '../state/slices/intakeSlice';
 
 
 const HistoryScreen: React.FC = () => {
   const dispatch = useDispatch();
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? Colors.dark : Colors.light;
+  const theme = useThemeColors();
   const [selectedDate, setSelectedDate] = useState(new Date());
   
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);

@@ -1,23 +1,14 @@
 import React, { useRef, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  useColorScheme,
-  ScrollView,
-  TouchableOpacity,
-  Switch,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../constants/colors';
+import { useTheme } from '../hooks/useThemeColors';
 import WaterRing, { WaterRingRef } from '../components/WaterRing';
 
 export default function WaterRingDemoScreen() {
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? 'dark' : 'light';
-  const themeColors = isDark ? Colors.dark : Colors.light;
+  const { theme: themeColors, mode } = useTheme();
+  const theme = mode;
   
   // Demo state
   const [progress, setProgress] = useState(0.2);

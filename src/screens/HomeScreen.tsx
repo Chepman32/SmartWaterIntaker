@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  useColorScheme,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
+import { useThemeColors } from '../hooks/useThemeColors';
 import WaterRing from '../components/WaterRing';
 import QuickAddChip from '../components/QuickAddChip';
 import ContainerCarousel from '../components/ContainerCarousel';
 import WaterLoggingBottomSheet from '../components/WaterLoggingBottomSheet';
 
 export default function HomeScreen() {
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? Colors.dark : Colors.light;
+  const theme = useThemeColors();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   
   const todayTotalMl = useSelector((state: RootState) => 
@@ -45,7 +38,7 @@ export default function HomeScreen() {
             progress={progress}
             valueMl={todayTotalMl}
             goalMl={dailyGoalMl}
-            theme={isDark ? 'dark' : 'light'}
+            theme={theme === Colors.dark ? 'dark' : 'light'}
             idleAmplitude={6}
             idleFrequency={1.8}
             splashAmplitudeMax={18}

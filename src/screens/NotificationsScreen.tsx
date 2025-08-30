@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Switch,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Switch, ScrollView, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useColorScheme } from 'react-native';
 import { Colors } from '../constants/colors';
+import { useThemeColors } from '../hooks/useThemeColors';
 import { RootState } from '../state/store';
 import { useNotifications } from '../hooks/useNotifications';
 import {
@@ -24,8 +16,7 @@ import { ReminderSchedule } from '../types/models';
 const NotificationsScreen: React.FC = () => {
   const dispatch = useDispatch();
 
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? Colors.dark : Colors.light;
+  const theme = useThemeColors();
   
   const {
     schedules,

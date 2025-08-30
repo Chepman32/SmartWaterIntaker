@@ -1,23 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  useColorScheme,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../constants/colors';
+import { useThemeColors } from '../hooks/useThemeColors';
 import { usePurchases } from '../hooks/usePurchases';
 import { PRODUCT_IDS, ProductId } from '../services/PurchaseService';
 
 const PurchaseScreen: React.FC = () => {
-  const isDark = useColorScheme() === 'dark';
-  const theme = isDark ? Colors.dark : Colors.light;
+  const theme = useThemeColors();
   
   const {
     isProUnlocked,
