@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RootState } from '../state/store';
 import { addEvent } from '../state/slices/intakeSlice';
 import { IntakeEvent } from '../types/models';
@@ -13,6 +14,7 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
   const dispatch = useDispatch();
   const containers = useSelector((state: RootState) => state.containers.items);
   const favoriteContainers = containers.filter((c: any) => c.favorite);
+  const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
 
   const handleContainerPress = (container: any) => {
     const intakeEvent: IntakeEvent = {
@@ -25,6 +27,12 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
     };
     
     dispatch(addEvent(intakeEvent));
+    if (hapticsEnabled) {
+      ReactNativeHapticFeedback.trigger('impactLight', {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: false,
+      });
+    }
   };
 
   if (favoriteContainers.length === 0) {

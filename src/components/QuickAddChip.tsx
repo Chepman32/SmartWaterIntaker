@@ -1,6 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { RootState } from '../state/store';
 import { addEvent } from '../state/slices/intakeSlice';
 import { IntakeEvent } from '../types/models';
 
@@ -18,6 +20,7 @@ export default function QuickAddChip({
   style,
 }: QuickAddChipProps) {
   const dispatch = useDispatch();
+  const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
 
   const handlePress = () => {
     const intakeEvent: IntakeEvent = {
@@ -29,6 +32,12 @@ export default function QuickAddChip({
     };
     
     dispatch(addEvent(intakeEvent));
+    if (hapticsEnabled) {
+      ReactNativeHapticFeedback.trigger('impactLight', {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: false,
+      });
+    }
   };
 
   return (

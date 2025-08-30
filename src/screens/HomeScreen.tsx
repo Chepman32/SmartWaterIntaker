@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
-import { useThemeColors } from '../hooks/useThemeColors';
+import { useTheme, useThemeColors } from '../hooks/useThemeColors';
 import WaterRing from '../components/WaterRing';
 import QuickAddChip from '../components/QuickAddChip';
 import ContainerCarousel from '../components/ContainerCarousel';
 import WaterLoggingBottomSheet from '../components/WaterLoggingBottomSheet';
 
 export default function HomeScreen() {
-  const theme = useThemeColors();
+  const { theme, mode } = useTheme();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   
   const todayTotalMl = useSelector((state: RootState) => 
@@ -38,12 +38,12 @@ export default function HomeScreen() {
             progress={progress}
             valueMl={todayTotalMl}
             goalMl={dailyGoalMl}
-            theme={theme === Colors.dark ? 'dark' : 'light'}
+            theme={mode === 'dark' ? 'dark' : 'light'}
             idleAmplitude={6}
             idleFrequency={1.8}
             splashAmplitudeMax={18}
             splashDurationMs={900}
-            levelRiseDurationMs={450}
+            levelRiseDurationMs={900}
           />
         </View>
         

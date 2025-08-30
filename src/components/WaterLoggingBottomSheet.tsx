@@ -9,6 +9,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { RootState } from '../state/store';
 import { addEvent } from '../state/slices/intakeSlice';
@@ -27,6 +28,7 @@ export default function WaterLoggingBottomSheet({
   const dispatch = useDispatch();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+  const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
   
   const containers = useSelector((state: RootState) => state.containers.items);
   const [selectedContainer, setSelectedContainer] = useState<Container | null>(null);
@@ -57,6 +59,12 @@ export default function WaterLoggingBottomSheet({
     };
 
     dispatch(addEvent(intakeEvent));
+    if (hapticsEnabled) {
+      ReactNativeHapticFeedback.trigger('impactLight', {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: false,
+      });
+    }
     
     // Reset form
     setSelectedContainer(null);

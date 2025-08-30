@@ -35,6 +35,12 @@ const settingsSlice = createSlice({
     setTheme(state, action: PayloadAction<Settings['theme']>) {
       state.settings.theme = action.payload;
     },
+    setHaptics(state, action: PayloadAction<boolean>) {
+      state.settings.haptics = action.payload;
+    },
+    setSounds(state, action: PayloadAction<boolean>) {
+      state.settings.sounds = action.payload;
+    },
     setQuickAdds(state, action: PayloadAction<number[]>) {
       state.settings.quickAddsMl = action.payload;
     },
@@ -44,5 +50,5 @@ const settingsSlice = createSlice({
   },
 });
 
-export const { setUnit, setTheme, setQuickAdds, updateProfile } = settingsSlice.actions;
+export const { setUnit, setTheme, setHaptics, setSounds, setQuickAdds, updateProfile } = settingsSlice.actions;
 export default settingsSlice.reducer;

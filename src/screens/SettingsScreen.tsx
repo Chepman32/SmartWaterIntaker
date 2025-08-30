@@ -8,7 +8,7 @@ import { Colors } from '../constants/colors';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { RootState } from '../state/store';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { setTheme } from '../state/slices/settingsSlice';
+import { setTheme, setHaptics, setSounds } from '../state/slices/settingsSlice';
 import { usePurchases } from '../hooks/usePurchases';
 
 type SettingsScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -59,10 +59,7 @@ const SettingsScreen: React.FC = () => {
       icon: 'phone-portrait',
       type: 'toggle',
       value: settings.haptics,
-      onToggle: (value) => {
-        // TODO: Implement haptics toggle
-        console.log('Toggle haptics:', value);
-      },
+      onToggle: (value) => dispatch(setHaptics(value)),
     },
     {
       id: 'sounds',
@@ -71,10 +68,7 @@ const SettingsScreen: React.FC = () => {
       icon: 'volume-high',
       type: 'toggle',
       value: settings.sounds,
-      onToggle: (value) => {
-        // TODO: Implement sounds toggle
-        console.log('Toggle sounds:', value);
-      },
+      onToggle: (value) => dispatch(setSounds(value)),
     },
   ];
   
