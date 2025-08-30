@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
 import { useThemeColors } from '../hooks/useThemeColors';
-import { deleteEvent } from '../state/slices/intakeSlice';
+import { deleteIntakeEventAndPersist } from '../state/slices/intakeSlice';
 
 
 const HistoryScreen: React.FC = () => {
@@ -40,7 +40,7 @@ const HistoryScreen: React.FC = () => {
   };
   
   const handleDeleteEvent = (eventId: string) => {
-    dispatch(deleteEvent(eventId));
+    dispatch(deleteIntakeEventAndPersist(eventId, selectedDateStr));
   };
   
   const navigateDate = (direction: 'prev' | 'next') => {

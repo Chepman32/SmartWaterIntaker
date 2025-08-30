@@ -51,6 +51,23 @@ export const StorageService = {
     return json ? JSON.parse(json) : [];
   },
 
+  // Aggregate all intake events across stored dates
+  getAllIntakeEvents(): IntakeEvent[] {
+    const keys = storage.getAllKeys();
+    const intakeKeys = keys.filter(k => k.startsWith('intake_'));
+    const all: IntakeEvent[] = [];
+    for (const key of intakeKeys) {
+      const json = storage.getString(key);
+      if (json) {
+        try {
+          const arr = JSON.parse(json) as IntakeEvent[];
+          for (const e of arr) all.push(e);
+        } catch {}
+      }
+    }
+    return all.sort((a, b) => b.timestamp - a.timestamp);
+  },
+
   addIntakeEvent(event: Omit<IntakeEvent, 'id'>): IntakeEvent {
     const withId: IntakeEvent = { ...event, id: `${Date.now()}` } as IntakeEvent;
     const dateISO = new Date(event.timestamp).toISOString().slice(0, 10);

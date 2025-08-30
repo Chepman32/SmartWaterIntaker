@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { RootState } from '../state/store';
-import { addEvent } from '../state/slices/intakeSlice';
+import { logIntakeEvent } from '../state/slices/intakeSlice';
 import { IntakeEvent, Container } from '../types/models';
 import { Colors } from '../constants/colors';
 
@@ -49,16 +49,12 @@ export default function WaterLoggingBottomSheet({
     
     if (amount <= 0) return;
 
-    const intakeEvent: IntakeEvent = {
-      id: Date.now().toString(),
-      timestamp: Date.now(),
+    dispatch(logIntakeEvent({
       amountMl: amount,
       source: selectedContainer ? 'container' : 'custom',
       containerId: selectedContainer?.id,
       note: note.trim() || undefined,
-    };
-
-    dispatch(addEvent(intakeEvent));
+    }));
     if (hapticsEnabled) {
       ReactNativeHapticFeedback.trigger('impactLight', {
         enableVibrateFallback: true,

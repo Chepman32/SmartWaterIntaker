@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
@@ -28,27 +28,23 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={[styles.title, { color: theme.text }]}>Today</Text>
-        
-        <View style={styles.progressContainer}>
-          <WaterRing
-            size={Math.floor(width * 0.99)}
-            strokeWidth={12}
-            progress={progress}
-            valueMl={todayTotalMl}
-            goalMl={dailyGoalMl}
-            theme={mode === 'dark' ? 'dark' : 'light'}
-            idleAmplitude={6}
-            idleFrequency={1.8}
-            splashAmplitudeMax={18}
-            splashDurationMs={900}
-            levelRiseDurationMs={900}
-          />
-        </View>
-        
-        <ContainerCarousel textColor={theme.text} />
-      </ScrollView>
+      <View style={styles.progressContainer}>
+        <WaterRing
+          size={Math.floor(width * 0.99)}
+          strokeWidth={12}
+          progress={progress}
+          valueMl={todayTotalMl}
+          goalMl={dailyGoalMl}
+          theme={mode === 'dark' ? 'dark' : 'light'}
+          idleAmplitude={6}
+          idleFrequency={1.8}
+          splashAmplitudeMax={18}
+          splashDurationMs={900}
+          levelRiseDurationMs={900}
+        />
+      </View>
+
+      <ContainerCarousel textColor={theme.text} />
     </SafeAreaView>
   );
 }
@@ -58,19 +54,12 @@ const styles = StyleSheet.create({
     flex: 1, 
     backgroundColor: '#fff' 
   },
-  title: { 
-    fontSize: 28, 
-    fontWeight: '700', 
-    marginBottom: 16,
-    paddingHorizontal: 16,
-  },
-  scrollContent: {
-    paddingBottom: 24,
-  },
+  
   progressContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 24,
+    marginTop: 8,
+    marginBottom: 12,
     position: 'relative',
   },
 
