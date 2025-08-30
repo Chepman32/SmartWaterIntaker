@@ -1,4 +1,12 @@
 import { Platform } from 'react-native';
+import {
+  checkNotifications,
+  requestNotifications,
+  check,
+  request,
+  PERMISSIONS,
+  RESULTS,
+} from 'react-native-permissions';
 
 export interface ReminderNotification {
   id: string;
@@ -40,19 +48,22 @@ class NotificationService {
 
   async requestPermissions(): Promise<NotificationPermissionStatus> {
     try {
-      // TODO: Implement actual permission request
-      // For iOS: Use react-native-permissions or built-in notification permissions
-      // For Android: Handle notification channel creation
-      
       if (Platform.OS === 'ios') {
-        // Mock iOS permission request
-        console.log('Requesting iOS notification permissions');
-        return { granted: true, canAskAgain: true };
-      } else {
-        // Mock Android permission request
-        console.log('Requesting Android notification permissions');
-        return { granted: true, canAskAgain: true };
+        const { status } = await requestNotifications(['alert', 'sound', 'badge']);
+        const granted = status === 'granted' || (status as any) === 'provisional';
+        const canAskAgain = status !== 'blocked';
+        return { granted, canAskAgain };
       }
+
+      // Android
+      if ((Platform.Version as number) >= 33) {
+        const status = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+        const granted = status === RESULTS.GRANTED;
+        const canAskAgain = status !== RESULTS.BLOCKED;
+        return { granted, canAskAgain };
+      }
+      // Below Android 13 does not require runtime permission
+      return { granted: true, canAskAgain: true };
     } catch (error) {
       console.error('Failed to request notification permissions:', error);
       return { granted: false, canAskAgain: true };
@@ -61,8 +72,18 @@ class NotificationService {
 
   async checkPermissions(): Promise<NotificationPermissionStatus> {
     try {
-      // TODO: Check actual notification permissions
-      console.log('Checking notification permissions');
+      if (Platform.OS === 'ios') {
+        const { status } = await checkNotifications();
+        const granted = status === 'granted' || (status as any) === 'provisional';
+        const canAskAgain = status !== 'blocked';
+        return { granted, canAskAgain };
+      }
+      if ((Platform.Version as number) >= 33) {
+        const status = await check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+        const granted = status === RESULTS.GRANTED;
+        const canAskAgain = status !== RESULTS.BLOCKED;
+        return { granted, canAskAgain };
+      }
       return { granted: true, canAskAgain: true };
     } catch (error) {
       console.error('Failed to check notification permissions:', error);

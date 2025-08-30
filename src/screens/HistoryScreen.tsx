@@ -82,11 +82,11 @@ const HistoryScreen: React.FC = () => {
         </View>
         
         <TouchableOpacity 
-          style={[styles.dateButton, !isToday && styles.dateButtonDisabled]} 
+          style={[styles.dateButton, isToday && styles.dateButtonDisabled]} 
           onPress={() => navigateDate('next')}
           disabled={isToday}
         >
-          <Text style={[styles.dateButtonText, !isToday && styles.dateButtonTextDisabled]}>›</Text>
+          <Text style={[styles.dateButtonText, isToday && styles.dateButtonTextDisabled]}>›</Text>
         </TouchableOpacity>
       </View>
       
