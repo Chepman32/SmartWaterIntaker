@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
@@ -10,6 +11,7 @@ import ContainerCarousel from '../components/ContainerCarousel';
 
 export default function HomeScreen() {
   const { theme, mode } = useTheme();
+  const { width } = useWindowDimensions();
   
   const todayTotalMl = useSelector((state: RootState) => 
     state.intake.events
@@ -25,13 +27,13 @@ export default function HomeScreen() {
   const progress = Math.min(todayTotalMl / dailyGoalMl, 1);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <ScrollView>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={[styles.title, { color: theme.text }]}>Today</Text>
         
         <View style={styles.progressContainer}>
           <WaterRing
-            size={280}
+            size={Math.floor(width * 0.99)}
             strokeWidth={12}
             progress={progress}
             valueMl={todayTotalMl}
@@ -47,7 +49,7 @@ export default function HomeScreen() {
         
         <ContainerCarousel textColor={theme.text} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -61,7 +63,9 @@ const styles = StyleSheet.create({
     fontWeight: '700', 
     marginBottom: 16,
     paddingHorizontal: 16,
-    paddingTop: 16,
+  },
+  scrollContent: {
+    paddingBottom: 24,
   },
   progressContainer: {
     alignItems: 'center',
