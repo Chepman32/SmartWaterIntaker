@@ -1,4 +1,4 @@
-package com.rntemplate
+package com.smartwaterintaker
 
 import android.app.Application
 import com.facebook.react.PackageList

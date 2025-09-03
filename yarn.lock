@@ -3111,9 +3111,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"RNTemplate@workspace:.":
+"SmartWaterIntaker@workspace:.":
   version: 0.0.0-use.local
-  resolution: "RNTemplate@workspace:."
+  resolution: "SmartWaterIntaker@workspace:."
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
