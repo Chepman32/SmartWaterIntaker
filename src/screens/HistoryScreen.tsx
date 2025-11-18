@@ -50,7 +50,48 @@ const HistoryScreen: React.FC = () => {
   };
   
   const isToday = selectedDateStr === new Date().toISOString().split('T')[0];
-  
+
+  // Helper function to check if date is recent (within last week)
+  const isRecentDate = () => {
+    if (isToday) return true;
+
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+    if (selectedDateStr === yesterdayStr) return true;
+
+    // Check if date is within last week (last 7 days)
+    const weekAgo = new Date(today);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    return selectedDate > weekAgo && selectedDate < today;
+  };
+
+  // Helper function to format date display
+  const getDateDisplayText = () => {
+    if (isToday) return 'Today';
+
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+    if (selectedDateStr === yesterdayStr) return 'Yesterday';
+
+    // Check if date is within last week (last 7 days)
+    const weekAgo = new Date(today);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    if (selectedDate > weekAgo && selectedDate < today) {
+      return selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+    }
+
+    // For older dates, show the formatted date
+    return selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+  };
+
   const styles = getStyles(theme);
   
   return (
@@ -69,16 +110,25 @@ const HistoryScreen: React.FC = () => {
         </TouchableOpacity>
         
         <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>
-            {isToday ? 'Today' : selectedDate.toLocaleDateString()}
-          </Text>
-          <Text style={styles.dateSubtext}>
-            {selectedDate.toLocaleDateString('en-US', { 
-              weekday: 'long', 
-              month: 'long', 
-              day: 'numeric' 
-            })}
-          </Text>
+          {isRecentDate() ? (
+            <>
+              <Text style={styles.dateText}>
+                {getDateDisplayText()}
+              </Text>
+              <Text style={styles.dateSubtext}>
+                {selectedDate.toLocaleDateString('en-GB').split('/').join('.')}
+              </Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.dateText}>
+                {selectedDate.toLocaleDateString('en-GB').split('/').join('.')}
+              </Text>
+              <Text style={styles.dateSubtext}>
+                {getDateDisplayText()}
+              </Text>
+            </>
+          )}
         </View>
         
         <TouchableOpacity 
