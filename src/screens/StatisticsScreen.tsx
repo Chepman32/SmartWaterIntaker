@@ -1,6 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 
@@ -104,15 +106,15 @@ export default function StatisticsScreen() {
     return { backgroundColor, textColor };
   };
 
-  const goToPreviousMonth = () => {
+  const goToPreviousMonth = useCallback(() => {
     setSelectedMonth((prev) => {
       const newDate = new Date(prev);
       newDate.setMonth(prev.getMonth() - 1);
       return newDate;
     });
-  };
+  }, []);
 
-  const goToNextMonth = () => {
+  const goToNextMonth = useCallback(() => {
     const currentMonth = new Date();
     currentMonth.setDate(1);
     const nextMonth = new Date(selectedMonth);
@@ -122,15 +124,15 @@ export default function StatisticsScreen() {
     if (nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth()) {
       setSelectedMonth(nextMonth);
     }
-  };
+  }, [selectedMonth]);
 
-  const canGoNext = () => {
+  const canGoNext = useCallback(() => {
     const currentMonth = new Date();
     currentMonth.setDate(1);
     const nextMonth = new Date(selectedMonth);
     nextMonth.setMonth(selectedMonth.getMonth() + 1);
     return nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth();
-  };
+  }, [selectedMonth]);
 
   const calendarCellSize = useMemo(() => {
     const totalHorizontalInset = CARD_HORIZONTAL_MARGIN * 2 + CARD_HORIZONTAL_PADDING * 2;
@@ -144,6 +146,54 @@ export default function StatisticsScreen() {
     }
     return computedSize;
   }, [windowWidth]);
+
+  // Animation values
+  const translateX = useSharedValue(0);
+  const opacity = useSharedValue(1);
+
+  // Check if we can navigate to next month
+  const canGoToNextMonth = useMemo(() => canGoNext(), [canGoNext]);
+
+  // Reset animation when month changes
+  useEffect(() => {
+    translateX.value = 0;
+    opacity.value = withTiming(1, { duration: 200 });
+  }, [selectedMonth, translateX, opacity]);
+
+  // Swipe gesture for month navigation
+  const swipeGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .onUpdate((event) => {
+          translateX.value = event.translationX;
+        })
+        .onEnd((event) => {
+          const SWIPE_THRESHOLD = 50;
+
+          if (event.translationX > SWIPE_THRESHOLD) {
+            // Swipe right - go to previous month
+            opacity.value = withTiming(0, { duration: 150 });
+            translateX.value = withTiming(windowWidth, { duration: 200 }, () => {
+              runOnJS(goToPreviousMonth)();
+            });
+          } else if (event.translationX < -SWIPE_THRESHOLD && canGoToNextMonth) {
+            // Swipe left - go to next month
+            opacity.value = withTiming(0, { duration: 150 });
+            translateX.value = withTiming(-windowWidth, { duration: 200 }, () => {
+              runOnJS(goToNextMonth)();
+            });
+          } else {
+            // Reset if threshold not met
+            translateX.value = withTiming(0, { duration: 200 });
+          }
+        }),
+    [canGoToNextMonth, windowWidth, translateX, opacity, goToPreviousMonth, goToNextMonth]
+  );
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+    opacity: opacity.value,
+  }));
 
   // Calendar data for month view
   const calendarData = useMemo(() => {
@@ -290,54 +340,58 @@ export default function StatisticsScreen() {
                 </TouchableOpacity>
               </View>
 
-              {/* Day Headers */}
-              <View style={styles.calendarHeader}>
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-                  <View key={day} style={styles.dayHeader}>
-                    <Text style={styles.dayHeaderText}>{day}</Text>
+              <GestureDetector gesture={swipeGesture}>
+                <Animated.View style={animatedStyle}>
+                  {/* Day Headers */}
+                  <View style={styles.calendarHeader}>
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+                      <View key={day} style={styles.dayHeader}>
+                        <Text style={styles.dayHeaderText}>{day}</Text>
+                      </View>
+                    ))}
                   </View>
-                ))}
-              </View>
 
-              {/* Calendar Grid */}
-              <View style={styles.calendarGrid}>
-                {calendarData.map((cell, index) => {
-                  const isRowEnd = (index + 1) % DAYS_IN_WEEK === 0;
-                  const baseCellStyle = [
-                    styles.calendarCell,
-                    {
-                      width: calendarCellSize,
-                      height: calendarCellSize,
-                      marginRight: isRowEnd ? 0 : CALENDAR_CELL_GAP,
-                    },
-                  ];
+                  {/* Calendar Grid */}
+                  <View style={styles.calendarGrid}>
+                    {calendarData.map((cell, index) => {
+                      const isRowEnd = (index + 1) % DAYS_IN_WEEK === 0;
+                      const baseCellStyle = [
+                        styles.calendarCell,
+                        {
+                          width: calendarCellSize,
+                          height: calendarCellSize,
+                          marginRight: isRowEnd ? 0 : CALENDAR_CELL_GAP,
+                        },
+                      ];
 
-                  if (!cell.isCurrentMonth) {
-                    // Empty cell
-                    return <View key={`empty-${index}`} style={baseCellStyle} />;
-                  }
+                      if (!cell.isCurrentMonth) {
+                        // Empty cell
+                        return <View key={`empty-${index}`} style={baseCellStyle} />;
+                      }
 
-                  const { backgroundColor, textColor } = getCellColors(cell.totalMl, cell.isFuture);
-                  const displayAmount = cell.isFuture ? '' : `${convertAmount(cell.totalMl).toLocaleString()} ${unit}`;
+                      const { backgroundColor, textColor } = getCellColors(cell.totalMl, cell.isFuture);
+                      const displayAmount = cell.isFuture ? '' : `${convertAmount(cell.totalMl).toLocaleString()} ${unit}`;
 
-                  return (
-                    <View key={index} style={[...baseCellStyle, { backgroundColor }]}>
-                      <Text style={[styles.cellDayNumber, { color: textColor }]}>
-                        {cell.dayNumber}
-                      </Text>
-                      {!cell.isFuture && (
-                        <Text
-                          style={[styles.cellAmount, { color: textColor }]}
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                        >
-                          {displayAmount}
-                        </Text>
-                      )}
-                    </View>
-                  );
-                })}
-              </View>
+                      return (
+                        <View key={index} style={[...baseCellStyle, { backgroundColor }]}>
+                          <Text style={[styles.cellDayNumber, { color: textColor }]}>
+                            {cell.dayNumber}
+                          </Text>
+                          {!cell.isFuture && (
+                            <Text
+                              style={[styles.cellAmount, { color: textColor }]}
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                            >
+                              {displayAmount}
+                            </Text>
+                          )}
+                        </View>
+                      );
+                    })}
+                  </View>
+                </Animated.View>
+              </GestureDetector>
             </>
           ) : (
             <>
