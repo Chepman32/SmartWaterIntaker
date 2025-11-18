@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { RootState } from '../state/store';
-import { Colors } from '../constants/colors';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { deleteIntakeEventAndPersist, logIntakeEvent } from '../state/slices/intakeSlice';
 
@@ -10,8 +11,11 @@ import { deleteIntakeEventAndPersist, logIntakeEvent } from '../state/slices/int
 const HistoryScreen: React.FC = () => {
   const dispatch = useDispatch();
   const theme = useThemeColors();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showAddModal, setShowAddModal] = useState(false);
+  const slideAnim = useRef(new Animated.Value(1000)).current;
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const { profile } = useSelector((state: RootState) => state.settings);
@@ -46,6 +50,23 @@ const HistoryScreen: React.FC = () => {
   const handleDeleteEvent = (eventId: string) => {
     dispatch(deleteIntakeEventAndPersist(eventId, selectedDateStr));
   };
+
+  useEffect(() => {
+    if (showAddModal) {
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        tension: 65,
+        friction: 11,
+      }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: 600,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [showAddModal, slideAnim]);
 
   const handleAddWater = () => {
     setShowAddModal(true);
@@ -118,7 +139,7 @@ const HistoryScreen: React.FC = () => {
     return selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
   };
 
-  const styles = getStyles(theme);
+  const styles = getStyles(theme, insets.bottom, tabBarHeight);
   
   return (
     <SafeAreaView style={styles.container}>
@@ -241,7 +262,7 @@ const HistoryScreen: React.FC = () => {
       {/* Add Water Modal */}
       <Modal
         visible={showAddModal}
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         onRequestClose={() => setShowAddModal(false)}
       >
@@ -250,11 +271,19 @@ const HistoryScreen: React.FC = () => {
           activeOpacity={1}
           onPress={() => setShowAddModal(false)}
         >
-          <TouchableOpacity
-            style={styles.modalContent}
-            activeOpacity={1}
-            onPress={(e) => e.stopPropagation()}
+          <Animated.View
+            style={[
+              styles.modalContent,
+              {
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
           >
+            <TouchableOpacity
+              style={styles.modalContentInner}
+              activeOpacity={1}
+              onPress={(e) => e.stopPropagation()}
+            >
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Add Water Intake</Text>
               <TouchableOpacity
@@ -292,14 +321,16 @@ const HistoryScreen: React.FC = () => {
                 </TouchableOpacity>
               ))}
             </ScrollView>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </Animated.View>
         </TouchableOpacity>
       </Modal>
     </SafeAreaView>
   );
 };
 
-const getStyles = (theme: any) => StyleSheet.create({
+const getStyles = (theme: any, bottomInset: number = 0, tabBarHeight: number = 0) => {
+  return StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.background,
@@ -490,8 +521,11 @@ const getStyles = (theme: any) => StyleSheet.create({
     backgroundColor: theme.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingBottom: 40,
-    maxHeight: '60%',
+    paddingBottom: Math.max(bottomInset, 20),
+    marginBottom: tabBarHeight,
+    minHeight: 300,
+  },
+  modalContentInner: {
   },
   modalHeader: {
     flexDirection: 'row',
@@ -522,7 +556,8 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   modalScrollContent: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
     gap: 12,
   },
   modalContainerItem: {
@@ -563,6 +598,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     opacity: 0.7,
     textAlign: 'center',
   },
-});
+  });
+};
 
 export default HistoryScreen;
