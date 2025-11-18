@@ -14,6 +14,7 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
   const glassImage = require('../../assets/images/Glass.png');
   const bottleImage = require('../../assets/images/bottle.png');
   const tumblerImage = require('../../assets/images/tumbler.png');
+  const pitcherImage = require('../../assets/images/pitcher.png');
   const dispatch = useDispatch();
   const containers = useSelector((state: RootState) => state.containers.items);
   const favoriteContainers = containers.filter((c: any) => c.favorite);
@@ -69,7 +70,7 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
-              ) : (container.id?.startsWith('bottle') || container.name === 'Bottle') ? (
+              ) : (container.id?.startsWith('bottle') || container.name === 'Bottle' || container.name === 'Water Bottle') ? (
                 <Image
                   source={bottleImage}
                   style={styles.iconImage}
@@ -78,6 +79,12 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
               ) : (container.id?.startsWith('tumbler') || container.name === 'Tumbler') ? (
                 <Image
                   source={tumblerImage}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              ) : (container.id?.startsWith('pitcher') || container.name === 'Pitcher') ? (
+                <Image
+                  source={pitcherImage}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />

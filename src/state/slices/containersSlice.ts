@@ -8,19 +8,19 @@ type ContainersState = {
 const initialState: ContainersState = {
   items: [
     {
+      id: 'cup-170',
+      name: 'Cup',
+      sizeMl: 170,
+      color: '#EC4899',
+      icon: '☕',
+      favorite: true,
+    },
+    {
       id: 'glass-250',
       name: 'Glass',
       sizeMl: 250,
       color: '#3B82F6',
       icon: '🥛',
-      favorite: true,
-    },
-    {
-      id: 'bottle-500',
-      name: 'Water Bottle',
-      sizeMl: 500,
-      color: '#10B981',
-      icon: '🍼',
       favorite: true,
     },
     {
@@ -32,11 +32,27 @@ const initialState: ContainersState = {
       favorite: false,
     },
     {
-      id: 'tumbler-400',
+      id: 'bottle-500',
+      name: 'Water Bottle',
+      sizeMl: 500,
+      color: '#10B981',
+      icon: '🍼',
+      favorite: true,
+    },
+    {
+      id: 'tumbler-700',
       name: 'Tumbler',
-      sizeMl: 400,
+      sizeMl: 700,
       color: '#F59E0B',
       icon: '🥤',
+      favorite: true,
+    },
+    {
+      id: 'pitcher-1000',
+      name: 'Pitcher',
+      sizeMl: 1000,
+      color: '#06B6D4',
+      icon: '🧃',
       favorite: true,
     },
   ],
