@@ -12,6 +12,8 @@ interface ContainerCarouselProps {
 
 export default function ContainerCarousel({ textColor }: ContainerCarouselProps) {
   const glassImage = require('../../assets/images/Glass.png');
+  const bottleImage = require('../../assets/images/bottle.png');
+  const tumblerImage = require('../../assets/images/tumbler.png');
   const dispatch = useDispatch();
   const containers = useSelector((state: RootState) => state.containers.items);
   const favoriteContainers = containers.filter((c: any) => c.favorite);
@@ -64,6 +66,18 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
               {(container.id?.startsWith('glass') || container.name === 'Glass') ? (
                 <Image
                   source={glassImage}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              ) : (container.id?.startsWith('bottle') || container.name === 'Bottle') ? (
+                <Image
+                  source={bottleImage}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              ) : (container.id?.startsWith('tumbler') || container.name === 'Tumbler') ? (
+                <Image
+                  source={tumblerImage}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
