@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -10,6 +10,8 @@ import { RootState } from '../state/store';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { setTheme, setHaptics, setSounds, setUnit } from '../state/slices/settingsSlice';
 import { usePurchases } from '../hooks/usePurchases';
+import { setSmartRemindersEnabled } from '../state/slices/remindersSlice';
+import { useNotifications } from '../hooks/useNotifications';
 
 type SettingsScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -32,7 +34,29 @@ const SettingsScreen: React.FC = () => {
   const theme = useThemeColors();
   
   const { settings, profile } = useSelector((state: RootState) => state.settings);
+  const { smartRemindersEnabled, notificationsEnabled, permissionsGranted } = useSelector(
+    (state: RootState) => state.reminders
+  );
   const { isProUnlocked } = usePurchases();
+  const { enableNotifications } = useNotifications();
+
+  const handleSmartToggle = useCallback(
+    async (value: boolean) => {
+      if (value) {
+        const hasPermission = notificationsEnabled && permissionsGranted;
+        if (!hasPermission) {
+          const granted = await enableNotifications();
+          if (!granted) {
+            return;
+          }
+        }
+        dispatch(setSmartRemindersEnabled(true));
+      } else {
+        dispatch(setSmartRemindersEnabled(false));
+      }
+    },
+    [dispatch, enableNotifications, notificationsEnabled, permissionsGranted]
+  );
   
   const settingsItems: SettingItem[] = [
     {
@@ -42,6 +66,17 @@ const SettingsScreen: React.FC = () => {
       icon: 'notifications',
       type: 'navigation',
       onPress: () => navigation.navigate('Notifications'),
+    },
+    {
+      id: 'smart-notifications',
+      title: 'Smart Notifications',
+      subtitle: permissionsGranted
+        ? 'AI reminders adapt to habits'
+        : 'Enable notifications to use smart reminders',
+      icon: 'sparkles',
+      type: 'toggle',
+      value: smartRemindersEnabled,
+      onToggle: handleSmartToggle,
     },
     {
       id: 'theme',

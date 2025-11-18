@@ -10,6 +10,7 @@ import StatisticsScreen from '../screens/StatisticsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import PurchaseScreen from '../screens/PurchaseScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import AIScreen from '../screens/AIScreen';
 import { Colors } from '../constants/colors';
 import { useThemeColors, useTheme } from '../hooks/useThemeColors';
 import {
@@ -40,6 +41,7 @@ export type MainTabParamList = {
   Home: undefined;
   History: undefined;
   Stats: undefined;
+  AI: undefined;
   Profile: undefined;
 };
 
@@ -66,6 +68,9 @@ function MainTabNavigator() {
               break;
             case 'Stats':
               iconName = focused ? 'analytics' : 'analytics-outline';
+              break;
+            case 'AI':
+              iconName = focused ? 'bulb' : 'bulb-outline';
               break;
             case 'Profile':
               iconName = focused ? 'settings' : 'settings-outline';
@@ -103,6 +108,11 @@ function MainTabNavigator() {
         name="Stats" 
         component={StatisticsScreen} 
         options={{ title: 'Statistics' }}
+      />
+      <Tab.Screen
+        name="AI"
+        component={AIScreen}
+        options={{ title: 'AI' }}
       />
       <Tab.Screen 
         name="Profile" 
