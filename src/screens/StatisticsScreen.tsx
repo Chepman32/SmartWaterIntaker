@@ -88,8 +88,8 @@ export default function StatisticsScreen() {
       </View>
 
       <View style={styles.periodToggle}>
-        <ToggleButton label="7D" active={period === 'week'} onPress={() => setPeriod('week')} color={theme} />
-        <ToggleButton label="30D" active={period === 'month'} onPress={() => setPeriod('month')} color={theme} />
+        <ToggleButton label="7 Days" active={period === 'week'} onPress={() => setPeriod('week')} color={theme} />
+        <ToggleButton label="30 Days" active={period === 'month'} onPress={() => setPeriod('month')} color={theme} />
       </View>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 24 }} showsVerticalScrollIndicator={false}>
@@ -106,7 +106,7 @@ export default function StatisticsScreen() {
           <Text style={styles.cardTitle}>Daily Intake</Text>
           <View style={[styles.chart, { height: chartHeight }]}>
             {buckets.map((b, idx) => {
-              const h = Math.max(4, Math.round((b.totalMl / maxMl) * (chartHeight - 24)));
+              const h = Math.max(4, Math.round((b.totalMl / dailyGoalMl) * (chartHeight - 24)));
               const isToday = getStartOfDay(new Date()).getTime() === getStartOfDay(b.date).getTime();
               return (
                 <View key={b.key} style={styles.barWrapper}>
