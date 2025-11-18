@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../state/store';
 import { Colors } from '../constants/colors';
 import { useThemeColors } from '../hooks/useThemeColors';
-import { deleteIntakeEventAndPersist } from '../state/slices/intakeSlice';
+import { deleteIntakeEventAndPersist, logIntakeEvent } from '../state/slices/intakeSlice';
 
 
 const HistoryScreen: React.FC = () => {
   const dispatch = useDispatch();
   const theme = useThemeColors();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  
+  const [showAddModal, setShowAddModal] = useState(false);
+
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const { profile } = useSelector((state: RootState) => state.settings);
   const unit = profile.unit;
@@ -39,10 +40,35 @@ const HistoryScreen: React.FC = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
   
+  const containers = useSelector((state: RootState) => state.containers.items);
+  const favoriteContainers = containers.filter((c) => c.favorite);
+
   const handleDeleteEvent = (eventId: string) => {
     dispatch(deleteIntakeEventAndPersist(eventId, selectedDateStr));
   };
-  
+
+  const handleAddWater = () => {
+    setShowAddModal(true);
+  };
+
+  const handleContainerSelect = (container: any) => {
+    // Create a timestamp for the selected date at current time
+    const timestamp = new Date(selectedDate);
+    timestamp.setHours(new Date().getHours());
+    timestamp.setMinutes(new Date().getMinutes());
+    timestamp.setSeconds(new Date().getSeconds());
+
+    dispatch(logIntakeEvent({
+      amountMl: container.sizeMl,
+      source: 'container',
+      containerId: container.id,
+      timestamp: timestamp.getTime(),
+      note: `${container.name} (${container.sizeMl}ml)`,
+    }));
+
+    setShowAddModal(false);
+  };
+
   const navigateDate = (direction: 'prev' | 'next') => {
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + (direction === 'next' ? 1 : -1));
@@ -175,6 +201,13 @@ const HistoryScreen: React.FC = () => {
             <Text style={styles.emptyStateSubtext}>
               {isToday ? 'Start logging your water intake!' : 'No data available'}
             </Text>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={handleAddWater}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.addButtonText}>+</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           dayEvents
@@ -194,7 +227,7 @@ const HistoryScreen: React.FC = () => {
                     </Text>
                   )}
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={() => handleDeleteEvent(event.id)}
                 >
@@ -204,6 +237,64 @@ const HistoryScreen: React.FC = () => {
             ))
         )}
       </ScrollView>
+
+      {/* Add Water Modal */}
+      <Modal
+        visible={showAddModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowAddModal(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowAddModal(false)}
+        >
+          <TouchableOpacity
+            style={styles.modalContent}
+            activeOpacity={1}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Add Water Intake</Text>
+              <TouchableOpacity
+                onPress={() => setShowAddModal(false)}
+                style={styles.modalCloseButton}
+              >
+                <Text style={styles.modalCloseText}>×</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.modalScrollContent}
+            >
+              {favoriteContainers.map((container) => (
+                <TouchableOpacity
+                  key={container.id}
+                  style={[
+                    styles.modalContainerItem,
+                    { backgroundColor: container.color + '20', borderColor: container.color }
+                  ]}
+                  onPress={() => handleContainerSelect(container)}
+                  activeOpacity={0.7}
+                >
+                  <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
+                    <Text style={styles.modalIconText}>{container.icon}</Text>
+                  </View>
+                  <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
+                    {container.name}
+                  </Text>
+                  <Text style={[styles.modalContainerSize, { color: theme.text }]}>
+                    {container.sizeMl}ml
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -367,6 +458,110 @@ const getStyles = (theme: any) => StyleSheet.create({
     color: theme.textSecondary,
     textAlign: 'center',
     marginTop: 8,
+  },
+  addButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: theme.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  addButtonText: {
+    fontSize: 32,
+    fontWeight: '300',
+    color: '#FFFFFF',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: theme.background,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 40,
+    maxHeight: '60%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.border,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: theme.text,
+  },
+  modalCloseButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: theme.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCloseText: {
+    fontSize: 24,
+    fontWeight: '300',
+    color: theme.text,
+  },
+  modalScrollContent: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    gap: 12,
+  },
+  modalContainerItem: {
+    width: 160,
+    padding: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    alignItems: 'center',
+    marginRight: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  modalIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  modalIconText: {
+    fontSize: 36,
+  },
+  modalContainerName: {
+    fontSize: 18,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  modalContainerSize: {
+    fontSize: 16,
+    opacity: 0.7,
+    textAlign: 'center',
   },
 });
 
