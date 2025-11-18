@@ -4,29 +4,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RootState } from '../state/store';
 import { logIntakeEvent } from '../state/slices/intakeSlice';
-import { IntakeEvent } from '../types/models';
+import { Container, DrinkType } from '../types/models';
 
 interface ContainerCarouselProps {
   textColor: string;
+  selectedDrinkType?: DrinkType | null;
+  onContainerSelect?: (container: Container) => void;
+  onChangeDrinkType?: () => void;
 }
 
-export default function ContainerCarousel({ textColor }: ContainerCarouselProps) {
+export default function ContainerCarousel({
+  textColor,
+  selectedDrinkType,
+  onContainerSelect,
+  onChangeDrinkType,
+}: ContainerCarouselProps) {
   const glassImage = require('../../assets/images/Glass.png');
   const bottleImage = require('../../assets/images/bottle.png');
   const tumblerImage = require('../../assets/images/tumbler.png');
   const pitcherImage = require('../../assets/images/pitcher.png');
   const dispatch = useDispatch();
   const containers = useSelector((state: RootState) => state.containers.items);
-  const favoriteContainers = containers.filter((c: any) => c.favorite);
+  const favoriteContainers = containers.filter((c: Container) => c.favorite);
   const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
 
-  const handleContainerPress = (container: any) => {
+  const handleContainerPress = (container: Container) => {
+    if (onContainerSelect) {
+      onContainerSelect(container);
+      return;
+    }
+
     dispatch(logIntakeEvent({
       amountMl: container.sizeMl,
       source: 'container',
       containerId: container.id,
       note: `${container.name} (${container.sizeMl}ml)`,
     }));
+
     if (hapticsEnabled) {
       ReactNativeHapticFeedback.trigger('impactLight', {
         enableVibrateFallback: true,
@@ -47,7 +61,18 @@ export default function ContainerCarousel({ textColor }: ContainerCarouselProps)
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: textColor }]}>Favorites</Text>
+      <View style={styles.headerRow}>
+        <Text style={[styles.title, { color: textColor }]}>
+          {selectedDrinkType ? `${selectedDrinkType.name} Favorites` : 'Favorites'}
+        </Text>
+        {selectedDrinkType && onChangeDrinkType && (
+          <TouchableOpacity onPress={onChangeDrinkType}>
+            <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>
+              Change
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
@@ -109,11 +134,20 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 8,
   },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
   title: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 12,
-    paddingHorizontal: 16,
+  },
+  changeTypeText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   scrollContent: {
     paddingHorizontal: 16,

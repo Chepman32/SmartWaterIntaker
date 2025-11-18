@@ -64,13 +64,16 @@ export const initIntakeFromStorage = () => (dispatch: any) => {
   }
 };
 
-export const logIntakeEvent = (payload: Omit<IntakeEvent, 'id' | 'timestamp'> & { amountMl: number; timestamp?: number }) => (dispatch: any) => {
+export const logIntakeEvent = (
+  payload: Omit<IntakeEvent, 'id' | 'timestamp'> & { amountMl: number; timestamp?: number }
+) => (dispatch: any) => {
   const timestamp = payload.timestamp ?? Date.now();
   const saved = StorageService.addIntakeEvent({
     timestamp,
     amountMl: payload.amountMl,
     source: payload.source,
     containerId: payload.containerId,
+    drinkTypeId: payload.drinkTypeId,
     note: payload.note,
   });
   dispatch(addEvent(saved));

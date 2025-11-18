@@ -26,6 +26,7 @@ export interface IntakeEvent {
   amountMl: number;
   source: 'chip' | 'container' | 'custom' | 'notification';
   containerId?: string;
+  drinkTypeId?: string;
   note?: string;
 }
 
@@ -36,6 +37,15 @@ export interface Container {
   color: string; // hex
   icon: string; // name
   favorite?: boolean;
+}
+
+export interface DrinkType {
+  id: string;
+  name: string;
+  icon: string;
+  image?: any; // Image source from require()
+  color: string;
+  description?: string;
 }
 
 export interface ReminderSchedule {

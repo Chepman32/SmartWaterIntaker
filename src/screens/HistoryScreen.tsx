@@ -1,11 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated, useWindowDimensions } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { deleteIntakeEventAndPersist, logIntakeEvent } from '../state/slices/intakeSlice';
+import DrinkTypeCarousel from '../components/DrinkTypeCarousel';
+import { DrinkType } from '../types/models';
+import { DRINK_TYPES } from '../constants/drinkTypes';
+
+const MODAL_CAROUSEL_HEIGHT = 260;
+
+const DRINK_TYPE_MAP = DRINK_TYPES.reduce<Record<string, DrinkType>>((acc, type) => {
+  acc[type.id] = type;
+  return acc;
+}, {});
 
 
 const HistoryScreen: React.FC = () => {
@@ -16,6 +26,9 @@ const HistoryScreen: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showAddModal, setShowAddModal] = useState(false);
   const slideAnim = useRef(new Animated.Value(1000)).current;
+  const { width: screenWidth } = useWindowDimensions();
+  const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
+  const carouselAnim = useRef(new Animated.Value(0)).current;
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const { profile } = useSelector((state: RootState) => state.settings);
@@ -65,10 +78,14 @@ const HistoryScreen: React.FC = () => {
         duration: 250,
         useNativeDriver: true,
       }).start();
+      carouselAnim.setValue(0);
+      setSelectedDrinkType(null);
     }
-  }, [showAddModal, slideAnim]);
+  }, [showAddModal, slideAnim, carouselAnim]);
 
   const handleAddWater = () => {
+    carouselAnim.setValue(0);
+    setSelectedDrinkType(null);
     setShowAddModal(true);
   };
 
@@ -79,12 +96,15 @@ const HistoryScreen: React.FC = () => {
     timestamp.setMinutes(new Date().getMinutes());
     timestamp.setSeconds(new Date().getSeconds());
 
+    const notePrefix = selectedDrinkType ? `${selectedDrinkType.name} - ` : '';
+
     dispatch(logIntakeEvent({
       amountMl: container.sizeMl,
       source: 'container',
       containerId: container.id,
       timestamp: timestamp.getTime(),
-      note: `${container.name} (${container.sizeMl}ml)`,
+      drinkTypeId: selectedDrinkType?.id,
+      note: `${notePrefix}${container.name} (${container.sizeMl}ml)`,
     }));
 
     setShowAddModal(false);
@@ -95,6 +115,33 @@ const HistoryScreen: React.FC = () => {
     newDate.setDate(newDate.getDate() + (direction === 'next' ? 1 : -1));
     setSelectedDate(newDate);
   };
+
+  const handleDrinkTypeSelect = (type: DrinkType) => {
+    setSelectedDrinkType(type);
+    Animated.timing(carouselAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleChangeDrinkType = () => {
+    Animated.timing(carouselAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setSelectedDrinkType(null));
+  };
+
+  const translateDrinkCarousel = carouselAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -MODAL_CAROUSEL_HEIGHT],
+  });
+
+  const translateContainerCarousel = carouselAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [MODAL_CAROUSEL_HEIGHT, 0],
+  });
   
   const isToday = selectedDateStr === new Date().toISOString().split('T')[0];
 
@@ -239,14 +286,19 @@ const HistoryScreen: React.FC = () => {
                   <Text style={styles.eventAmount}>
                     {convertAmount(event.amountMl)} {unit}
                   </Text>
-                  <Text style={styles.eventTime}>
-                    {formatTime(event.timestamp)}
-                  </Text>
-                  {event.containerId && (
-                    <Text style={styles.eventContainer}>
-                      Container: {event.containerId}
-                    </Text>
-                  )}
+              <Text style={styles.eventTime}>
+                {formatTime(event.timestamp)}
+              </Text>
+              {event.drinkTypeId && (
+                <Text style={styles.eventDrinkType}>
+                  Drink: {DRINK_TYPE_MAP[event.drinkTypeId]?.name ?? event.drinkTypeId}
+                </Text>
+              )}
+              {event.containerId && (
+                <Text style={styles.eventContainer}>
+                  Container: {event.containerId}
+                </Text>
+              )}
                 </View>
                 <TouchableOpacity
                   style={styles.deleteButton}
@@ -294,33 +346,72 @@ const HistoryScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
 
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.modalScrollContent}
-            >
-              {favoriteContainers.map((container) => (
-                <TouchableOpacity
-                  key={container.id}
-                  style={[
-                    styles.modalContainerItem,
-                    { backgroundColor: container.color + '20', borderColor: container.color }
-                  ]}
-                  onPress={() => handleContainerSelect(container)}
-                  activeOpacity={0.7}
-                >
-                  <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
-                    <Text style={styles.modalIconText}>{container.icon}</Text>
+            <View style={styles.modalCarouselSwitcher}>
+              <Animated.View
+                style={[
+                  styles.modalCarouselInner,
+                  { transform: [{ translateY: translateDrinkCarousel }] },
+                ]}
+                pointerEvents={selectedDrinkType ? 'none' : 'auto'}
+              >
+                <DrinkTypeCarousel
+                  textColor={theme.text}
+                  subtitleColor={theme.textSecondary}
+                  onSelect={handleDrinkTypeSelect}
+                  selectedDrinkTypeId={selectedDrinkType?.id}
+                  title="Choose a drink"
+                />
+              </Animated.View>
+
+              <Animated.View
+                style={[
+                  styles.modalCarouselInner,
+                  { transform: [{ translateY: translateContainerCarousel }] },
+                ]}
+                pointerEvents={selectedDrinkType ? 'auto' : 'none'}
+              >
+                {selectedDrinkType && (
+                  <View style={styles.selectedDrinkHeader}>
+                    <View>
+                      <Text style={styles.selectedDrinkLabel}>Selected drink</Text>
+                      <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>
+                        {selectedDrinkType.name}
+                      </Text>
+                    </View>
+                    <TouchableOpacity onPress={handleChangeDrinkType}>
+                      <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
+                    </TouchableOpacity>
                   </View>
-                  <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
-                    {container.name}
-                  </Text>
-                  <Text style={[styles.modalContainerSize, { color: theme.text }]}>
-                    {container.sizeMl}ml
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+                )}
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.modalScrollContent}
+                >
+                  {favoriteContainers.map((container) => (
+                    <TouchableOpacity
+                      key={container.id}
+                      style={[
+                        styles.modalContainerItem,
+                        { backgroundColor: container.color + '20', borderColor: container.color }
+                      ]}
+                      onPress={() => handleContainerSelect(container)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
+                        <Text style={styles.modalIconText}>{container.icon}</Text>
+                      </View>
+                      <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
+                        {container.name}
+                      </Text>
+                      <Text style={[styles.modalContainerSize, { color: theme.text }]}>
+                        {container.sizeMl}ml
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </Animated.View>
+            </View>
             </TouchableOpacity>
           </Animated.View>
         </TouchableOpacity>
@@ -554,11 +645,43 @@ const getStyles = (theme: any, bottomInset: number = 0, tabBarHeight: number = 0
     fontWeight: '300',
     color: theme.text,
   },
+  modalCarouselSwitcher: {
+    height: MODAL_CAROUSEL_HEIGHT,
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  modalCarouselInner: {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+  },
   modalScrollContent: {
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 20,
     gap: 12,
+  },
+  selectedDrinkHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+  },
+  selectedDrinkLabel: {
+    fontSize: 12,
+    color: theme.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  selectedDrinkName: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 4,
+  },
+  changeTypeText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   modalContainerItem: {
     width: 160,
@@ -597,6 +720,11 @@ const getStyles = (theme: any, bottomInset: number = 0, tabBarHeight: number = 0
     fontSize: 16,
     opacity: 0.7,
     textAlign: 'center',
+  },
+  eventDrinkType: {
+    fontSize: 12,
+    color: theme.textSecondary,
+    marginTop: 2,
   },
   });
 };
