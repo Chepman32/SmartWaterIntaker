@@ -31,6 +31,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We use your photo library to let you choose images for your containers and hydration reminders.</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>We use notifications to remind you to stay hydrated.</string>
 	<key>RCTNewArchEnabled</key>
