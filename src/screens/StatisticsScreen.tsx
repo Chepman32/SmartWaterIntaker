@@ -1,10 +1,15 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent } from 'react-native';
-import { useSelector } from 'react-redux';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
+import DrinkTypeCarousel from '../components/DrinkTypeCarousel';
+import { DrinkType } from '../types/models';
+import { logIntakeEvent } from '../state/slices/intakeSlice';
 
 type Period = 'week' | 'month';
 
@@ -71,13 +76,22 @@ const CALENDAR_CELL_GAP = 8;
 
 export default function StatisticsScreen() {
   const theme = useThemeColors();
+  const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
   const [period, setPeriod] = useState<Period>('week');
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const { width: windowWidth } = useWindowDimensions();
   const [calendarContainerWidth, setCalendarContainerWidth] = useState<number | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showDayModal, setShowDayModal] = useState(false);
+  const [showAddWaterModal, setShowAddWaterModal] = useState(false);
+  const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
+  const containers = useSelector((state: RootState) => state.containers.items);
+  const favoriteContainers = containers.filter((c) => c.favorite);
 
   const convertAmount = (amountMl: number) => {
     if (unit === 'oz') {
@@ -85,6 +99,37 @@ export default function StatisticsScreen() {
     }
     return amountMl;
   };
+
+  const formatTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const selectedDateKey = useMemo(() => {
+    if (!selectedDate) return null;
+    return getStartOfDay(selectedDate).toISOString().split('T')[0];
+  }, [selectedDate]);
+
+  const dayEvents = useMemo(() => {
+    if (!selectedDateKey) return [];
+
+    return events
+      .filter((event) => {
+        const eventDate = new Date(event.timestamp).toISOString().split('T')[0];
+        return eventDate === selectedDateKey;
+      })
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  }, [events, selectedDateKey]);
+
+  const totalIntakeForDay = useMemo(() => dayEvents.reduce((sum, event) => sum + event.amountMl, 0), [dayEvents]);
+  const progressPercent = dailyGoalMl > 0 ? Math.round((totalIntakeForDay / dailyGoalMl) * 100) : 0;
+  const selectedDateLabel = useMemo(
+    () =>
+      selectedDate
+        ? selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+        : '',
+    [selectedDate]
+  );
 
   const getCellColors = (totalMl: number, isFuture: boolean) => {
     if (isFuture) {
@@ -134,6 +179,45 @@ export default function StatisticsScreen() {
     nextMonth.setMonth(selectedMonth.getMonth() + 1);
     return nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth();
   }, [selectedMonth]);
+
+  const handleCalendarCellPress = useCallback((date: Date | null) => {
+    if (!date) return;
+    setSelectedDate(date);
+    setShowDayModal(true);
+  }, []);
+
+  const handleAddWaterPress = useCallback(() => {
+    setSelectedDrinkType(null);
+    setShowAddWaterModal(true);
+  }, []);
+
+  const handleDrinkTypeSelect = useCallback((type: DrinkType) => {
+    setSelectedDrinkType(type);
+  }, []);
+
+  const handleContainerSelect = useCallback(
+    (container: any) => {
+      const dateForEntry = selectedDate ? new Date(selectedDate) : new Date();
+      dateForEntry.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), 0);
+
+      const notePrefix = selectedDrinkType ? `${selectedDrinkType.name} - ` : '';
+
+      dispatch(
+        logIntakeEvent({
+          amountMl: container.sizeMl,
+          source: 'container',
+          containerId: container.id,
+          timestamp: dateForEntry.getTime(),
+          drinkTypeId: selectedDrinkType?.id,
+          note: `${notePrefix}${container.name} (${container.sizeMl}ml)`,
+        })
+      );
+
+      setShowAddWaterModal(false);
+      setSelectedDrinkType(null);
+    },
+    [dispatch, selectedDate, selectedDrinkType]
+  );
 
   const estimatedCalendarWidth = useMemo(() => {
     const totalHorizontalInset = CARD_HORIZONTAL_MARGIN * 2 + CARD_HORIZONTAL_PADDING * 2;
@@ -389,7 +473,12 @@ export default function StatisticsScreen() {
                         const displayAmount = cell.isFuture ? '' : `${convertAmount(cell.totalMl).toLocaleString()} ${unit}`;
 
                         return (
-                          <View key={index} style={[...baseCellStyle, { backgroundColor }]}>
+                          <TouchableOpacity
+                            key={index}
+                            style={[...baseCellStyle, { backgroundColor }]}
+                            activeOpacity={0.85}
+                            onPress={() => handleCalendarCellPress(cell.date)}
+                          >
                             <Text style={[styles.cellDayNumber, { color: textColor }]}>
                               {cell.dayNumber}
                             </Text>
@@ -402,7 +491,7 @@ export default function StatisticsScreen() {
                                 {displayAmount}
                               </Text>
                             )}
-                          </View>
+                          </TouchableOpacity>
                         );
                       })}
                     </View>
@@ -444,6 +533,161 @@ export default function StatisticsScreen() {
           )}
         </View>
       </View>
+
+      <Modal
+        visible={showDayModal && !!selectedDate}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setShowDayModal(false)}
+      >
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowDayModal(false)}>
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View style={[styles.dayModalCard, { backgroundColor: theme.card }]}>
+              <View style={styles.dayModalHeader}>
+                <View>
+                  <Text style={styles.modalTitle}>Daily Details</Text>
+                  {!!selectedDateLabel && <Text style={styles.modalSubtitle}>{selectedDateLabel}</Text>}
+                </View>
+                <TouchableOpacity style={styles.modalCloseButton} onPress={() => setShowDayModal(false)}>
+                  <Text style={styles.modalCloseText}>×</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={[styles.modalSummaryCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                <View style={styles.modalSummaryRow}>
+                  <Text style={[styles.modalSummaryLabel, { color: theme.textSecondary }]}>Total Intake</Text>
+                  <Text style={[styles.modalSummaryValue, { color: theme.text }]}>
+                    {convertAmount(totalIntakeForDay)} {unit}
+                  </Text>
+                </View>
+                <View style={styles.modalSummaryRow}>
+                  <Text style={[styles.modalSummaryLabel, { color: theme.textSecondary }]}>Daily Goal</Text>
+                  <Text style={[styles.modalSummaryValue, { color: theme.text }]}>
+                    {convertAmount(dailyGoalMl)} {unit}
+                  </Text>
+                </View>
+                <View style={[styles.modalProgressBar, { backgroundColor: theme.border }]}>
+                  <View
+                    style={[
+                      styles.modalProgressFill,
+                      { width: `${Math.min(progressPercent, 100)}%`, backgroundColor: theme.primary },
+                    ]}
+                  />
+                </View>
+                <Text style={[styles.modalProgressText, { color: theme.textSecondary }]}>
+                  {progressPercent}% of goal
+                </Text>
+              </View>
+
+              {dayEvents.length === 0 ? (
+                <View style={styles.modalEmptyState}>
+                  <Text style={[styles.modalEmptyTitle, { color: theme.textSecondary }]}>No water logged for this day</Text>
+                  <Text style={[styles.modalEmptySubtitle, { color: theme.textSecondary }]}>No data available</Text>
+                  <TouchableOpacity
+                    style={[styles.modalAddButton, { backgroundColor: theme.primary }]}
+                    onPress={handleAddWaterPress}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.modalAddButtonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <ScrollView style={styles.modalEventsList} showsVerticalScrollIndicator={false}>
+                  {dayEvents.map((event) => (
+                    <View key={event.id} style={[styles.modalEventCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                      <View style={styles.modalEventRow}>
+                        <Text style={[styles.modalEventAmount, { color: theme.text }]}>
+                          {convertAmount(event.amountMl)} {unit}
+                        </Text>
+                        <Text style={[styles.modalEventTime, { color: theme.textSecondary }]}>{formatTime(event.timestamp)}</Text>
+                      </View>
+                      {event.note ? (
+                        <Text style={[styles.modalEventNote, { color: theme.textSecondary }]} numberOfLines={1}>
+                          {event.note}
+                        </Text>
+                      ) : null}
+                    </View>
+                  ))}
+                </ScrollView>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+          {showAddWaterModal && (
+            <View style={styles.inlineAddContainer} pointerEvents="box-none">
+              <TouchableOpacity
+                style={styles.inlineAddBackdrop}
+                activeOpacity={1}
+                onPress={() => {
+                  setShowAddWaterModal(false);
+                  setSelectedDrinkType(null);
+                }}
+              />
+              <View
+                style={[
+                  styles.addModalContent,
+                  {
+                    backgroundColor: theme.background,
+                    paddingBottom: Math.max(insets.bottom, 20) + tabBarHeight,
+                  },
+                ]}
+              >
+                <View style={styles.addModalHeader}>
+                  <Text style={[styles.addModalTitle, { color: theme.text }]}>Add Water Intake</Text>
+                  <TouchableOpacity style={[styles.modalCloseButton, { backgroundColor: theme.border }]} onPress={() => setShowAddWaterModal(false)}>
+                    <Text style={[styles.modalCloseText, { color: theme.text }]}>×</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <DrinkTypeCarousel
+                  textColor={theme.text}
+                  subtitleColor={theme.textSecondary}
+                  onSelect={handleDrinkTypeSelect}
+                  selectedDrinkTypeId={selectedDrinkType?.id}
+                  title="Choose a drink"
+                />
+
+                {selectedDrinkType && (
+                  <View style={styles.selectedDrinkHeader}>
+                    <View>
+                      <Text style={[styles.selectedDrinkLabel, { color: theme.textSecondary }]}>Selected drink</Text>
+                      <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>{selectedDrinkType.name}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => setSelectedDrinkType(null)}>
+                      <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.modalScrollContent}
+                >
+                  {favoriteContainers.map((container) => (
+                    <TouchableOpacity
+                      key={container.id}
+                      style={[
+                        styles.modalContainerItem,
+                        { backgroundColor: container.color + '20', borderColor: container.color },
+                      ]}
+                      onPress={() => handleContainerSelect(container)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
+                        <Text style={styles.modalIconText}>{container.icon}</Text>
+                      </View>
+                      <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
+                        {container.name}
+                      </Text>
+                      <Text style={[styles.modalContainerSize, { color: theme.text }]}>{container.sizeMl}ml</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
+          )}
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -600,6 +844,227 @@ const getStyles = (theme: any) =>
     cellAmount: {
       fontSize: 10,
       fontWeight: '500',
+      textAlign: 'center',
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 16,
+    },
+    inlineAddContainer: {
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: 'flex-end',
+      zIndex: 2,
+    },
+    inlineAddBackdrop: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(0,0,0,0.4)',
+    },
+    dayModalCard: {
+      width: '100%',
+      maxWidth: 420,
+      borderRadius: 16,
+      padding: 16,
+    },
+    dayModalHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+    },
+    modalSubtitle: {
+      fontSize: 14,
+      marginTop: 4,
+    },
+    modalCloseButton: {
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: theme.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalCloseText: {
+      fontSize: 22,
+      fontWeight: '700',
+      color: theme.text,
+      lineHeight: 22,
+    },
+    modalSummaryCard: {
+      borderWidth: 1,
+      borderRadius: 12,
+      padding: 14,
+      marginTop: 12,
+      marginBottom: 16,
+    },
+    modalSummaryRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    modalSummaryLabel: {
+      fontSize: 14,
+    },
+    modalSummaryValue: {
+      fontSize: 16,
+      fontWeight: '700',
+    },
+    modalProgressBar: {
+      height: 8,
+      borderRadius: 4,
+      overflow: 'hidden',
+      marginTop: 6,
+    },
+    modalProgressFill: {
+      height: '100%',
+      borderRadius: 4,
+    },
+    modalProgressText: {
+      fontSize: 12,
+      marginTop: 6,
+      textAlign: 'center',
+    },
+    modalEmptyState: {
+      alignItems: 'center',
+      paddingVertical: 30,
+    },
+    modalEmptyTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    modalEmptySubtitle: {
+      fontSize: 14,
+      marginTop: 6,
+    },
+    modalAddButton: {
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    modalAddButtonText: {
+      color: '#fff',
+      fontSize: 30,
+      fontWeight: '600',
+      lineHeight: 32,
+    },
+    modalEventsList: {
+      maxHeight: 260,
+      marginTop: 4,
+    },
+    modalEventCard: {
+      padding: 12,
+      borderRadius: 10,
+      borderWidth: 1,
+      marginBottom: 10,
+    },
+    modalEventRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    modalEventAmount: {
+      fontSize: 16,
+      fontWeight: '700',
+    },
+    modalEventTime: {
+      fontSize: 12,
+    },
+    modalEventNote: {
+      marginTop: 6,
+      fontSize: 12,
+    },
+    addModalContent: {
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      overflow: 'hidden',
+      paddingTop: 16,
+    },
+    addModalHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 20,
+      paddingBottom: 12,
+    },
+    addModalTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+    },
+    selectedDrinkHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 20,
+      paddingTop: 12,
+    },
+    selectedDrinkLabel: {
+      fontSize: 12,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    selectedDrinkName: {
+      fontSize: 18,
+      fontWeight: '600',
+      marginTop: 4,
+    },
+    changeTypeText: {
+      fontSize: 14,
+      fontWeight: '500',
+    },
+    modalScrollContent: {
+      paddingHorizontal: 20,
+      paddingTop: 16,
+      paddingBottom: 24,
+      gap: 12,
+    },
+    modalContainerItem: {
+      width: 160,
+      padding: 20,
+      borderRadius: 20,
+      borderWidth: 1,
+      alignItems: 'center',
+      marginRight: 12,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 3,
+    },
+    modalIconContainer: {
+      width: 64,
+      height: 64,
+      borderRadius: 32,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 12,
+    },
+    modalIconText: {
+      fontSize: 36,
+    },
+    modalContainerName: {
+      fontSize: 18,
+      fontWeight: '500',
+      textAlign: 'center',
+      marginBottom: 4,
+    },
+    modalContainerSize: {
+      fontSize: 16,
+      opacity: 0.7,
       textAlign: 'center',
     },
   });
