@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
@@ -74,6 +74,7 @@ export default function StatisticsScreen() {
   const [period, setPeriod] = useState<Period>('week');
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const { width: windowWidth } = useWindowDimensions();
+  const [calendarContainerWidth, setCalendarContainerWidth] = useState<number | null>(null);
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
@@ -134,9 +135,15 @@ export default function StatisticsScreen() {
     return nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth();
   }, [selectedMonth]);
 
-  const calendarCellSize = useMemo(() => {
+  const estimatedCalendarWidth = useMemo(() => {
     const totalHorizontalInset = CARD_HORIZONTAL_MARGIN * 2 + CARD_HORIZONTAL_PADDING * 2;
-    const availableWidth = Math.max(windowWidth - totalHorizontalInset, 0);
+    return Math.max(windowWidth - totalHorizontalInset, 0);
+  }, [windowWidth]);
+
+  const effectiveCalendarWidth = calendarContainerWidth ?? estimatedCalendarWidth;
+
+  const calendarCellSize = useMemo(() => {
+    const availableWidth = Math.max(effectiveCalendarWidth, 0);
     const totalGapWidth = CALENDAR_CELL_GAP * (DAYS_IN_WEEK - 1);
     const usableWidth = availableWidth - totalGapWidth;
     const computedSize = usableWidth / DAYS_IN_WEEK;
@@ -145,7 +152,17 @@ export default function StatisticsScreen() {
       return fallbackSize > 0 ? fallbackSize : 0;
     }
     return computedSize;
-  }, [windowWidth]);
+  }, [effectiveCalendarWidth]);
+
+  const handleCalendarLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      const { width } = event.nativeEvent.layout;
+      if (width > 0 && (calendarContainerWidth === null || Math.abs(width - calendarContainerWidth) > 0.5)) {
+        setCalendarContainerWidth(width);
+      }
+    },
+    [calendarContainerWidth]
+  );
 
   // Animation values
   const translateX = useSharedValue(0);
@@ -342,53 +359,53 @@ export default function StatisticsScreen() {
 
               <GestureDetector gesture={swipeGesture}>
                 <Animated.View style={animatedStyle}>
-                  {/* Day Headers */}
-                  <View style={styles.calendarHeader}>
-                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-                      <View key={day} style={styles.dayHeader}>
-                        <Text style={styles.dayHeaderText}>{day}</Text>
-                      </View>
-                    ))}
-                  </View>
-
-                  {/* Calendar Grid */}
-                  <View style={styles.calendarGrid}>
-                    {calendarData.map((cell, index) => {
-                      const isRowEnd = (index + 1) % DAYS_IN_WEEK === 0;
-                      const baseCellStyle = [
-                        styles.calendarCell,
-                        {
-                          width: calendarCellSize,
-                          height: calendarCellSize,
-                          marginRight: isRowEnd ? 0 : CALENDAR_CELL_GAP,
-                        },
-                      ];
-
-                      if (!cell.isCurrentMonth) {
-                        // Empty cell
-                        return <View key={`empty-${index}`} style={baseCellStyle} />;
-                      }
-
-                      const { backgroundColor, textColor } = getCellColors(cell.totalMl, cell.isFuture);
-                      const displayAmount = cell.isFuture ? '' : `${convertAmount(cell.totalMl).toLocaleString()} ${unit}`;
-
-                      return (
-                        <View key={index} style={[...baseCellStyle, { backgroundColor }]}>
-                          <Text style={[styles.cellDayNumber, { color: textColor }]}>
-                            {cell.dayNumber}
-                          </Text>
-                          {!cell.isFuture && (
-                            <Text
-                              style={[styles.cellAmount, { color: textColor }]}
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                            >
-                              {displayAmount}
-                            </Text>
-                          )}
+                  <View onLayout={handleCalendarLayout} style={{ width: '100%' }}>
+                    {/* Day Headers */}
+                    <View style={styles.calendarHeader}>
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+                        <View key={day} style={styles.dayHeader}>
+                          <Text style={styles.dayHeaderText}>{day}</Text>
                         </View>
-                      );
-                    })}
+                      ))}
+                    </View>
+
+                    {/* Calendar Grid */}
+                    <View style={styles.calendarGrid}>
+                      {calendarData.map((cell, index) => {
+                        const baseCellStyle = [
+                          styles.calendarCell,
+                          {
+                            width: calendarCellSize,
+                            height: calendarCellSize,
+                          },
+                        ];
+
+                        if (!cell.isCurrentMonth) {
+                          // Empty cell
+                          return <View key={`empty-${index}`} style={baseCellStyle} />;
+                        }
+
+                        const { backgroundColor, textColor } = getCellColors(cell.totalMl, cell.isFuture);
+                        const displayAmount = cell.isFuture ? '' : `${convertAmount(cell.totalMl).toLocaleString()} ${unit}`;
+
+                        return (
+                          <View key={index} style={[...baseCellStyle, { backgroundColor }]}>
+                            <Text style={[styles.cellDayNumber, { color: textColor }]}>
+                              {cell.dayNumber}
+                            </Text>
+                            {!cell.isFuture && (
+                              <Text
+                                style={[styles.cellAmount, { color: textColor }]}
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                              >
+                                {displayAmount}
+                              </Text>
+                            )}
+                          </View>
+                        );
+                      })}
+                    </View>
                   </View>
                 </Animated.View>
               </GestureDetector>
@@ -550,6 +567,7 @@ const getStyles = (theme: any) =>
     calendarHeader: {
       flexDirection: 'row',
       marginBottom: 8,
+      columnGap: CALENDAR_CELL_GAP,
     },
     dayHeader: {
       flex: 1,
@@ -565,11 +583,12 @@ const getStyles = (theme: any) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',
+      columnGap: CALENDAR_CELL_GAP,
+      rowGap: CALENDAR_CELL_GAP,
     },
     calendarCell: {
       borderRadius: 12,
       padding: 6,
-      marginBottom: 8,
       justifyContent: 'space-between',
       alignItems: 'center',
       flexShrink: 0,
