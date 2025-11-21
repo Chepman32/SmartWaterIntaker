@@ -405,22 +405,29 @@ const HistoryScreen: React.FC = () => {
           {Math.round((totalIntake / dailyGoalMl) * 100)}% of goal
         </Text>
       </View>
+
+      <View style={styles.listHeader}>
+        <TouchableOpacity
+          style={styles.inlineAddButton}
+          onPress={handleAddWater}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.addButtonText}>+</Text>
+        </TouchableOpacity>
+      </View>
       
       {/* Events List */}
-      <ScrollView style={styles.eventsList} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.eventsList}
+        contentContainerStyle={styles.eventsContent}
+        showsVerticalScrollIndicator={false}
+      >
         {dayEvents.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyStateText}>No water logged for this day</Text>
             <Text style={styles.emptyStateSubtext}>
               {isToday ? 'Start logging your water intake!' : 'No data available'}
             </Text>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={handleAddWater}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.addButtonText}>+</Text>
-            </TouchableOpacity>
           </View>
         ) : (
           dayEvents
@@ -654,6 +661,9 @@ const getStyles = (theme: any, bottomInset: number = 0, tabBarHeight: number = 0
     paddingHorizontal: 20,
     paddingTop: 16,
   },
+  eventsContent: {
+    paddingBottom: Math.max(bottomInset + tabBarHeight + 20, 60),
+  },
   eventCard: {
     backgroundColor: theme.card,
     padding: 16,
@@ -729,9 +739,32 @@ const getStyles = (theme: any, bottomInset: number = 0, tabBarHeight: number = 0
     elevation: 5,
   },
   addButtonText: {
-    fontSize: 32,
-    fontWeight: '300',
+    fontSize: 28,
+    fontWeight: '400',
     color: '#FFFFFF',
+  },
+  listHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  inlineAddButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: theme.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   modalOverlay: {
     flex: 1,
