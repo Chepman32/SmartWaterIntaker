@@ -112,7 +112,7 @@ export const WeightActivityScreen: React.FC = () => {
   };
 
   const isValid = weight.trim() !== '' && !isNaN(parseFloat(weight)) && parseFloat(weight) > 0;
-  
+
   const styles = getStyles(theme);
   const safeTop = Math.max(insets.top, 16);
   
