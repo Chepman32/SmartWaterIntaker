@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   TextInput,
   ScrollView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { updateProfile } from '../../state/slices/settingsSlice';
 import { Colors } from '../../constants/colors';
 import { RootState } from '../../state/store';
@@ -80,6 +80,7 @@ export const WeightActivityScreen: React.FC = () => {
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
+  const insets = useSafeAreaInsets();
   
   const [weight, setWeight] = useState('');
   const [selectedActivity, setSelectedActivity] = useState<ActivityLevel>('medium');
@@ -89,22 +90,31 @@ export const WeightActivityScreen: React.FC = () => {
   const weightUnit = isMetric ? 'kg' : 'lbs';
   
   const handleContinue = () => {
-    const weightKg = isMetric 
-      ? parseFloat(weight) 
+    const weightKg = isMetric
+      ? parseFloat(weight)
       : parseFloat(weight) * 0.453592; // Convert lbs to kg
-    
+
     dispatch(updateProfile({
       weightKg,
       activityLevel: selectedActivity,
       climate: selectedClimate,
     }));
-    
+
     navigation.navigate('GoalCalculationScreen' as never);
   };
-  
+
+  const handleSkip = () => {
+    navigation.navigate('GoalCalculationScreen' as never);
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   const isValid = weight.trim() !== '' && !isNaN(parseFloat(weight)) && parseFloat(weight) > 0;
   
   const styles = getStyles(theme);
+  const safeTop = Math.max(insets.top, 16);
   
   const renderActivityOption = (option: ActivityOption) => {
     const isSelected = selectedActivity === option.id;
@@ -175,7 +185,13 @@ export const WeightActivityScreen: React.FC = () => {
   };
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Tell Us About Yourself</Text>
@@ -219,6 +235,14 @@ export const WeightActivityScreen: React.FC = () => {
       
       <View style={styles.footer}>
         <TouchableOpacity
+          style={styles.backButton}
+          onPress={handleBack}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
           style={[
             styles.continueButton,
             !isValid && styles.continueButtonDisabled,
@@ -243,6 +267,20 @@ const getStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.background,
+  },
+  topBar: {
+    paddingHorizontal: 24,
+    alignItems: 'flex-start',
+  },
+  skipButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: theme.textSecondary,
+    fontWeight: '500',
   },
   content: {
     flex: 1,
@@ -347,8 +385,25 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 40,
     paddingTop: 20,
+    flexDirection: 'row',
+    gap: 12,
+  },
+  backButton: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: theme.border,
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: theme.textSecondary,
+    fontSize: 18,
+    fontWeight: '600',
   },
   continueButton: {
+    flex: 2,
     backgroundColor: theme.primary,
     borderRadius: 12,
     paddingVertical: 16,

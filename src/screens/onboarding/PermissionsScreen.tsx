@@ -4,11 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
 
 type Permission = {
@@ -43,6 +43,7 @@ export const PermissionsScreen: React.FC = () => {
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+  const insets = useSafeAreaInsets();
   
   const [permissionStates, setPermissionStates] = useState<Permission[]>(permissions);
   
@@ -77,7 +78,7 @@ export const PermissionsScreen: React.FC = () => {
       routes: [{ name: 'MainTabs' as never }],
     });
   };
-  
+
   const handleSkipAll = () => {
     // Skip all permissions and go to main app
     navigation.reset({
@@ -85,11 +86,22 @@ export const PermissionsScreen: React.FC = () => {
       routes: [{ name: 'MainTabs' as never }],
     });
   };
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
   
   const styles = getStyles(theme);
+  const safeTop = Math.max(insets.top, 16);
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkipAll} activeOpacity={0.7}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Almost Ready!</Text>
@@ -143,13 +155,13 @@ export const PermissionsScreen: React.FC = () => {
       
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.skipButton}
-          onPress={handleSkipAll}
+          style={styles.backButton}
+          onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.skipButtonText}>Skip All</Text>
+          <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           style={styles.continueButton}
           onPress={handleContinue}
@@ -166,6 +178,20 @@ const getStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.background,
+  },
+  topBar: {
+    paddingHorizontal: 24,
+    alignItems: 'flex-start',
+  },
+  skipButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: theme.textSecondary,
+    fontWeight: '500',
   },
   content: {
     flex: 1,
@@ -268,9 +294,11 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 40,
     paddingTop: 20,
+    flexDirection: 'row',
     gap: 12,
   },
-  skipButton: {
+  backButton: {
+    flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: theme.border,
@@ -278,12 +306,13 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
   },
-  skipButtonText: {
+  backButtonText: {
     color: theme.textSecondary,
     fontSize: 18,
     fontWeight: '600',
   },
   continueButton: {
+    flex: 2,
     backgroundColor: theme.primary,
     borderRadius: 12,
     paddingVertical: 16,

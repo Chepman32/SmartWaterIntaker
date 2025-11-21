@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   Switch,
   ScrollView,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
 
 type ReminderTime = {
@@ -34,6 +34,7 @@ export const RemindersScreen: React.FC = () => {
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+  const insets = useSafeAreaInsets();
   
   const [reminders, setReminders] = useState<ReminderTime[]>(defaultReminders);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -54,21 +55,30 @@ export const RemindersScreen: React.FC = () => {
       // TODO: Schedule notifications based on enabled reminders
       console.log('Setting up notifications:', reminders.filter(r => r.enabled));
     }
-    
+
     // Navigate to the main app
     navigation.navigate('PermissionsScreen' as never);
   };
-  
+
   const handleSkip = () => {
     navigation.navigate('PermissionsScreen' as never);
   };
-  
 
-  
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   const styles = getStyles(theme);
+  const safeTop = Math.max(insets.top, 16);
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Stay Hydrated</Text>
@@ -151,13 +161,13 @@ export const RemindersScreen: React.FC = () => {
       
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.skipButton}
-          onPress={handleSkip}
+          style={styles.backButton}
+          onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.skipButtonText}>Skip for Now</Text>
+          <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           style={styles.continueButton}
           onPress={handleContinue}
@@ -176,6 +186,20 @@ const getStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.background,
+  },
+  topBar: {
+    paddingHorizontal: 24,
+    alignItems: 'flex-start',
+  },
+  skipButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: theme.textSecondary,
+    fontWeight: '500',
   },
   content: {
     flex: 1,
@@ -315,9 +339,11 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 40,
     paddingTop: 20,
+    flexDirection: 'row',
     gap: 12,
   },
-  skipButton: {
+  backButton: {
+    flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: theme.border,
@@ -325,12 +351,13 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
   },
-  skipButtonText: {
+  backButtonText: {
     color: theme.textSecondary,
     fontSize: 18,
     fontWeight: '600',
   },
   continueButton: {
+    flex: 2,
     backgroundColor: theme.primary,
     borderRadius: 12,
     paddingVertical: 16,

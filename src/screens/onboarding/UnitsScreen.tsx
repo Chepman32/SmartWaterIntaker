@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { setUnit } from '../../state/slices/settingsSlice';
 import { Colors } from '../../constants/colors';
 import { useColorScheme } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type UnitSystem = 'metric' | 'imperial';
 
@@ -45,6 +45,7 @@ export const UnitsScreen: React.FC = () => {
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+  const insets = useSafeAreaInsets();
 
   const handleContinue = () => {
     const unit = selectedUnit === 'metric' ? 'ml' : 'oz';
@@ -108,8 +109,19 @@ export const UnitsScreen: React.FC = () => {
     );
   };
 
+  const handleSkip = () => {
+    navigation.navigate('MotivationScreen' as never);
+  };
+  const safeTop = Math.max(insets.top, 16);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.title}>Choose Your Units</Text>
@@ -138,6 +150,20 @@ const getStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.background,
+  },
+  topBar: {
+    paddingHorizontal: 24,
+    alignItems: 'flex-start',
+  },
+  skipButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: theme.textSecondary,
+    fontWeight: '500',
   },
   content: {
     flex: 1,

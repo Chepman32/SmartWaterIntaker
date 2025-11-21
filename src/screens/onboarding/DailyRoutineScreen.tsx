@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   Switch,
   Platform,
+  TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { updateProfile } from '../../state/slices/settingsSlice';
 import { Colors } from '../../constants/colors';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -21,6 +23,7 @@ export const DailyRoutineScreen: React.FC = () => {
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+  const insets = useSafeAreaInsets();
 
   const [wakeUpTime, setWakeUpTime] = useState(new Date());
   const [bedTime, setBedTime] = useState(new Date());
@@ -32,6 +35,11 @@ export const DailyRoutineScreen: React.FC = () => {
   const [showBedTimePicker, setShowBedTimePicker] = useState(false);
   const [showWorkStartPicker, setShowWorkStartPicker] = useState(false);
   const [showWorkEndPicker, setShowWorkEndPicker] = useState(false);
+
+  const wakeUpPickerAnim = useRef(new Animated.Value(0)).current;
+  const bedTimePickerAnim = useRef(new Animated.Value(0)).current;
+  const workStartPickerAnim = useRef(new Animated.Value(0)).current;
+  const workEndPickerAnim = useRef(new Animated.Value(0)).current;
 
   // Set default times
   React.useEffect(() => {
@@ -51,6 +59,42 @@ export const DailyRoutineScreen: React.FC = () => {
     defaultWorkEnd.setHours(17, 0, 0, 0);
     setWorkEndTime(defaultWorkEnd);
   }, []);
+
+  // Animate wake up picker
+  useEffect(() => {
+    Animated.timing(wakeUpPickerAnim, {
+      toValue: showWakeUpPicker ? 1 : 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [showWakeUpPicker]);
+
+  // Animate bed time picker
+  useEffect(() => {
+    Animated.timing(bedTimePickerAnim, {
+      toValue: showBedTimePicker ? 1 : 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [showBedTimePicker]);
+
+  // Animate work start picker
+  useEffect(() => {
+    Animated.timing(workStartPickerAnim, {
+      toValue: showWorkStartPicker ? 1 : 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [showWorkStartPicker]);
+
+  // Animate work end picker
+  useEffect(() => {
+    Animated.timing(workEndPickerAnim, {
+      toValue: showWorkEndPicker ? 1 : 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [showWorkEndPicker]);
 
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -98,7 +142,44 @@ export const DailyRoutineScreen: React.FC = () => {
     }
   };
 
+  const closeAllPickers = () => {
+    setShowWakeUpPicker(false);
+    setShowBedTimePicker(false);
+    setShowWorkStartPicker(false);
+    setShowWorkEndPicker(false);
+  };
+
+  const toggleWakeUpPicker = () => {
+    const willOpen = !showWakeUpPicker;
+    closeAllPickers();
+    setShowWakeUpPicker(willOpen);
+  };
+
+  const toggleBedTimePicker = () => {
+    const willOpen = !showBedTimePicker;
+    closeAllPickers();
+    setShowBedTimePicker(willOpen);
+  };
+
+  const toggleWorkStartPicker = () => {
+    const willOpen = !showWorkStartPicker;
+    closeAllPickers();
+    setShowWorkStartPicker(willOpen);
+  };
+
+  const toggleWorkEndPicker = () => {
+    const willOpen = !showWorkEndPicker;
+    closeAllPickers();
+    setShowWorkEndPicker(willOpen);
+  };
+
+  const handleWorkScheduleToggle = (value: boolean) => {
+    closeAllPickers();
+    setHasWorkSchedule(value);
+  };
+
   const handleContinue = () => {
+    closeAllPickers();
     const profileUpdate: any = {
       wakeUpTime: formatTimeToHHMM(wakeUpTime),
       bedTime: formatTimeToHHMM(bedTime),
@@ -114,14 +195,31 @@ export const DailyRoutineScreen: React.FC = () => {
   };
 
   const handleSkip = () => {
+    closeAllPickers();
     navigation.navigate('WeightActivityScreen' as never);
   };
 
+  const handleBack = () => {
+    closeAllPickers();
+    navigation.goBack();
+  };
+
   const styles = getStyles(theme);
+  const safeTop = Math.max(insets.top, 16);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+        onScrollBeginDrag={closeAllPickers}
+      >
         <View style={styles.header}>
           <Text style={styles.title}>Your Daily Routine</Text>
           <Text style={styles.subtitle}>
@@ -134,20 +232,31 @@ export const DailyRoutineScreen: React.FC = () => {
           <Text style={styles.sectionTitle}>Wake Up Time</Text>
           <TouchableOpacity
             style={styles.timeButton}
-            onPress={() => setShowWakeUpPicker(true)}
+            onPress={toggleWakeUpPicker}
             activeOpacity={0.7}
           >
             <Text style={styles.timeLabel}>I usually wake up at</Text>
             <Text style={styles.timeValue}>{formatTime(wakeUpTime)}</Text>
           </TouchableOpacity>
-          {showWakeUpPicker && (
-            <DateTimePicker
-              value={wakeUpTime}
-              mode="time"
-              is24Hour={true}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={handleWakeUpChange}
-            />
+          {(showWakeUpPicker || wakeUpPickerAnim._value > 0) && (
+            <Animated.View
+              style={{
+                opacity: wakeUpPickerAnim,
+                maxHeight: wakeUpPickerAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 300],
+                }),
+                overflow: 'hidden',
+              }}
+            >
+              <DateTimePicker
+                value={wakeUpTime}
+                mode="time"
+                is24Hour={true}
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={handleWakeUpChange}
+              />
+            </Animated.View>
           )}
         </View>
 
@@ -156,20 +265,31 @@ export const DailyRoutineScreen: React.FC = () => {
           <Text style={styles.sectionTitle}>Bed Time</Text>
           <TouchableOpacity
             style={styles.timeButton}
-            onPress={() => setShowBedTimePicker(true)}
+            onPress={toggleBedTimePicker}
             activeOpacity={0.7}
           >
             <Text style={styles.timeLabel}>I usually go to bed at</Text>
             <Text style={styles.timeValue}>{formatTime(bedTime)}</Text>
           </TouchableOpacity>
-          {showBedTimePicker && (
-            <DateTimePicker
-              value={bedTime}
-              mode="time"
-              is24Hour={true}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={handleBedTimeChange}
-            />
+          {(showBedTimePicker || bedTimePickerAnim._value > 0) && (
+            <Animated.View
+              style={{
+                opacity: bedTimePickerAnim,
+                maxHeight: bedTimePickerAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 300],
+                }),
+                overflow: 'hidden',
+              }}
+            >
+              <DateTimePicker
+                value={bedTime}
+                mode="time"
+                is24Hour={true}
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={handleBedTimeChange}
+              />
+            </Animated.View>
           )}
         </View>
 
@@ -184,7 +304,7 @@ export const DailyRoutineScreen: React.FC = () => {
             </View>
             <Switch
               value={hasWorkSchedule}
-              onValueChange={setHasWorkSchedule}
+              onValueChange={handleWorkScheduleToggle}
               trackColor={{ false: theme.border, true: theme.primary + '40' }}
               thumbColor={hasWorkSchedule ? theme.primary : theme.textSecondary}
             />
@@ -198,20 +318,31 @@ export const DailyRoutineScreen: React.FC = () => {
               <Text style={styles.sectionTitle}>Work Start Time</Text>
               <TouchableOpacity
                 style={styles.timeButton}
-                onPress={() => setShowWorkStartPicker(true)}
+                onPress={toggleWorkStartPicker}
                 activeOpacity={0.7}
               >
                 <Text style={styles.timeLabel}>Work starts at</Text>
                 <Text style={styles.timeValue}>{formatTime(workStartTime)}</Text>
               </TouchableOpacity>
-              {showWorkStartPicker && (
-                <DateTimePicker
-                  value={workStartTime}
-                  mode="time"
-                  is24Hour={true}
-                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                  onChange={handleWorkStartChange}
-                />
+              {(showWorkStartPicker || workStartPickerAnim._value > 0) && (
+                <Animated.View
+                  style={{
+                    opacity: workStartPickerAnim,
+                    maxHeight: workStartPickerAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 300],
+                    }),
+                    overflow: 'hidden',
+                  }}
+                >
+                  <DateTimePicker
+                    value={workStartTime}
+                    mode="time"
+                    is24Hour={true}
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={handleWorkStartChange}
+                  />
+                </Animated.View>
               )}
             </View>
 
@@ -219,20 +350,31 @@ export const DailyRoutineScreen: React.FC = () => {
               <Text style={styles.sectionTitle}>Work End Time</Text>
               <TouchableOpacity
                 style={styles.timeButton}
-                onPress={() => setShowWorkEndPicker(true)}
+                onPress={toggleWorkEndPicker}
                 activeOpacity={0.7}
               >
                 <Text style={styles.timeLabel}>Work ends at</Text>
                 <Text style={styles.timeValue}>{formatTime(workEndTime)}</Text>
               </TouchableOpacity>
-              {showWorkEndPicker && (
-                <DateTimePicker
-                  value={workEndTime}
-                  mode="time"
-                  is24Hour={true}
-                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                  onChange={handleWorkEndChange}
-                />
+              {(showWorkEndPicker || workEndPickerAnim._value > 0) && (
+                <Animated.View
+                  style={{
+                    opacity: workEndPickerAnim,
+                    maxHeight: workEndPickerAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 300],
+                    }),
+                    overflow: 'hidden',
+                  }}
+                >
+                  <DateTimePicker
+                    value={workEndTime}
+                    mode="time"
+                    is24Hour={true}
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={handleWorkEndChange}
+                  />
+                </Animated.View>
               )}
             </View>
           </>
@@ -248,11 +390,11 @@ export const DailyRoutineScreen: React.FC = () => {
 
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.skipButton}
-          onPress={handleSkip}
+          style={styles.backButton}
+          onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.skipButtonText}>Skip</Text>
+          <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -271,6 +413,20 @@ const getStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.background,
+  },
+  topBar: {
+    paddingHorizontal: 24,
+    alignItems: 'flex-start',
+  },
+  skipButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: theme.textSecondary,
+    fontWeight: '500',
   },
   content: {
     flex: 1,
@@ -371,7 +527,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
   },
-  skipButton: {
+  backButton: {
     flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 2,
@@ -380,7 +536,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
   },
-  skipButtonText: {
+  backButtonText: {
     color: theme.textSecondary,
     fontSize: 18,
     fontWeight: '600',
