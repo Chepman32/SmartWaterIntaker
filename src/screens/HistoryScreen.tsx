@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Mod
 import { useSelector, useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { deleteIntakeEventAndPersist, logIntakeEvent } from '../state/slices/intakeSlice';
@@ -111,6 +112,17 @@ const HistoryScreen: React.FC = () => {
   };
 
   const navigateDate = (direction: 'prev' | 'next') => {
+    // Don't navigate or trigger haptic if trying to go to future
+    if (direction === 'next' && isToday) {
+      return;
+    }
+
+    // Trigger light haptic feedback
+    ReactNativeHapticFeedback.trigger('impactLight', {
+      enableVibrateFallback: true,
+      ignoreAndroidSystemSettings: false,
+    });
+
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + (direction === 'next' ? 1 : -1));
     setSelectedDate(newDate);
