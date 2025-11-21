@@ -10,7 +10,7 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants/colors';
 
 type ReminderTime = {
@@ -34,7 +34,6 @@ export const RemindersScreen: React.FC = () => {
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
-  const insets = useSafeAreaInsets();
   
   const [reminders, setReminders] = useState<ReminderTime[]>(defaultReminders);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -69,11 +68,10 @@ export const RemindersScreen: React.FC = () => {
   };
 
   const styles = getStyles(theme);
-  const safeTop = Math.max(insets.top, 16);
   
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+      <View style={styles.topBar}>
         <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
           <Text style={styles.skipButtonText}>Skip</Text>
         </TouchableOpacity>
@@ -189,6 +187,7 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   topBar: {
     paddingHorizontal: 24,
+    paddingTop: 12,
     alignItems: 'flex-start',
   },
   skipButton: {

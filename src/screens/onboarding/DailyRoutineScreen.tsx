@@ -13,7 +13,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { updateProfile } from '../../state/slices/settingsSlice';
 import { Colors } from '../../constants/colors';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -23,7 +23,6 @@ export const DailyRoutineScreen: React.FC = () => {
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
-  const insets = useSafeAreaInsets();
 
   const [wakeUpTime, setWakeUpTime] = useState(new Date());
   const [bedTime, setBedTime] = useState(new Date());
@@ -205,11 +204,10 @@ export const DailyRoutineScreen: React.FC = () => {
   };
 
   const styles = getStyles(theme);
-  const safeTop = Math.max(insets.top, 16);
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={[styles.topBar, { paddingTop: safeTop }]}>
+      <View style={styles.topBar}>
         <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
           <Text style={styles.skipButtonText}>Skip</Text>
         </TouchableOpacity>
@@ -416,6 +414,7 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   topBar: {
     paddingHorizontal: 24,
+    paddingTop: 12,
     alignItems: 'flex-start',
   },
   skipButton: {
