@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated, useWindowDimensions, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +18,103 @@ const DRINK_TYPE_MAP = DRINK_TYPES.reduce<Record<string, DrinkType>>((acc, type)
   return acc;
 }, {});
 
+interface AnimatedEventCardProps {
+  event: any;
+  theme: any;
+  unit: string;
+  convertAmount: (amount: number) => number;
+  formatTime: (timestamp: number) => string;
+  onDelete: (eventId: string) => void;
+}
+
+const AnimatedEventCard: React.FC<AnimatedEventCardProps> = ({
+  event,
+  theme,
+  unit,
+  convertAmount,
+  formatTime,
+  onDelete,
+}) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  useEffect(() => {
+    // Animate in when component mounts
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, scaleAnim]);
+
+  const handleDelete = () => {
+    setIsRemoving(true);
+    // Animate out before deleting
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 0.8,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      onDelete(event.id);
+    });
+  };
+
+  const styles = getStyles(theme, 0, 0);
+
+  return (
+    <Animated.View
+      style={{
+        opacity: fadeAnim,
+        transform: [{ scale: scaleAnim }],
+      }}
+    >
+      <View style={styles.eventCard}>
+        <View style={styles.eventInfo}>
+          <Text style={styles.eventAmount}>
+            {convertAmount(event.amountMl)} {unit}
+          </Text>
+          <Text style={styles.eventTime}>
+            {formatTime(event.timestamp)}
+          </Text>
+          {event.drinkTypeId && (
+            <Text style={styles.eventDrinkType}>
+              Drink: {DRINK_TYPE_MAP[event.drinkTypeId]?.name ?? event.drinkTypeId}
+            </Text>
+          )}
+          {event.containerId && (
+            <Text style={styles.eventContainer}>
+              Container: {event.containerId}
+            </Text>
+          )}
+        </View>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={handleDelete}
+          disabled={isRemoving}
+        >
+          <Text style={styles.deleteButtonText}>×</Text>
+        </TouchableOpacity>
+      </View>
+    </Animated.View>
+  );
+};
 
 const HistoryScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,6 +128,7 @@ const HistoryScreen: React.FC = () => {
   const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
   const carouselAnim = useRef(new Animated.Value(0)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
+  const previousEventCount = useRef(0);
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const { profile } = useSelector((state: RootState) => state.settings);
@@ -227,6 +325,13 @@ const HistoryScreen: React.FC = () => {
   };
 
   const styles = getStyles(theme, insets.bottom, tabBarHeight);
+
+  useLayoutEffect(() => {
+    if (dayEvents.length !== previousEventCount.current) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      previousEventCount.current = dayEvents.length;
+    }
+  }, [dayEvents.length, selectedDateStr]);
   
   return (
     <SafeAreaView style={styles.container}>
@@ -321,32 +426,15 @@ const HistoryScreen: React.FC = () => {
           dayEvents
             .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
             .map((event) => (
-              <View key={event.id} style={styles.eventCard}>
-                <View style={styles.eventInfo}>
-                  <Text style={styles.eventAmount}>
-                    {convertAmount(event.amountMl)} {unit}
-                  </Text>
-              <Text style={styles.eventTime}>
-                {formatTime(event.timestamp)}
-              </Text>
-              {event.drinkTypeId && (
-                <Text style={styles.eventDrinkType}>
-                  Drink: {DRINK_TYPE_MAP[event.drinkTypeId]?.name ?? event.drinkTypeId}
-                </Text>
-              )}
-              {event.containerId && (
-                <Text style={styles.eventContainer}>
-                  Container: {event.containerId}
-                </Text>
-              )}
-                </View>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => handleDeleteEvent(event.id)}
-                >
-                  <Text style={styles.deleteButtonText}>×</Text>
-                </TouchableOpacity>
-              </View>
+              <AnimatedEventCard
+                key={event.id}
+                event={event}
+                theme={theme}
+                unit={unit}
+                convertAmount={convertAmount}
+                formatTime={formatTime}
+                onDelete={handleDeleteEvent}
+              />
             ))
         )}
       </ScrollView>
