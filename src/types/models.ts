@@ -1,12 +1,19 @@
 // Shared TypeScript interfaces for core data models
 export type Unit = 'ml' | 'oz';
 
+export type MotivationType = 'work' | 'brain' | 'fitness' | 'meditation' | 'health' | 'beauty' | 'other';
+
 export interface UserProfile {
   unit: Unit;
   weightKg?: number;
   sex?: 'male' | 'female' | 'other';
   activityLevel: 'low' | 'medium' | 'high';
   climate: 'cool' | 'temperate' | 'hot';
+  motivation?: MotivationType[];
+  wakeUpTime?: string; // HH:mm format
+  bedTime?: string; // HH:mm format
+  workStartTime?: string; // HH:mm format
+  workEndTime?: string; // HH:mm format
   createdAt: number;
   updatedAt: number;
 }

@@ -15,6 +15,8 @@ import { Colors } from '../constants/colors';
 import { useThemeColors, useTheme } from '../hooks/useThemeColors';
 import {
   UnitsScreen,
+  MotivationScreen,
+  DailyRoutineScreen,
   WeightActivityScreen,
   GoalCalculationScreen,
   RemindersScreen,
@@ -31,6 +33,8 @@ export type RootStackParamList = {
   Onboarding: undefined;
   ContainerEditor: { containerId?: string };
   UnitsScreen: undefined;
+  MotivationScreen: undefined;
+  DailyRoutineScreen: undefined;
   WeightActivityScreen: undefined;
   GoalCalculationScreen: undefined;
   RemindersScreen: undefined;
@@ -172,29 +176,39 @@ export default function AppNavigator() {
           component={MainTabNavigator} 
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="UnitsScreen" 
-          component={UnitsScreen} 
+        <Stack.Screen
+          name="UnitsScreen"
+          component={UnitsScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="WeightActivityScreen" 
-          component={WeightActivityScreen} 
+        <Stack.Screen
+          name="MotivationScreen"
+          component={MotivationScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="GoalCalculationScreen" 
-          component={GoalCalculationScreen} 
+        <Stack.Screen
+          name="DailyRoutineScreen"
+          component={DailyRoutineScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="RemindersScreen" 
-          component={RemindersScreen} 
+        <Stack.Screen
+          name="WeightActivityScreen"
+          component={WeightActivityScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="PermissionsScreen" 
-          component={PermissionsScreen} 
+        <Stack.Screen
+          name="GoalCalculationScreen"
+          component={GoalCalculationScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RemindersScreen"
+          component={RemindersScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PermissionsScreen"
+          component={PermissionsScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen 

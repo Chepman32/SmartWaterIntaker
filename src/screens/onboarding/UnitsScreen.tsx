@@ -49,7 +49,7 @@ export const UnitsScreen: React.FC = () => {
   const handleContinue = () => {
     const unit = selectedUnit === 'metric' ? 'ml' : 'oz';
     dispatch(setUnit(unit));
-    navigation.navigate('WeightActivityScreen' as never);
+    navigation.navigate('MotivationScreen' as never);
   };
 
   const styles = getStyles(theme);

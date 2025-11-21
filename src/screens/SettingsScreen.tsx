@@ -129,6 +129,17 @@ const SettingsScreen: React.FC = () => {
       },
     },
   ];
+
+  const developerItems: SettingItem[] = [
+    {
+      id: 'reset-onboarding',
+      title: 'Reset Onboarding',
+      subtitle: 'Go through onboarding again',
+      icon: 'refresh',
+      type: 'navigation',
+      onPress: () => navigation.navigate('UnitsScreen'),
+    },
+  ];
   
   const renderSettingItem = (item: SettingItem) => {
     const isProFeature = item.proFeature && !isProUnlocked;
@@ -244,8 +255,9 @@ const SettingsScreen: React.FC = () => {
         {/* Settings Sections */}
         {renderSection('Preferences', settingsItems)}
         {renderSection('Premium', proItems)}
+        {renderSection('Developer', developerItems)}
         {renderSection('About', aboutItems)}
-        
+
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={[styles.footerText, { color: theme.textSecondary }]}>
