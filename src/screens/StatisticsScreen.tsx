@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent, Modal, TouchableWithoutFeedback, ScrollView, Animated as RNAnimated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
@@ -84,9 +84,14 @@ export default function StatisticsScreen() {
   const { width: windowWidth } = useWindowDimensions();
   const [calendarContainerWidth, setCalendarContainerWidth] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showDayModal, setShowDayModal] = useState(false);
-  const [showAddWaterModal, setShowAddWaterModal] = useState(false);
+  const [isDayModalVisible, setIsDayModalVisible] = useState(false);
+  const [isAddWaterModalVisible, setIsAddWaterModalVisible] = useState(false);
   const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
+  const dayOverlayOpacity = useRef(new RNAnimated.Value(0)).current;
+  const dayModalTranslate = useRef(new RNAnimated.Value(20)).current;
+  const dayModalScale = useRef(new RNAnimated.Value(0.96)).current;
+  const addWaterSlide = useRef(new RNAnimated.Value(320)).current;
+  const addWaterOpacity = useRef(new RNAnimated.Value(0)).current;
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
@@ -180,16 +185,110 @@ export default function StatisticsScreen() {
     return nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth();
   }, [selectedMonth]);
 
+  const openDayModal = useCallback(
+    (date: Date) => {
+      setSelectedDate(date);
+      setIsDayModalVisible(true);
+      dayOverlayOpacity.setValue(0);
+      dayModalTranslate.setValue(20);
+      dayModalScale.setValue(0.96);
+      RNAnimated.parallel([
+        RNAnimated.timing(dayOverlayOpacity, {
+          toValue: 1,
+          duration: 180,
+          useNativeDriver: true,
+        }),
+        RNAnimated.timing(dayModalTranslate, {
+          toValue: 0,
+          duration: 230,
+          useNativeDriver: true,
+        }),
+        RNAnimated.timing(dayModalScale, {
+          toValue: 1,
+          duration: 230,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    },
+    [dayModalScale, dayModalTranslate, dayOverlayOpacity]
+  );
+
+  const closeDayModal = useCallback(() => {
+    RNAnimated.parallel([
+      RNAnimated.timing(dayOverlayOpacity, {
+        toValue: 0,
+        duration: 180,
+        useNativeDriver: true,
+      }),
+      RNAnimated.timing(dayModalTranslate, {
+        toValue: 20,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      RNAnimated.timing(dayModalScale, {
+        toValue: 0.96,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start(({ finished }) => {
+      if (finished) {
+        setIsDayModalVisible(false);
+        setIsAddWaterModalVisible(false);
+        setSelectedDrinkType(null);
+        addWaterSlide.setValue(320);
+        addWaterOpacity.setValue(0);
+      }
+    });
+  }, [addWaterOpacity, addWaterSlide, dayModalScale, dayModalTranslate, dayOverlayOpacity]);
+
+  const openAddWaterModal = useCallback(() => {
+    setSelectedDrinkType(null);
+    setIsAddWaterModalVisible(true);
+    addWaterOpacity.setValue(0);
+    addWaterSlide.setValue(320);
+    RNAnimated.parallel([
+      RNAnimated.timing(addWaterOpacity, {
+        toValue: 1,
+        duration: 180,
+        useNativeDriver: true,
+      }),
+      RNAnimated.spring(addWaterSlide, {
+        toValue: 0,
+        useNativeDriver: true,
+        tension: 70,
+        friction: 12,
+      }),
+    ]).start();
+  }, [addWaterOpacity, addWaterSlide]);
+
+  const closeAddWaterModal = useCallback(() => {
+    RNAnimated.parallel([
+      RNAnimated.timing(addWaterOpacity, {
+        toValue: 0,
+        duration: 180,
+        useNativeDriver: true,
+      }),
+      RNAnimated.timing(addWaterSlide, {
+        toValue: 320,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start(({ finished }) => {
+      if (finished) {
+        setIsAddWaterModalVisible(false);
+        setSelectedDrinkType(null);
+      }
+    });
+  }, [addWaterOpacity, addWaterSlide]);
+
   const handleCalendarCellPress = useCallback((date: Date | null) => {
     if (!date) return;
-    setSelectedDate(date);
-    setShowDayModal(true);
-  }, []);
+    openDayModal(date);
+  }, [openDayModal]);
 
   const handleAddWaterPress = useCallback(() => {
-    setSelectedDrinkType(null);
-    setShowAddWaterModal(true);
-  }, []);
+    openAddWaterModal();
+  }, [openAddWaterModal]);
 
   const handleDrinkTypeSelect = useCallback((type: DrinkType) => {
     setSelectedDrinkType(type);
@@ -213,10 +312,9 @@ export default function StatisticsScreen() {
         })
       );
 
-      setShowAddWaterModal(false);
-      setSelectedDrinkType(null);
+      closeAddWaterModal();
     },
-    [dispatch, selectedDate, selectedDrinkType]
+    [closeAddWaterModal, dispatch, selectedDate, selectedDrinkType]
   );
 
   const estimatedCalendarWidth = useMemo(() => {
@@ -535,20 +633,29 @@ export default function StatisticsScreen() {
       </View>
 
       <Modal
-        visible={showDayModal && !!selectedDate}
-        animationType="fade"
+        visible={isDayModalVisible && !!selectedDate}
+        animationType="none"
         transparent
-        onRequestClose={() => setShowDayModal(false)}
+        onRequestClose={closeDayModal}
       >
-        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowDayModal(false)}>
+        <RNAnimated.View style={[styles.modalOverlay, { opacity: dayOverlayOpacity }]}>
+          <TouchableOpacity style={StyleSheet.absoluteFillObject} activeOpacity={1} onPress={closeDayModal} />
           <TouchableWithoutFeedback onPress={() => {}}>
-            <View style={[styles.dayModalCard, { backgroundColor: theme.card }]}>
+            <RNAnimated.View
+              style={[
+                styles.dayModalCard,
+                {
+                  backgroundColor: theme.card,
+                  transform: [{ translateY: dayModalTranslate }, { scale: dayModalScale }],
+                },
+              ]}
+            >
               <View style={styles.dayModalHeader}>
                 <View>
                   <Text style={styles.modalTitle}>Daily Details</Text>
                   {!!selectedDateLabel && <Text style={styles.modalSubtitle}>{selectedDateLabel}</Text>}
                 </View>
-                <TouchableOpacity style={styles.modalCloseButton} onPress={() => setShowDayModal(false)}>
+                <TouchableOpacity style={styles.modalCloseButton} onPress={closeDayModal}>
                   <Text style={styles.modalCloseText}>×</Text>
                 </TouchableOpacity>
               </View>
@@ -610,30 +717,28 @@ export default function StatisticsScreen() {
                   ))}
                 </ScrollView>
               )}
-            </View>
+            </RNAnimated.View>
           </TouchableWithoutFeedback>
-          {showAddWaterModal && (
-            <View style={styles.inlineAddContainer} pointerEvents="box-none">
+          {isAddWaterModalVisible && (
+            <RNAnimated.View style={[styles.inlineAddContainer, { opacity: addWaterOpacity }]} pointerEvents="box-none">
               <TouchableOpacity
                 style={styles.inlineAddBackdrop}
                 activeOpacity={1}
-                onPress={() => {
-                  setShowAddWaterModal(false);
-                  setSelectedDrinkType(null);
-                }}
+                onPress={closeAddWaterModal}
               />
-              <View
+              <RNAnimated.View
                 style={[
                   styles.addModalContent,
                   {
                     backgroundColor: theme.background,
                     paddingBottom: Math.max(insets.bottom, 20) + tabBarHeight,
+                    transform: [{ translateY: addWaterSlide }],
                   },
                 ]}
               >
                 <View style={styles.addModalHeader}>
                   <Text style={[styles.addModalTitle, { color: theme.text }]}>Add Water Intake</Text>
-                  <TouchableOpacity style={[styles.modalCloseButton, { backgroundColor: theme.border }]} onPress={() => setShowAddWaterModal(false)}>
+                  <TouchableOpacity style={[styles.modalCloseButton, { backgroundColor: theme.border }]} onPress={closeAddWaterModal}>
                     <Text style={[styles.modalCloseText, { color: theme.text }]}>×</Text>
                   </TouchableOpacity>
                 </View>
@@ -683,10 +788,10 @@ export default function StatisticsScreen() {
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
-              </View>
-            </View>
+              </RNAnimated.View>
+            </RNAnimated.View>
           )}
-        </TouchableOpacity>
+        </RNAnimated.View>
       </Modal>
     </SafeAreaView>
   );

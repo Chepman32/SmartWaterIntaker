@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated, useWindowDimensions, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -25,11 +25,12 @@ const HistoryScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showAddModal, setShowAddModal] = useState(false);
-  const slideAnim = useRef(new Animated.Value(1000)).current;
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const slideAnim = useRef(new Animated.Value(600)).current;
   const { width: screenWidth } = useWindowDimensions();
   const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
   const carouselAnim = useRef(new Animated.Value(0)).current;
+  const overlayAnim = useRef(new Animated.Value(0)).current;
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const { profile } = useSelector((state: RootState) => state.settings);
@@ -62,32 +63,58 @@ const HistoryScreen: React.FC = () => {
   const favoriteContainers = containers.filter((c) => c.favorite);
 
   const handleDeleteEvent = (eventId: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     dispatch(deleteIntakeEventAndPersist(eventId, selectedDateStr));
   };
 
   useEffect(() => {
-    if (showAddModal) {
+    if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+  }, []);
+
+  const handleAddWater = () => {
+    openAddModal();
+  };
+
+  const openAddModal = () => {
+    carouselAnim.setValue(0);
+    setSelectedDrinkType(null);
+    setIsAddModalVisible(true);
+    overlayAnim.setValue(0);
+    slideAnim.setValue(600);
+    Animated.parallel([
+      Animated.timing(overlayAnim, {
+        toValue: 1,
+        duration: 180,
+        useNativeDriver: true,
+      }),
       Animated.spring(slideAnim, {
         toValue: 0,
         useNativeDriver: true,
         tension: 65,
         friction: 11,
-      }).start();
-    } else {
+      }),
+    ]).start();
+  };
+
+  const closeAddModal = () => {
+    Animated.parallel([
+      Animated.timing(overlayAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
       Animated.timing(slideAnim, {
         toValue: 600,
-        duration: 250,
+        duration: 240,
         useNativeDriver: true,
-      }).start();
+      }),
+    ]).start(() => {
+      setIsAddModalVisible(false);
       carouselAnim.setValue(0);
       setSelectedDrinkType(null);
-    }
-  }, [showAddModal, slideAnim, carouselAnim]);
-
-  const handleAddWater = () => {
-    carouselAnim.setValue(0);
-    setSelectedDrinkType(null);
-    setShowAddModal(true);
+    });
   };
 
   const handleContainerSelect = (container: any) => {
@@ -99,6 +126,7 @@ const HistoryScreen: React.FC = () => {
 
     const notePrefix = selectedDrinkType ? `${selectedDrinkType.name} - ` : '';
 
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     dispatch(logIntakeEvent({
       amountMl: container.sizeMl,
       source: 'container',
@@ -108,7 +136,7 @@ const HistoryScreen: React.FC = () => {
       note: `${notePrefix}${container.name} (${container.sizeMl}ml)`,
     }));
 
-    setShowAddModal(false);
+    closeAddModal();
   };
 
   const navigateDate = (direction: 'prev' | 'next') => {
@@ -325,108 +353,110 @@ const HistoryScreen: React.FC = () => {
 
       {/* Add Water Modal */}
       <Modal
-        visible={showAddModal}
-        animationType="fade"
+        visible={isAddModalVisible}
+        animationType="none"
         transparent={true}
-        onRequestClose={() => setShowAddModal(false)}
+        onRequestClose={closeAddModal}
       >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowAddModal(false)}
-        >
-          <Animated.View
-            style={[
-              styles.modalContent,
-              {
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
+        <Animated.View style={[styles.modalOverlay, { opacity: overlayAnim }]}>
+          <TouchableOpacity
+            style={[styles.modalOverlay, { backgroundColor: 'transparent' }]}
+            activeOpacity={1}
+            onPress={closeAddModal}
           >
-            <TouchableOpacity
-              style={styles.modalContentInner}
-              activeOpacity={1}
-              onPress={(e) => e.stopPropagation()}
+            <Animated.View
+              style={[
+                styles.modalContent,
+                {
+                  transform: [{ translateY: slideAnim }],
+                },
+              ]}
             >
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Add Water Intake</Text>
               <TouchableOpacity
-                onPress={() => setShowAddModal(false)}
-                style={styles.modalCloseButton}
+                style={styles.modalContentInner}
+                activeOpacity={1}
+                onPress={(e) => e.stopPropagation()}
               >
-                <Text style={styles.modalCloseText}>×</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.modalCarouselSwitcher}>
-              <Animated.View
-                style={[
-                  styles.modalCarouselInner,
-                  { transform: [{ translateY: translateDrinkCarousel }] },
-                ]}
-                pointerEvents={selectedDrinkType ? 'none' : 'auto'}
-              >
-                <DrinkTypeCarousel
-                  textColor={theme.text}
-                  subtitleColor={theme.textSecondary}
-                  onSelect={handleDrinkTypeSelect}
-                  selectedDrinkTypeId={selectedDrinkType?.id}
-                  title="Choose a drink"
-                />
-              </Animated.View>
-
-              <Animated.View
-                style={[
-                  styles.modalCarouselInner,
-                  { transform: [{ translateY: translateContainerCarousel }] },
-                ]}
-                pointerEvents={selectedDrinkType ? 'auto' : 'none'}
-              >
-                {selectedDrinkType && (
-                  <View style={styles.selectedDrinkHeader}>
-                    <View>
-                      <Text style={styles.selectedDrinkLabel}>Selected drink</Text>
-                      <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>
-                        {selectedDrinkType.name}
-                      </Text>
-                    </View>
-                    <TouchableOpacity onPress={handleChangeDrinkType}>
-                      <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.modalScrollContent}
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Add Water Intake</Text>
+                <TouchableOpacity
+                  onPress={closeAddModal}
+                  style={styles.modalCloseButton}
                 >
-                  {favoriteContainers.map((container) => (
-                    <TouchableOpacity
-                      key={container.id}
-                      style={[
-                        styles.modalContainerItem,
-                        { backgroundColor: container.color + '20', borderColor: container.color }
-                      ]}
-                      onPress={() => handleContainerSelect(container)}
-                      activeOpacity={0.7}
-                    >
-                      <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
-                        <Text style={styles.modalIconText}>{container.icon}</Text>
+                  <Text style={styles.modalCloseText}>×</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.modalCarouselSwitcher}>
+                <Animated.View
+                  style={[
+                    styles.modalCarouselInner,
+                    { transform: [{ translateY: translateDrinkCarousel }] },
+                  ]}
+                  pointerEvents={selectedDrinkType ? 'none' : 'auto'}
+                >
+                  <DrinkTypeCarousel
+                    textColor={theme.text}
+                    subtitleColor={theme.textSecondary}
+                    onSelect={handleDrinkTypeSelect}
+                    selectedDrinkTypeId={selectedDrinkType?.id}
+                    title="Choose a drink"
+                  />
+                </Animated.View>
+
+                <Animated.View
+                  style={[
+                    styles.modalCarouselInner,
+                    { transform: [{ translateY: translateContainerCarousel }] },
+                  ]}
+                  pointerEvents={selectedDrinkType ? 'auto' : 'none'}
+                >
+                  {selectedDrinkType && (
+                    <View style={styles.selectedDrinkHeader}>
+                      <View>
+                        <Text style={styles.selectedDrinkLabel}>Selected drink</Text>
+                        <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>
+                          {selectedDrinkType.name}
+                        </Text>
                       </View>
-                      <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
-                        {container.name}
-                      </Text>
-                      <Text style={[styles.modalContainerSize, { color: theme.text }]}>
-                        {container.sizeMl}ml
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </Animated.View>
-            </View>
-            </TouchableOpacity>
-          </Animated.View>
-        </TouchableOpacity>
+                      <TouchableOpacity onPress={handleChangeDrinkType}>
+                        <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.modalScrollContent}
+                  >
+                    {favoriteContainers.map((container) => (
+                      <TouchableOpacity
+                        key={container.id}
+                        style={[
+                          styles.modalContainerItem,
+                          { backgroundColor: container.color + '20', borderColor: container.color }
+                        ]}
+                        onPress={() => handleContainerSelect(container)}
+                        activeOpacity={0.7}
+                      >
+                        <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
+                          <Text style={styles.modalIconText}>{container.icon}</Text>
+                        </View>
+                        <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
+                          {container.name}
+                        </Text>
+                        <Text style={[styles.modalContainerSize, { color: theme.text }]}>
+                          {container.sizeMl}ml
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </Animated.View>
+              </View>
+              </TouchableOpacity>
+            </Animated.View>
+          </TouchableOpacity>
+        </Animated.View>
       </Modal>
     </SafeAreaView>
   );
