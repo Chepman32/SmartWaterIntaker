@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Switch, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Switch, ScrollView, Alert, Linking } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '../constants/colors';
@@ -106,7 +106,7 @@ const NotificationsScreen: React.FC = () => {
               'Please enable notifications in your device settings to receive hydration reminders.',
               [
                 { text: 'Cancel', style: 'cancel' },
-                { text: 'Settings', onPress: () => {/* TODO: Open device settings */} },
+                { text: 'Settings', onPress: () => Linking.openSettings() },
               ]
             );
             setIsLoading(false);

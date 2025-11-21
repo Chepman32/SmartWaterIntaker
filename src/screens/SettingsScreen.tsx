@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Colors } from '../constants/colors';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { RootState } from '../state/store';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -59,14 +58,6 @@ const SettingsScreen: React.FC = () => {
   );
   
   const settingsItems: SettingItem[] = [
-    {
-      id: 'notifications',
-      title: 'Notifications',
-      subtitle: 'Manage reminder settings',
-      icon: 'notifications',
-      type: 'navigation',
-      onPress: () => navigation.navigate('Notifications'),
-    },
     {
       id: 'smart-notifications',
       title: 'Smart Notifications',

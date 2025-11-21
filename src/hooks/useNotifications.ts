@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, AppStateStatus } from 'react-native';
+import { Alert, AppState, AppStateStatus, Linking } from 'react-native';
 import { RootState } from '../state/store';
 import NotificationService, { ReminderNotification } from '../services/NotificationService';
 import {
@@ -109,15 +109,29 @@ export const useNotifications = () => {
     }
   }, [dispatch]);
 
+  const promptEnableInSettings = useCallback(() => {
+    Alert.alert(
+      'Enable Notifications',
+      'Notification permissions are blocked. Please enable them in your device settings to receive reminders.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+      ],
+    );
+  }, []);
+
   const enableNotifications = useCallback(async () => {
     if (!permissionsGranted) {
       const permissions = await requestPermissions();
-      if (!permissions.granted) return false;
+      if (!permissions.granted) {
+        promptEnableInSettings();
+        return false;
+      }
     }
     
     dispatch(setNotificationsEnabled(true));
     return true;
-  }, [permissionsGranted, requestPermissions, dispatch]);
+  }, [permissionsGranted, requestPermissions, dispatch, promptEnableInSettings]);
 
   const disableNotifications = useCallback(async () => {
     dispatch(setNotificationsEnabled(false));
