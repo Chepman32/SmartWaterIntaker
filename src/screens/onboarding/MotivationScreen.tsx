@@ -4,6 +4,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +14,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { updateProfile } from '../../state/slices/settingsSlice';
 import { Colors } from '../../constants/colors';
 import { MotivationType } from '../../types/models';
+
+// Import motivation images
+const motivationImages: Partial<Record<MotivationType, ImageSourcePropType>> = {
+  work: require('../../assets/motivation/WorkPerformance.png'),
+  brain: require('../../assets/motivation/MentalClarity.png'),
+  fitness: require("../../assets/motivation/'FitnessGoals.png"),
+  meditation: require('../../assets/motivation/Wellness.png'),
+  health: require('../../assets/motivation/Health.png'),
+  beauty: require('../../assets/motivation/Beauty.png'),
+};
 
 interface MotivationOption {
   id: MotivationType;
@@ -131,7 +143,15 @@ export const MotivationScreen: React.FC = () => {
                   styles.iconContainer,
                   isSelected && styles.iconContainerSelected,
                 ]}>
-                  <Text style={styles.icon}>{option.icon}</Text>
+                  {motivationImages[option.id] ? (
+                    <Image
+                      source={motivationImages[option.id]!}
+                      style={styles.iconImage}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Text style={styles.icon}>{option.icon}</Text>
+                  )}
                 </View>
                 <Text style={[
                   styles.optionTitle,
@@ -262,6 +282,10 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   icon: {
     fontSize: 32,
+  },
+  iconImage: {
+    width: 48,
+    height: 48,
   },
   optionTitle: {
     fontSize: 16,
