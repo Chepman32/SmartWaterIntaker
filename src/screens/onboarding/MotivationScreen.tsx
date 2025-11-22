@@ -229,6 +229,7 @@ const getStyles = (theme: any) => StyleSheet.create({
   content: {
     paddingHorizontal: 24,
     paddingTop: 40,
+    paddingBottom: 15,
   },
   header: {
     marginBottom: 5,
