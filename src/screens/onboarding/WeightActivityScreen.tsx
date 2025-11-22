@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   ScrollView,
 } from 'react-native';
+import { WeightPicker } from '../../components/WeightPicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
@@ -81,17 +81,18 @@ export const WeightActivityScreen: React.FC = () => {
   const theme = isDark ? Colors.dark : Colors.light;
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
   
-  const [weight, setWeight] = useState('');
+  const isMetric = unit === 'ml';
+  const weightUnit = isMetric ? 'kg' : 'lbs';
+  const defaultWeight = isMetric ? 70 : 154; // Default weight in kg or lbs
+
+  const [weight, setWeight] = useState(defaultWeight);
   const [selectedActivity, setSelectedActivity] = useState<ActivityLevel>('medium');
   const [selectedClimate, setSelectedClimate] = useState<Climate>('temperate');
   
-  const isMetric = unit === 'ml';
-  const weightUnit = isMetric ? 'kg' : 'lbs';
-  
   const handleContinue = () => {
     const weightKg = isMetric
-      ? parseFloat(weight)
-      : parseFloat(weight) * 0.453592; // Convert lbs to kg
+      ? weight
+      : weight * 0.453592; // Convert lbs to kg
 
     dispatch(updateProfile({
       weightKg,
@@ -110,7 +111,7 @@ export const WeightActivityScreen: React.FC = () => {
     navigation.goBack();
   };
 
-  const isValid = weight.trim() !== '' && !isNaN(parseFloat(weight)) && parseFloat(weight) > 0;
+  const isValid = weight > 0;
 
   const styles = getStyles(theme);
   
@@ -201,17 +202,12 @@ export const WeightActivityScreen: React.FC = () => {
         {/* Weight Input */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Your Weight</Text>
-          <View style={styles.weightInputContainer}>
-            <TextInput
-              style={styles.weightInput}
-              value={weight}
-              onChangeText={setWeight}
-              placeholder={`Enter weight in ${weightUnit}`}
-              placeholderTextColor={theme.textSecondary}
-              keyboardType="numeric"
-            />
-            <Text style={styles.unitLabel}>{weightUnit}</Text>
-          </View>
+          <WeightPicker
+            value={weight}
+            onValueChange={setWeight}
+            unit={weightUnit}
+            theme={theme}
+          />
         </View>
         
         {/* Activity Level */}
@@ -310,27 +306,6 @@ const getStyles = (theme: any) => StyleSheet.create({
     fontWeight: '600',
     color: theme.text,
     marginBottom: 16,
-  },
-  weightInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  weightInput: {
-    flex: 1,
-    height: 56,
-    backgroundColor: theme.surface,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    fontSize: 18,
-    color: theme.text,
-    borderWidth: 1,
-    borderColor: theme.border,
-  },
-  unitLabel: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: theme.text,
-    marginLeft: 12,
   },
   optionsContainer: {
     gap: 12,
