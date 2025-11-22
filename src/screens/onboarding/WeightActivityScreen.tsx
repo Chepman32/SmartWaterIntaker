@@ -82,15 +82,16 @@ export const WeightActivityScreen: React.FC = () => {
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
   
   const isMetric = unit === 'ml';
-  const weightUnit = isMetric ? 'kg' : 'lbs';
+  const defaultWeightUnit = isMetric ? 'kg' : 'lbs';
   const defaultWeight = isMetric ? 70 : 154; // Default weight in kg or lbs
 
   const [weight, setWeight] = useState(defaultWeight);
+  const [weightUnit, setWeightUnit] = useState<'kg' | 'lbs'>(defaultWeightUnit);
   const [selectedActivity, setSelectedActivity] = useState<ActivityLevel>('medium');
   const [selectedClimate, setSelectedClimate] = useState<Climate>('temperate');
   
   const handleContinue = () => {
-    const weightKg = isMetric
+    const weightKg = weightUnit === 'kg'
       ? weight
       : weight * 0.453592; // Convert lbs to kg
 
@@ -206,6 +207,7 @@ export const WeightActivityScreen: React.FC = () => {
             value={weight}
             onValueChange={setWeight}
             unit={weightUnit}
+            onUnitChange={setWeightUnit}
             theme={theme}
           />
         </View>

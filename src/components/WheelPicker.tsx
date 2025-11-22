@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 
-const ITEM_HEIGHT = 44;
+const ITEM_HEIGHT = 60;
 const VISIBLE_ITEMS = 5;
 const CONTAINER_HEIGHT = ITEM_HEIGHT * VISIBLE_ITEMS;
 
@@ -31,8 +31,8 @@ export const WheelPicker: React.FC<WheelPickerProps> = ({
   width = 80,
   textColor = '#94A3B8',
   selectedTextColor = '#1E293B',
-  fontSize = 18,
-  selectedFontSize = 22,
+  fontSize = 24,
+  selectedFontSize = 32,
 }) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(selectedIndex);

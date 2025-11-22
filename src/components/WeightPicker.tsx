@@ -6,6 +6,7 @@ interface WeightPickerProps {
   value: number;
   onValueChange: (value: number) => void;
   unit: 'kg' | 'lbs';
+  onUnitChange: (unit: 'kg' | 'lbs') => void;
   theme: {
     surface: string;
     border: string;
@@ -21,10 +22,13 @@ const KG_MAX = 200;
 const LBS_MIN = 66;
 const LBS_MAX = 440;
 
+const UNITS: string[] = ['kg', 'lbs'];
+
 export const WeightPicker: React.FC<WeightPickerProps> = ({
   value,
   onValueChange,
   unit,
+  onUnitChange,
   theme,
 }) => {
   const isMetric = unit === 'kg';
@@ -52,6 +56,23 @@ export const WeightPicker: React.FC<WeightPickerProps> = ({
     [onValueChange]
   );
 
+  const unitIndex = UNITS.indexOf(unit);
+
+  const handleUnitChange = useCallback(
+    (_index: number, val: string | number) => {
+      const newUnit = val as 'kg' | 'lbs';
+      if (newUnit !== unit) {
+        // Convert weight when switching units
+        const convertedWeight = newUnit === 'lbs'
+          ? Math.round(value * 2.20462) // kg to lbs
+          : Math.round(value / 2.20462); // lbs to kg
+        onUnitChange(newUnit);
+        onValueChange(convertedWeight);
+      }
+    },
+    [unit, value, onUnitChange, onValueChange]
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: theme.surface, borderColor: theme.border }]}>
       {/* Top fade */}
@@ -62,15 +83,20 @@ export const WeightPicker: React.FC<WeightPickerProps> = ({
           data={wholeNumbers}
           selectedIndex={wholeIndex}
           onValueChange={handleValueChange}
-          width={90}
+          width={120}
           textColor={theme.textSecondary}
           selectedTextColor={theme.text}
         />
 
-        {/* Unit label */}
-        <View style={styles.unitContainer}>
-          <Text style={[styles.unitText, { color: theme.primary }]}>{unit}</Text>
-        </View>
+        {/* Unit picker */}
+        <WheelPicker
+          data={UNITS}
+          selectedIndex={unitIndex}
+          onValueChange={handleUnitChange}
+          width={70}
+          textColor={theme.textSecondary}
+          selectedTextColor={theme.primary}
+        />
       </View>
 
       {/* Bottom fade */}
@@ -91,22 +117,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  unitContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 12,
-    width: 36,
-  },
-  unitText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
   fadeTop: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: 30,
+    height: 40,
     zIndex: 10,
     opacity: 0.9,
   },
@@ -115,7 +131,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 30,
+    height: 40,
     zIndex: 10,
     opacity: 0.9,
   },
