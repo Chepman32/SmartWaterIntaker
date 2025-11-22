@@ -211,7 +211,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     paddingTop: 40,
   },
   header: {
-    marginBottom: 32,
+    marginBottom: 5,
   },
   title: {
     fontSize: 32,

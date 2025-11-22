@@ -237,7 +237,7 @@ const getStyles = (theme: any) => StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 40,
+    paddingTop: 30,
   },
   header: {
     marginBottom: 40,
@@ -257,12 +257,12 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   calculationContainer: {
     alignItems: 'center',
-    marginVertical: 40,
+    marginVertical: 16,
   },
   factorsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 16,
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
@@ -270,7 +270,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.surface,
     borderRadius: 12,
-    padding: 16,
+    padding: 12,
     minWidth: 80,
     marginHorizontal: 4,
   },
@@ -294,7 +294,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     fontWeight: '300',
   },
   equals: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   equalsText: {
     fontSize: 24,
@@ -305,7 +305,7 @@ const getStyles = (theme: any) => StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.primaryLight || theme.primary + '20',
     borderRadius: 20,
-    padding: 24,
+    padding: 16,
     borderWidth: 2,
     borderColor: theme.primary,
   },
@@ -329,8 +329,8 @@ const getStyles = (theme: any) => StyleSheet.create({
   explanationContainer: {
     backgroundColor: theme.surface,
     borderRadius: 12,
-    padding: 20,
-    marginTop: 20,
+    padding: 16,
+    marginTop: 12,
   },
   explanationTitle: {
     fontSize: 16,
@@ -345,8 +345,8 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   footer: {
     paddingHorizontal: 24,
-    paddingBottom: 40,
-    paddingTop: 20,
+    paddingBottom: 32,
+    paddingTop: 12,
     flexDirection: 'row',
     gap: 12,
   },
