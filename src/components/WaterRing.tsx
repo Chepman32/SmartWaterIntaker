@@ -6,11 +6,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
   withRepeat,
-  withSequence,
-  withDelay,
-  runOnUI,
   useAnimatedProps,
-  interpolate,
   Easing,
   useAnimatedSensor,
   SensorType,
@@ -36,6 +32,7 @@ export interface WaterRingProps {
   levelRiseDurationMs?: number;  // default 450
   reduceMotion?: boolean;        // honor OS setting; if true, lowers amplitudes/speeds
   onAnimationEnd?: () => void;   // fired after level change completes
+  performance?: 'performance' | 'balanced' | 'high'; // detail vs fps trade-off
 }
 
 export type WaterRingRef = {
@@ -64,6 +61,7 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   levelRiseDurationMs = 450,
   reduceMotion = false,
   onAnimationEnd,
+  performance = 'performance',
 }, ref) {
   const radius = (size - strokeWidth) / 2;
   const center = size / 2;
@@ -78,8 +76,13 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   
   // Scale amplitudes and speeds based on size and reduce motion
   const scaleFactor = size / 240;
-  const scaledIdleAmplitude = (shouldReduceMotion ? idleAmplitude * 0.5 : idleAmplitude) * scaleFactor;
-  const scaledSplashAmplitudeMax = (shouldReduceMotion ? splashAmplitudeMax * 0.5 : splashAmplitudeMax) * scaleFactor;
+  const perf = performance ?? 'performance';
+  const perfMultiplier = perf === 'high' ? 1.1 : perf === 'balanced' ? 1 : 0.8;
+  const breathEnabled = !shouldReduceMotion && perf !== 'performance';
+  const crestEnabled = perf !== 'performance';
+  const bubblesMultiplier = perf === 'high' ? 1.2 : perf === 'balanced' ? 1 : 0.7;
+  const scaledIdleAmplitude = (shouldReduceMotion ? idleAmplitude * 0.5 : idleAmplitude) * scaleFactor * perfMultiplier;
+  const scaledSplashAmplitudeMax = (shouldReduceMotion ? splashAmplitudeMax * 0.5 : splashAmplitudeMax) * scaleFactor * perfMultiplier;
   const scaledIdlePeriodMs = shouldReduceMotion ? idlePeriodMs * 2 : idlePeriodMs;
   const scaledLevelRiseDurationMs = shouldReduceMotion ? levelRiseDurationMs * 2 : levelRiseDurationMs;
   const scaledSplashDurationMs = shouldReduceMotion ? splashDurationMs * 2 : splashDurationMs;
@@ -93,10 +96,32 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   const A_peak = useSharedValue(0);
   const S_peak = useSharedValue(0);
   const lastDeltaNorm = useSharedValue(0);
-  // device tilt (roll)
-  const rotation = useAnimatedSensor(SensorType.ROTATION, { interval: 16 });
+  // device tilt (roll) - use a slower interval when tilt is disabled to avoid wasted work
+  const rotation = useAnimatedSensor(SensorType.ROTATION, { interval: enableTilt ? 16 : 120 });
   // global time for bubbles
   const bubblesTime = useSharedValue(0);
+
+  // Precompute wave sample positions so we aren't doing heavy math/string building every frame
+  const sampleCount = Math.min(54, Math.max(26, Math.round((30 + scaleFactor * 6) * perfMultiplier)));
+  const waveSamples = React.useMemo(() => {
+    const xs: number[] = [];
+    const normalized: number[] = [];
+    const kFront: number[] = [];
+    const kBack: number[] = [];
+    const kFrontBase = idleFrequency * Math.PI;
+    const kBackBase = idleFrequency * 0.9 * Math.PI;
+
+    for (let i = 0; i <= sampleCount; i++) {
+      const x = (i / sampleCount) * size;
+      const norm = (x - size / 2) / (size / 2);
+      xs.push(x);
+      normalized.push(norm);
+      kFront.push(kFrontBase * norm);
+      kBack.push(kBackBase * norm);
+    }
+
+    return { xs, normalized, kFront, kBack };
+  }, [size, sampleCount, idleFrequency]);
   
   // Previous progress for detecting changes
   const prevProgress = useRef(progress);
@@ -116,21 +141,25 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   
   // Optional breathing effect for idle amplitude
   useEffect(() => {
-    if (shouldReduceMotion) return;
+    if (!breathEnabled) {
+      breath.value = 0;
+      return;
+    }
     breath.value = withRepeat(
       withTiming(2 * Math.PI, { duration: 2400, easing: Easing.linear }),
       -1
     );
-  }, [shouldReduceMotion]);
+  }, [breathEnabled]);
 
   // Bubbles time driver (slow loop)
   useEffect(() => {
-    const dur = shouldReduceMotion ? 16000 : 10000;
+    const base = perf === 'high' ? 9000 : perf === 'balanced' ? 10000 : 12000;
+    const dur = shouldReduceMotion ? base * 1.6 : base;
     bubblesTime.value = withRepeat(
       withTiming(2 * Math.PI, { duration: dur, easing: Easing.linear }),
       -1
     );
-  }, [shouldReduceMotion]);
+  }, [shouldReduceMotion, perf]);
 
   // Imperative API
   useImperativeHandle(ref, () => ({
@@ -216,11 +245,10 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     'worklet';
     const width = size;
     const height = size;
-    const numPoints = 80;
-    const k = idleFrequency * Math.PI; // spatial frequency factor over -1..1
     const perspective = 0.35; // 0..1, reduces amplitude near edges for 3D look
     // Idle amplitude with subtle breathing
-    const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value)));
+    const breathPhase = breathEnabled ? Math.sin(breath.value) : 0;
+    const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * breathPhase));
     // Splash impulse envelope
     const t = splashT.value * (scaledSplashDurationMs / 1000);
     const tau = (scaledSplashDurationMs / 1000) / 2.2;
@@ -235,23 +263,21 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     const roll = rotation.sensor.value ? rotation.sensor.value.roll : 0;
     const tiltSlope = enableTilt && !shouldReduceMotion ? clamp(roll * 0.08, -0.25, 0.25) : 0;
     const slopeTotal = clamp(slopeImpulse + tiltSlope, -0.25, 0.25);
+    const waterLevel = height - (baseLevel.value * height);
+    const slopeScale = slopeTotal * height / 2;
+    const phaseShift = phase.value;
 
     let path = `M 0 ${height}`;
     
-    for (let i = 0; i <= numPoints; i++) {
-      const x = (i / numPoints) * width;
-      const normalizedX = (x - width / 2) / (width / 2); // -1 to 1
-      
-      // Wave function: y = waterLevel + slope * x + amplitude * sin(frequency * x + phase)
-      // waterLevel should be from bottom (height) to top (0), so we invert the progress
-      const waterLevel = height - (baseLevel.value * height);
+    for (let i = 0; i <= sampleCount; i++) {
+      const normalizedX = waveSamples.normalized[i];
       const ampFactor = 1 - perspective * (normalizedX * normalizedX); // smaller at edges
       const waveY = waterLevel + 
-                   slopeTotal * normalizedX * height / 2 +
-                   (A_total * ampFactor) * Math.sin(k * normalizedX + phase.value);
+                   slopeScale * normalizedX +
+                   (A_total * ampFactor) * Math.sin(waveSamples.kFront[i] + phaseShift);
       
       const clampedY = Math.max(0, Math.min(height, waveY));
-      
+      const x = waveSamples.xs[i];
       if (i === 0) {
         path += ` M ${x} ${clampedY}`;
       } else {
@@ -269,10 +295,9 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     'worklet';
     const width = size;
     const height = size;
-    const numPoints = 80;
-    const k = (idleFrequency * 0.9) * Math.PI;
     const perspective = 0.4;
-    const A_idle = scaledIdleAmplitude * 0.7 * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value + 0.6)));
+    const breathPhase = breathEnabled ? Math.sin(breath.value + 0.6) : 0;
+    const A_idle = scaledIdleAmplitude * 0.7 * (shouldReduceMotion ? 1 : (1 + 0.2 * breathPhase));
     const t = splashT.value * (scaledSplashDurationMs / 1000);
     const tau = (scaledSplashDurationMs / 1000) / 2.2;
     const f_splash = 2.2;
@@ -284,23 +309,21 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     const roll = rotation.sensor.value ? rotation.sensor.value.roll : 0;
     const tiltSlope = enableTilt && !shouldReduceMotion ? clamp(roll * 0.08, -0.25, 0.25) : 0;
     const slopeTotal = clamp(slopeImpulse + tiltSlope, -0.25, 0.25);
+    const waterLevel = height - (baseLevel.value * height);
+    const slopeScale = slopeTotal * 0.8 * height / 2;
+    const phaseShift = phase.value + 0.3;
 
     let path = `M 0 ${height}`;
     
-    for (let i = 0; i <= numPoints; i++) {
-      const x = (i / numPoints) * width;
-      const normalizedX = (x - width / 2) / (width / 2); // -1 to 1
-      
-      // Wave function: y = waterLevel + slope * x + amplitude * sin(frequency * x + phase)
-      // waterLevel should be from bottom (height) to top (0), so we invert the progress
-      const waterLevel = height - (baseLevel.value * height);
+    for (let i = 0; i <= sampleCount; i++) {
+      const normalizedX = waveSamples.normalized[i];
       const ampFactor = 1 - perspective * (normalizedX * normalizedX);
       const waveY = waterLevel + 
-                   slopeTotal * 0.8 * normalizedX * height / 2 +
-                   (A_total * ampFactor) * Math.sin(k * normalizedX + phase.value + 0.3);
+                   slopeScale * normalizedX +
+                   (A_total * ampFactor) * Math.sin(waveSamples.kBack[i] + phaseShift);
       
       const clampedY = Math.max(0, Math.min(height, waveY));
-      
+      const x = waveSamples.xs[i];
       if (i === 0) {
         path += ` M ${x} ${clampedY}`;
       } else {
@@ -317,14 +340,13 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   // Crest-only path for a subtle specular highlight (top of the front wave)
   const crestPath = useDerivedValue(() => {
     'worklet';
-    const width = size;
+    if (!crestEnabled) return 'M0 0';
     const height = size;
-    const numPoints = 80;
-    const k = idleFrequency * Math.PI;
     const perspective = 0.35;
 
     // Same amplitude and slope as front
-    const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * Math.sin(breath.value)));
+    const breathPhase = breathEnabled ? Math.sin(breath.value) : 0;
+    const A_idle = scaledIdleAmplitude * (shouldReduceMotion ? 1 : (1 + 0.2 * breathPhase));
     const t = splashT.value * (scaledSplashDurationMs / 1000);
     const tau = (scaledSplashDurationMs / 1000) / 2.2;
     const f_splash = 2.2;
@@ -336,15 +358,17 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
     const roll = rotation.sensor.value ? rotation.sensor.value.roll : 0;
     const tiltSlope = enableTilt && !shouldReduceMotion ? clamp(roll * 0.08, -0.25, 0.25) : 0;
     const slopeTotal = clamp(slopeImpulse + tiltSlope, -0.25, 0.25);
+    const waterLevel = height - (baseLevel.value * height);
+    const slopeScale = slopeTotal * height / 2;
+    const phaseShift = phase.value;
 
     let path = '';
-    for (let i = 0; i <= numPoints; i++) {
-      const x = (i / numPoints) * width;
-      const normalizedX = (x - width / 2) / (width / 2);
-      const waterLevel = height - (baseLevel.value * height);
+    for (let i = 0; i <= sampleCount; i++) {
+      const normalizedX = waveSamples.normalized[i];
       const ampFactor = 1 - perspective * (normalizedX * normalizedX);
-      const waveY = waterLevel + slopeTotal * normalizedX * height / 2 + (A_total * ampFactor) * Math.sin(k * normalizedX + phase.value);
+      const waveY = waterLevel + slopeScale * normalizedX + (A_total * ampFactor) * Math.sin(waveSamples.kFront[i] + phaseShift);
       const y = Math.max(0, Math.min(height, waveY - 1)); // slight upward offset for highlight
+      const x = waveSamples.xs[i];
       if (i === 0) path += `M ${x} ${y}`; else path += ` L ${x} ${y}`;
     }
     return path;
@@ -377,7 +401,7 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
       const y = bottom - t * travel;
       // only show when under the surface
       const isVisible = y > waterLevel + 3;
-      const drift = Math.sin(phase.value * 0.8 + seed.phase) * (4 * seed.drift * (width / 240));
+      const drift = Math.sin(phase.value * 0.8 + seed.phase) * (4 * seed.drift * (width / 240)) * bubbleDriftScale;
       const cx = (0.18 + 0.64 * seed.x) * width + drift;
       const cy = y;
       const rr = Math.max(0.8, seed.r * (width / 240) * (0.7 + 0.6 * (1 - t)));
@@ -410,9 +434,10 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   };
   
   const colors = getThemeColors();
+  const bubbleDriftScale = perf === 'high' ? 1 : perf === 'balanced' ? 0.85 : 0.65;
 
   // Bubbles setup (lightweight, deterministic seeds)
-  const bubbleCount = Math.max(8, Math.round(14 * scaleFactor));
+  const bubbleCount = Math.max(4, Math.min(12, Math.round(8 * scaleFactor * bubblesMultiplier)));
   const bubbleSeeds = React.useMemo(() => {
     const rng = (seed: number) => () => {
       // LCG for deterministic pseudo-random
@@ -501,14 +526,16 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
         />
 
         {/* Subtle specular highlight on the front crest */}
-        <AnimatedPath
-          animatedProps={crestAnimatedProps}
-          stroke="#FFFFFF"
-          strokeOpacity={0.25}
-          strokeWidth={Math.max(1, 1.25 * scaleFactor)}
-          fill="none"
-          clipPath="url(#waterClip)"
-        />
+        {crestEnabled && (
+          <AnimatedPath
+            animatedProps={crestAnimatedProps}
+            stroke="#FFFFFF"
+            strokeOpacity={0.25}
+            strokeWidth={Math.max(1, 1.25 * scaleFactor)}
+            fill="none"
+            clipPath="url(#waterClip)"
+          />
+        )}
 
         {/* Rising bubbles */}
         {bubbleSeeds.map((b) => {
