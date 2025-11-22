@@ -52,8 +52,12 @@ export const WheelPicker: React.FC<WheelPickerProps> = ({
 
   // Update scroll position when selectedIndex changes externally
   useEffect(() => {
-    if (!isUserScrolling.current) {
+    if (!isUserScrolling.current && selectedIndex !== currentIndex) {
       setCurrentIndex(selectedIndex);
+      scrollViewRef.current?.scrollTo({
+        y: selectedIndex * ITEM_HEIGHT,
+        animated: true,
+      });
     }
   }, [selectedIndex]);
 
