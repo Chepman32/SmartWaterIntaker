@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated, useWindowDimensions, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Animated, useWindowDimensions, LayoutAnimation, Platform, UIManager, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -121,6 +121,14 @@ const HistoryScreen: React.FC = () => {
   const theme = useThemeColors();
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+
+  // Container images
+  const cupImage = require('../../assets/images/cup.png');
+  const glassImage = require('../../assets/images/Glass.png');
+  const bottleImage = require('../../assets/images/bottle.png');
+  const tumblerImage = require('../../assets/images/tumbler.png');
+  const pitcherImage = require('../../assets/images/pitcher.png');
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(600)).current;
@@ -535,7 +543,19 @@ const HistoryScreen: React.FC = () => {
                         activeOpacity={0.7}
                       >
                         <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
-                          <Text style={styles.modalIconText}>{container.icon}</Text>
+                          {(container.id?.startsWith('cup') || container.name === 'Cup') ? (
+                            <Image source={cupImage} style={styles.modalIconImage} resizeMode="contain" />
+                          ) : (container.id?.startsWith('glass') || container.name === 'Glass') ? (
+                            <Image source={glassImage} style={styles.modalIconImage} resizeMode="contain" />
+                          ) : (container.id?.startsWith('bottle') || container.name === 'Bottle' || container.name === 'Water Bottle') ? (
+                            <Image source={bottleImage} style={styles.modalIconImage} resizeMode="contain" />
+                          ) : (container.id?.startsWith('tumbler') || container.name === 'Tumbler') ? (
+                            <Image source={tumblerImage} style={styles.modalIconImage} resizeMode="contain" />
+                          ) : (container.id?.startsWith('pitcher') || container.name === 'Pitcher') ? (
+                            <Image source={pitcherImage} style={styles.modalIconImage} resizeMode="contain" />
+                          ) : (
+                            <Text style={styles.modalIconText}>{container.icon}</Text>
+                          )}
                         </View>
                         <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
                           {container.name}
@@ -872,6 +892,10 @@ const getStyles = (theme: any, bottomInset: number = 0, tabBarHeight: number = 0
   },
   modalIconText: {
     fontSize: 36,
+  },
+  modalIconImage: {
+    width: 48,
+    height: 48,
   },
   modalContainerName: {
     fontSize: 18,

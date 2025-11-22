@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent, Modal, TouchableWithoutFeedback, ScrollView, Animated as RNAnimated } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent, Modal, TouchableWithoutFeedback, ScrollView, Animated as RNAnimated, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
@@ -74,11 +74,21 @@ const CARD_HORIZONTAL_MARGIN = 16; // Matches styles.card marginHorizontal
 const CARD_HORIZONTAL_PADDING = 16; // Matches styles.card padding
 const CALENDAR_CELL_GAP = 8;
 
+const MODAL_CAROUSEL_HEIGHT = 260;
+
 export default function StatisticsScreen() {
   const theme = useThemeColors();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+
+  // Container images
+  const cupImage = require('../../assets/images/cup.png');
+  const glassImage = require('../../assets/images/Glass.png');
+  const bottleImage = require('../../assets/images/bottle.png');
+  const tumblerImage = require('../../assets/images/tumbler.png');
+  const pitcherImage = require('../../assets/images/pitcher.png');
+
   const [period, setPeriod] = useState<Period>('week');
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const { width: windowWidth } = useWindowDimensions();
@@ -92,6 +102,7 @@ export default function StatisticsScreen() {
   const dayModalScale = useRef(new RNAnimated.Value(0.96)).current;
   const addWaterSlide = useRef(new RNAnimated.Value(320)).current;
   const addWaterOpacity = useRef(new RNAnimated.Value(0)).current;
+  const carouselAnim = useRef(new RNAnimated.Value(0)).current;
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
@@ -243,6 +254,7 @@ export default function StatisticsScreen() {
 
   const openAddWaterModal = useCallback(() => {
     setSelectedDrinkType(null);
+    carouselAnim.setValue(0);
     setIsAddWaterModalVisible(true);
     addWaterOpacity.setValue(0);
     addWaterSlide.setValue(320);
@@ -259,7 +271,7 @@ export default function StatisticsScreen() {
         friction: 12,
       }),
     ]).start();
-  }, [addWaterOpacity, addWaterSlide]);
+  }, [addWaterOpacity, addWaterSlide, carouselAnim]);
 
   const closeAddWaterModal = useCallback(() => {
     RNAnimated.parallel([
@@ -277,9 +289,10 @@ export default function StatisticsScreen() {
       if (finished) {
         setIsAddWaterModalVisible(false);
         setSelectedDrinkType(null);
+        carouselAnim.setValue(0);
       }
     });
-  }, [addWaterOpacity, addWaterSlide]);
+  }, [addWaterOpacity, addWaterSlide, carouselAnim]);
 
   const handleCalendarCellPress = useCallback((date: Date | null) => {
     if (!date) return;
@@ -292,7 +305,20 @@ export default function StatisticsScreen() {
 
   const handleDrinkTypeSelect = useCallback((type: DrinkType) => {
     setSelectedDrinkType(type);
-  }, []);
+    RNAnimated.timing(carouselAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [carouselAnim]);
+
+  const handleChangeDrinkType = useCallback(() => {
+    RNAnimated.timing(carouselAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setSelectedDrinkType(null));
+  }, [carouselAnim]);
 
   const handleContainerSelect = useCallback(
     (container: any) => {
@@ -743,51 +769,94 @@ export default function StatisticsScreen() {
                   </TouchableOpacity>
                 </View>
 
-                <DrinkTypeCarousel
-                  textColor={theme.text}
-                  subtitleColor={theme.textSecondary}
-                  onSelect={handleDrinkTypeSelect}
-                  selectedDrinkTypeId={selectedDrinkType?.id}
-                  title="Choose a drink"
-                />
+                <View style={styles.modalCarouselSwitcher}>
+                  <RNAnimated.View
+                    style={[
+                      styles.modalCarouselInner,
+                      {
+                        transform: [{
+                          translateY: carouselAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -MODAL_CAROUSEL_HEIGHT],
+                          }),
+                        }],
+                      },
+                    ]}
+                    pointerEvents={selectedDrinkType ? 'none' : 'auto'}
+                  >
+                    <DrinkTypeCarousel
+                      textColor={theme.text}
+                      subtitleColor={theme.textSecondary}
+                      onSelect={handleDrinkTypeSelect}
+                      selectedDrinkTypeId={selectedDrinkType?.id}
+                      title="Choose a drink"
+                    />
+                  </RNAnimated.View>
 
-                {selectedDrinkType && (
-                  <View style={styles.selectedDrinkHeader}>
-                    <View>
-                      <Text style={[styles.selectedDrinkLabel, { color: theme.textSecondary }]}>Selected drink</Text>
-                      <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>{selectedDrinkType.name}</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => setSelectedDrinkType(null)}>
-                      <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.modalScrollContent}
-                >
-                  {favoriteContainers.map((container) => (
-                    <TouchableOpacity
-                      key={container.id}
-                      style={[
-                        styles.modalContainerItem,
-                        { backgroundColor: container.color + '20', borderColor: container.color },
-                      ]}
-                      onPress={() => handleContainerSelect(container)}
-                      activeOpacity={0.7}
-                    >
-                      <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
-                        <Text style={styles.modalIconText}>{container.icon}</Text>
+                  <RNAnimated.View
+                    style={[
+                      styles.modalCarouselInner,
+                      {
+                        transform: [{
+                          translateY: carouselAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [MODAL_CAROUSEL_HEIGHT, 0],
+                          }),
+                        }],
+                      },
+                    ]}
+                    pointerEvents={selectedDrinkType ? 'auto' : 'none'}
+                  >
+                    {selectedDrinkType && (
+                      <View style={styles.selectedDrinkHeader}>
+                        <View>
+                          <Text style={[styles.selectedDrinkLabel, { color: theme.textSecondary }]}>Selected drink</Text>
+                          <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>{selectedDrinkType.name}</Text>
+                        </View>
+                        <TouchableOpacity onPress={handleChangeDrinkType}>
+                          <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
+                        </TouchableOpacity>
                       </View>
-                      <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
-                        {container.name}
-                      </Text>
-                      <Text style={[styles.modalContainerSize, { color: theme.text }]}>{container.sizeMl}ml</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+                    )}
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      contentContainerStyle={styles.modalScrollContent}
+                    >
+                      {favoriteContainers.map((container) => (
+                        <TouchableOpacity
+                          key={container.id}
+                          style={[
+                            styles.modalContainerItem,
+                            { backgroundColor: container.color + '20', borderColor: container.color },
+                          ]}
+                          onPress={() => handleContainerSelect(container)}
+                          activeOpacity={0.7}
+                        >
+                          <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
+                            {(container.id?.startsWith('cup') || container.name === 'Cup') ? (
+                              <Image source={cupImage} style={styles.modalIconImage} resizeMode="contain" />
+                            ) : (container.id?.startsWith('glass') || container.name === 'Glass') ? (
+                              <Image source={glassImage} style={styles.modalIconImage} resizeMode="contain" />
+                            ) : (container.id?.startsWith('bottle') || container.name === 'Bottle' || container.name === 'Water Bottle') ? (
+                              <Image source={bottleImage} style={styles.modalIconImage} resizeMode="contain" />
+                            ) : (container.id?.startsWith('tumbler') || container.name === 'Tumbler') ? (
+                              <Image source={tumblerImage} style={styles.modalIconImage} resizeMode="contain" />
+                            ) : (container.id?.startsWith('pitcher') || container.name === 'Pitcher') ? (
+                              <Image source={pitcherImage} style={styles.modalIconImage} resizeMode="contain" />
+                            ) : (
+                              <Text style={styles.modalIconText}>{container.icon}</Text>
+                            )}
+                          </View>
+                          <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
+                            {container.name}
+                          </Text>
+                          <Text style={[styles.modalContainerSize, { color: theme.text }]}>{container.sizeMl}ml</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </RNAnimated.View>
+                </View>
               </RNAnimated.View>
             </RNAnimated.View>
           )}
@@ -1160,6 +1229,20 @@ const getStyles = (theme: any) =>
     },
     modalIconText: {
       fontSize: 36,
+    },
+    modalIconImage: {
+      width: 48,
+      height: 48,
+    },
+    modalCarouselSwitcher: {
+      height: MODAL_CAROUSEL_HEIGHT,
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    modalCarouselInner: {
+      position: 'absolute',
+      width: '100%',
+      top: 0,
     },
     modalContainerName: {
       fontSize: 18,
