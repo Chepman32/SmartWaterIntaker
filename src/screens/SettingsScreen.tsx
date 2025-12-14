@@ -94,27 +94,6 @@ const SettingsScreen: React.FC = () => {
       onToggle: (value) => dispatch(setSounds(value)),
     },
   ];
-  
-  const aboutItems: SettingItem[] = [
-    {
-      id: 'version',
-      title: 'Version',
-      subtitle: '1.0.0',
-      icon: 'information-circle',
-      type: 'action',
-    },
-    {
-      id: 'support',
-      title: 'Support',
-      subtitle: 'Get help and send feedback',
-      icon: 'help-circle',
-      type: 'action',
-      onPress: () => {
-        // TODO: Open support/feedback
-        console.log('Open support');
-      },
-    },
-  ];
 
   const developerItems: SettingItem[] = [
     {
@@ -234,7 +213,6 @@ const SettingsScreen: React.FC = () => {
         {/* Settings Sections */}
         {renderSection('Preferences', settingsItems)}
         {renderSection('Developer', developerItems)}
-        {renderSection('About', aboutItems)}
 
         {/* Footer */}
         <View style={styles.footer}>

@@ -107,6 +107,8 @@ export default function StatisticsScreen() {
   const addWaterSlide = useRef(new RNAnimated.Value(320)).current;
   const addWaterOpacity = useRef(new RNAnimated.Value(0)).current;
   const carouselAnim = useRef(new RNAnimated.Value(0)).current;
+  const progressBarWidth = useRef(new RNAnimated.Value(0)).current;
+  const isFirstProgressAnimation = useRef(true);
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
@@ -143,6 +145,29 @@ export default function StatisticsScreen() {
 
   const totalIntakeForDay = useMemo(() => dayEvents.reduce((sum, event) => sum + event.amountMl, 0), [dayEvents]);
   const progressPercent = dailyGoalMl > 0 ? Math.round((totalIntakeForDay / dailyGoalMl) * 100) : 0;
+
+  useEffect(() => {
+    if (isDayModalVisible && progressPercent >= 0) {
+      if (isFirstProgressAnimation.current) {
+        const timer = setTimeout(() => {
+          RNAnimated.timing(progressBarWidth, {
+            toValue: Math.min(progressPercent, 100),
+            duration: 1200,
+            useNativeDriver: false,
+          }).start();
+          isFirstProgressAnimation.current = false;
+        }, 300);
+        return () => clearTimeout(timer);
+      } else {
+        RNAnimated.timing(progressBarWidth, {
+          toValue: Math.min(progressPercent, 100),
+          duration: 800,
+          useNativeDriver: false,
+        }).start();
+      }
+    }
+  }, [progressPercent, progressBarWidth, isDayModalVisible]);
+
   const selectedDateLabel = useMemo(
     () =>
       selectedDate
@@ -207,6 +232,8 @@ export default function StatisticsScreen() {
       dayOverlayOpacity.setValue(0);
       dayModalTranslate.setValue(20);
       dayModalScale.setValue(0.96);
+      progressBarWidth.setValue(0);
+      isFirstProgressAnimation.current = true;
       RNAnimated.parallel([
         RNAnimated.timing(dayOverlayOpacity, {
           toValue: 1,
@@ -225,7 +252,7 @@ export default function StatisticsScreen() {
         }),
       ]).start();
     },
-    [dayModalScale, dayModalTranslate, dayOverlayOpacity]
+    [dayModalScale, dayModalTranslate, dayOverlayOpacity, progressBarWidth]
   );
 
   const closeDayModal = useCallback(() => {
@@ -702,10 +729,16 @@ export default function StatisticsScreen() {
                   </Text>
                 </View>
                 <View style={[styles.modalProgressBar, { backgroundColor: theme.border }]}>
-                  <View
+                  <RNAnimated.View
                     style={[
                       styles.modalProgressFill,
-                      { width: `${Math.min(progressPercent, 100)}%`, backgroundColor: theme.primary },
+                      {
+                        width: progressBarWidth.interpolate({
+                          inputRange: [0, 100],
+                          outputRange: ['0%', '100%'],
+                        }),
+                        backgroundColor: theme.primary,
+                      },
                     ]}
                   />
                 </View>

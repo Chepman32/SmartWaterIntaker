@@ -137,6 +137,8 @@ const HistoryScreen: React.FC = () => {
   const carouselAnim = useRef(new Animated.Value(0)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
   const previousEventCount = useRef(0);
+  const progressBarWidth = useRef(new Animated.Value(0)).current;
+  const isFirstProgressAnimation = useRef(true);
 
   const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
   const { profile } = useSelector((state: RootState) => state.settings);
@@ -151,7 +153,8 @@ const HistoryScreen: React.FC = () => {
   
   // Calculate total intake for the day
   const totalIntake = dayEvents.reduce((sum, event) => sum + event.amountMl, 0);
-  
+  const progressPercent = dailyGoalMl > 0 ? Math.round((totalIntake / dailyGoalMl) * 100) : 0;
+
   // Convert ml to display unit
   const convertAmount = (amountMl: number) => {
     if (unit === 'oz') {
@@ -178,6 +181,26 @@ const HistoryScreen: React.FC = () => {
       UIManager.setLayoutAnimationEnabledExperimental(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (isFirstProgressAnimation.current) {
+      const timer = setTimeout(() => {
+        Animated.timing(progressBarWidth, {
+          toValue: Math.min(progressPercent, 100),
+          duration: 1200,
+          useNativeDriver: false,
+        }).start();
+        isFirstProgressAnimation.current = false;
+      }, 300);
+      return () => clearTimeout(timer);
+    } else {
+      Animated.timing(progressBarWidth, {
+        toValue: Math.min(progressPercent, 100),
+        duration: 800,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [progressPercent, progressBarWidth]);
 
   const handleAddWater = () => {
     openAddModal();
@@ -259,6 +282,8 @@ const HistoryScreen: React.FC = () => {
 
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + (direction === 'next' ? 1 : -1));
+    progressBarWidth.setValue(0);
+    isFirstProgressAnimation.current = true;
     setSelectedDate(newDate);
   };
 
@@ -402,15 +427,20 @@ const HistoryScreen: React.FC = () => {
           </Text>
         </View>
         <View style={styles.progressBar}>
-          <View 
+          <Animated.View
             style={[
-              styles.progressFill, 
-              { width: `${Math.min((totalIntake / dailyGoalMl) * 100, 100)}%` }
-            ]} 
+              styles.progressFill,
+              {
+                width: progressBarWidth.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: ['0%', '100%'],
+                }),
+              },
+            ]}
           />
         </View>
         <Text style={styles.progressText}>
-          {Math.round((totalIntake / dailyGoalMl) * 100)}% of goal
+          {progressPercent}% of goal
         </Text>
       </View>
 
