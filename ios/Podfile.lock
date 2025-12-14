@@ -2511,12 +2511,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNIap (13.0.4):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - ReactCommon/turbomodule/core
   - RNKeychain (10.0.0):
     - boost
     - DoubleConversion
@@ -3034,7 +3028,6 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNIap (from `../node_modules/react-native-iap`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -3211,8 +3204,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNIap:
-    :path: "../node_modules/react-native-iap"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
   RNLocalize:
@@ -3314,7 +3305,6 @@ SPEC CHECKSUMS:
   RNDateTimePicker: cda4c045beca864cebb3209ef9cc4094f974864c
   RNDeviceInfo: d863506092aef7e7af3a1c350c913d867d795047
   RNGestureHandler: 3a73f098d74712952870e948b3d9cf7b6cae9961
-  RNIap: 61f183ac917792fae42b0326b1bef33598c1adf6
   RNKeychain: a2c134ab796272c3d605e035ab727591000b30f3
   RNLocalize: a0ec66afe0980934cfe13f3bc30f476443388a36
   RNPermissions: b8f41f03d66be9a910cc2ac848cdac5656bfe78f

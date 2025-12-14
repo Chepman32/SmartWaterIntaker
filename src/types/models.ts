@@ -66,12 +66,6 @@ export interface ReminderSchedule {
   enabled: boolean;
 }
 
-export interface PurchaseState {
-  proUnlocked: boolean;
-  purchasedIds: string[];
-  lastReceipt?: string;
-}
-
 export interface Settings {
   theme: 'system' | 'light' | 'dark' | 'pro1' | 'pro2' | 'pro3';
   haptics: boolean;

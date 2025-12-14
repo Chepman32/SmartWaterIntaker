@@ -3150,7 +3150,6 @@ __metadata:
     react-native-device-info: "npm:^14.0.4"
     react-native-gesture-handler: "npm:^2.28.0"
     react-native-haptic-feedback: "npm:^2.3.3"
-    react-native-iap: "npm:^13.0.4"
     react-native-keychain: "npm:^10.0.0"
     react-native-linear-gradient: "npm:^2.8.3"
     react-native-localize: "npm:^3.5.2"
@@ -8229,20 +8228,6 @@ __metadata:
   peerDependencies:
     react-native: ">=0.60.0"
   checksum: 10c0/de65b6a0088cf8c14b6248eddb1275233c400a52f818eda640d1475ecaa38dc059b3c37fce7f0a0bd0c33c4e1fb7537bc31fed60e94d026638993dd5d916b35e
-  languageName: node
-  linkType: hard
-
-"react-native-iap@npm:^13.0.4":
-  version: 13.0.4
-  resolution: "react-native-iap@npm:13.0.4"
-  peerDependencies:
-    expo: ">=47.0.0"
-    react: ">=16.13.1"
-    react-native: ">=0.65.1"
-  peerDependenciesMeta:
-    expo:
-      optional: true
-  checksum: 10c0/a1acbd59a1f9920c7b4c6d4d4d58a5502ed0e2a20297f9d611332dd140e800aeab6b96b11ff11ed26cd9ebb890f6ff5041ebeb960594f098e69e75c9443c5734
   languageName: node
   linkType: hard
 

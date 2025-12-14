@@ -8,7 +8,6 @@ import { useThemeColors } from '../hooks/useThemeColors';
 import { RootState } from '../state/store';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { setTheme, setHaptics, setSounds, setUnit } from '../state/slices/settingsSlice';
-import { usePurchases } from '../hooks/usePurchases';
 import { setSmartRemindersEnabled } from '../state/slices/remindersSlice';
 import { useNotifications } from '../hooks/useNotifications';
 
@@ -24,7 +23,6 @@ interface SettingItem {
   onPress?: () => void;
   onToggle?: (value: boolean) => void;
   disabled?: boolean;
-  proFeature?: boolean;
 }
 
 const SettingsScreen: React.FC = () => {
@@ -36,7 +34,6 @@ const SettingsScreen: React.FC = () => {
   const { smartRemindersEnabled, notificationsEnabled, permissionsGranted } = useSelector(
     (state: RootState) => state.reminders
   );
-  const { isProUnlocked } = usePurchases();
   const { enableNotifications } = useNotifications();
 
   const handleSmartToggle = useCallback(
@@ -98,17 +95,6 @@ const SettingsScreen: React.FC = () => {
     },
   ];
   
-  const proItems: SettingItem[] = [
-    {
-      id: 'purchase',
-      title: isProUnlocked ? 'Manage Purchases' : 'Upgrade to Pro',
-      subtitle: isProUnlocked ? 'View your purchases' : 'Unlock premium features',
-      icon: isProUnlocked ? 'star' : 'diamond',
-      type: 'navigation',
-      onPress: () => navigation.navigate('Purchase'),
-    },
-  ];
-  
   const aboutItems: SettingItem[] = [
     {
       id: 'version',
@@ -142,18 +128,15 @@ const SettingsScreen: React.FC = () => {
   ];
   
   const renderSettingItem = (item: SettingItem) => {
-    const isProFeature = item.proFeature && !isProUnlocked;
-    
     return (
       <TouchableOpacity
         key={item.id}
         style={[
           styles.settingItem,
           { backgroundColor: theme.card },
-          isProFeature && styles.settingItemDisabled,
         ]}
         onPress={item.onPress}
-        disabled={item.disabled || (item.type === 'toggle') || isProFeature}
+        disabled={item.disabled || (item.type === 'toggle')}
         activeOpacity={0.7}
       >
         <View style={styles.settingItemLeft}>
@@ -161,22 +144,19 @@ const SettingsScreen: React.FC = () => {
             styles.settingIcon,
             { backgroundColor: theme.primary + '20' }
           ]}>
-            <Icon 
-              name={item.icon} 
-              size={20} 
-              color={isProFeature ? theme.textSecondary : theme.primary} 
+            <Icon
+              name={item.icon}
+              size={20}
+              color={theme.primary}
             />
           </View>
-          
+
           <View style={styles.settingInfo}>
             <Text style={[
               styles.settingTitle,
-              { color: isProFeature ? theme.textSecondary : theme.text }
+              { color: theme.text }
             ]}>
               {item.title}
-              {item.proFeature && !isProUnlocked && (
-                <Text style={styles.proLabel}> PRO</Text>
-              )}
             </Text>
             {item.subtitle && (
               <Text style={[styles.settingSubtitle, { color: theme.textSecondary }]}>
@@ -185,7 +165,7 @@ const SettingsScreen: React.FC = () => {
             )}
           </View>
         </View>
-        
+
         <View style={styles.settingItemRight}>
           {item.type === 'toggle' && (
             <Switch
@@ -193,15 +173,14 @@ const SettingsScreen: React.FC = () => {
               onValueChange={item.onToggle}
               trackColor={{ false: theme.border, true: theme.primary + '40' }}
               thumbColor={item.value ? theme.primary : theme.textSecondary}
-              disabled={isProFeature}
             />
           )}
-          
+
           {item.type === 'navigation' && (
-            <Icon 
-              name="chevron-forward" 
-              size={20} 
-              color={theme.textSecondary} 
+            <Icon
+              name="chevron-forward"
+              size={20}
+              color={theme.textSecondary}
             />
           )}
         </View>
@@ -254,7 +233,6 @@ const SettingsScreen: React.FC = () => {
         
         {/* Settings Sections */}
         {renderSection('Preferences', settingsItems)}
-        {renderSection('Premium', proItems)}
         {renderSection('Developer', developerItems)}
         {renderSection('About', aboutItems)}
 
@@ -329,9 +307,6 @@ const getStyles = (theme: any) => StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.border,
   },
-  settingItemDisabled: {
-    opacity: 0.5,
-  },
   settingItemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -355,11 +330,6 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   settingSubtitle: {
     fontSize: 14,
-  },
-  proLabel: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#FFD700',
   },
   settingItemRight: {
     marginLeft: 12,

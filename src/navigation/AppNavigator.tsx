@@ -8,7 +8,6 @@ import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import StatisticsScreen from '../screens/StatisticsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
-import PurchaseScreen from '../screens/PurchaseScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import AIScreen from '../screens/AIScreen';
 import { Colors } from '../constants/colors';
@@ -29,7 +28,6 @@ export type RootStackParamList = {
   LogWater: { containerId?: string; amount?: number };
   Settings: undefined;
   Notifications: undefined;
-  Purchase: undefined;
   Onboarding: undefined;
   ContainerEditor: { containerId?: string };
   UnitsScreen: undefined;
@@ -211,19 +209,14 @@ export default function AppNavigator() {
           component={PermissionsScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="Notifications" 
-          component={NotificationsScreen} 
+        <Stack.Screen
+          name="Notifications"
+          component={NotificationsScreen}
           options={{ title: 'Notifications' }}
         />
-        <Stack.Screen 
-          name="Purchase" 
-          component={PurchaseScreen} 
-          options={{ title: 'Purchases' }}
-        />
-        <Stack.Screen 
-          name="Settings" 
-          component={SettingsScreen} 
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
           options={{ title: 'Settings' }}
         />
         {/* TODO: Add modal screens like LogWater, ContainerEditor */}

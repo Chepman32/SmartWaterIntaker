@@ -1,7 +1,7 @@
 import { MMKV } from 'react-native-mmkv';
-import { UserProfile, Settings, PurchaseState, IntakeEvent, Container, DailyGoal } from '../types/models';
+import { UserProfile, Settings, IntakeEvent, Container, DailyGoal } from '../types/models';
 
-// MMKV storage for settings, profile, purchases
+// MMKV storage for settings, profile
 const storage = new MMKV();
 
 export const StorageService = {
@@ -23,16 +23,6 @@ export const StorageService = {
 
   setSettings(settings: Settings): void {
     storage.set('settings', JSON.stringify(settings));
-  },
-
-  // Purchase state operations
-  getPurchaseState(): PurchaseState | null {
-    const purchaseJson = storage.getString('purchases');
-    return purchaseJson ? JSON.parse(purchaseJson) : null;
-  },
-
-  setPurchaseState(state: PurchaseState): void {
-    storage.set('purchases', JSON.stringify(state));
   },
 
   // Migration version
