@@ -1,15 +1,30 @@
 import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Switch,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useThemeColors } from '../hooks/useThemeColors';
 import { RootState } from '../state/store';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { setTheme, setHaptics, setSounds, setUnit } from '../state/slices/settingsSlice';
+import {
+  setTheme,
+  setHaptics,
+  setSounds,
+  setUnit,
+} from '../state/slices/settingsSlice';
 import { setSmartRemindersEnabled } from '../state/slices/remindersSlice';
 import { useNotifications } from '../hooks/useNotifications';
+import LanguageSelector from '../components/LanguageSelector';
 
 type SettingsScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -29,11 +44,13 @@ const SettingsScreen: React.FC = () => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
   const dispatch = useDispatch();
   const theme = useThemeColors();
-  
-  const { settings, profile } = useSelector((state: RootState) => state.settings);
-  const { smartRemindersEnabled, notificationsEnabled, permissionsGranted } = useSelector(
-    (state: RootState) => state.reminders
+  const { t } = useTranslation();
+
+  const { settings, profile } = useSelector(
+    (state: RootState) => state.settings,
   );
+  const { smartRemindersEnabled, notificationsEnabled, permissionsGranted } =
+    useSelector((state: RootState) => state.reminders);
   const { enableNotifications } = useNotifications();
 
   const handleSmartToggle = useCallback(
@@ -51,16 +68,16 @@ const SettingsScreen: React.FC = () => {
         dispatch(setSmartRemindersEnabled(false));
       }
     },
-    [dispatch, enableNotifications, notificationsEnabled, permissionsGranted]
+    [dispatch, enableNotifications, notificationsEnabled, permissionsGranted],
   );
-  
+
   const settingsItems: SettingItem[] = [
     {
       id: 'smart-notifications',
-      title: 'Smart Notifications',
+      title: t('settings.smartNotifications'),
       subtitle: permissionsGranted
-        ? 'AI reminders adapt to habits'
-        : 'Enable notifications to use smart reminders',
+        ? t('settings.smartNotificationsDescEnabled')
+        : t('settings.smartNotificationsDescDisabled'),
       icon: 'sparkles',
       type: 'toggle',
       value: smartRemindersEnabled,
@@ -68,77 +85,71 @@ const SettingsScreen: React.FC = () => {
     },
     {
       id: 'theme',
-      title: 'Dark Mode',
-      subtitle: 'Toggle dark/light theme',
+      title: t('settings.darkMode'),
+      subtitle: t('settings.darkModeDesc'),
       icon: 'moon',
       type: 'toggle',
       value: settings.theme === 'dark',
-      onToggle: (value) => dispatch(setTheme(value ? 'dark' : 'light')),
+      onToggle: value => dispatch(setTheme(value ? 'dark' : 'light')),
     },
     {
       id: 'haptics',
-      title: 'Haptic Feedback',
-      subtitle: 'Vibration on interactions',
+      title: t('settings.hapticFeedback'),
+      subtitle: t('settings.hapticFeedbackDesc'),
       icon: 'phone-portrait',
       type: 'toggle',
       value: settings.haptics,
-      onToggle: (value) => dispatch(setHaptics(value)),
+      onToggle: value => dispatch(setHaptics(value)),
     },
     {
       id: 'sounds',
-      title: 'Sound Effects',
-      subtitle: 'Audio feedback',
+      title: t('settings.soundEffects'),
+      subtitle: t('settings.soundEffectsDesc'),
       icon: 'volume-high',
       type: 'toggle',
       value: settings.sounds,
-      onToggle: (value) => dispatch(setSounds(value)),
+      onToggle: value => dispatch(setSounds(value)),
     },
   ];
 
   const developerItems: SettingItem[] = [
     {
       id: 'reset-onboarding',
-      title: 'Reset Onboarding',
-      subtitle: 'Go through onboarding again',
+      title: t('settings.resetOnboarding'),
+      subtitle: t('settings.resetOnboardingDesc'),
       icon: 'refresh',
       type: 'navigation',
       onPress: () => navigation.navigate('UnitsScreen'),
     },
   ];
-  
+
   const renderSettingItem = (item: SettingItem) => {
     return (
       <TouchableOpacity
         key={item.id}
-        style={[
-          styles.settingItem,
-          { backgroundColor: theme.card },
-        ]}
+        style={[styles.settingItem, { backgroundColor: theme.card }]}
         onPress={item.onPress}
-        disabled={item.disabled || (item.type === 'toggle')}
+        disabled={item.disabled || item.type === 'toggle'}
         activeOpacity={0.7}
       >
         <View style={styles.settingItemLeft}>
-          <View style={[
-            styles.settingIcon,
-            { backgroundColor: theme.primary + '20' }
-          ]}>
-            <Icon
-              name={item.icon}
-              size={20}
-              color={theme.primary}
-            />
+          <View
+            style={[
+              styles.settingIcon,
+              { backgroundColor: theme.primary + '20' },
+            ]}
+          >
+            <Icon name={item.icon} size={20} color={theme.primary} />
           </View>
 
           <View style={styles.settingInfo}>
-            <Text style={[
-              styles.settingTitle,
-              { color: theme.text }
-            ]}>
+            <Text style={[styles.settingTitle, { color: theme.text }]}>
               {item.title}
             </Text>
             {item.subtitle && (
-              <Text style={[styles.settingSubtitle, { color: theme.textSecondary }]}>
+              <Text
+                style={[styles.settingSubtitle, { color: theme.textSecondary }]}
+              >
                 {item.subtitle}
               </Text>
             )}
@@ -166,58 +177,107 @@ const SettingsScreen: React.FC = () => {
       </TouchableOpacity>
     );
   };
-  
+
   const renderSection = (title: string, items: SettingItem[]) => (
     <View style={styles.section}>
       <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
         {title}
       </Text>
-      <View style={styles.sectionContent}>
-        {items.map(renderSettingItem)}
-      </View>
+      <View style={styles.sectionContent}>{items.map(renderSettingItem)}</View>
     </View>
   );
-  
+
   const styles = getStyles(theme);
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Unit selector */}
-        <View style={[styles.unitCard, { backgroundColor: theme.card, borderColor: theme.border }]}>          
-          <Text style={[styles.unitLabel, { color: theme.textSecondary }]}>Measure Unit</Text>
+        <View
+          style={[
+            styles.unitCard,
+            { backgroundColor: theme.card, borderColor: theme.border },
+          ]}
+        >
+          <Text style={[styles.unitLabel, { color: theme.textSecondary }]}>
+            {t('settings.measureUnit')}
+          </Text>
           <View style={styles.unitPillsRow}>
             <TouchableOpacity
               onPress={() => dispatch(setUnit('ml'))}
-              style={[styles.unitPill, { 
-                backgroundColor: profile.unit === 'ml' ? theme.primary + '20' : 'transparent',
-                borderColor: profile.unit === 'ml' ? theme.primary : theme.border,
-              }]}
+              style={[
+                styles.unitPill,
+                {
+                  backgroundColor:
+                    profile.unit === 'ml'
+                      ? theme.primary + '20'
+                      : 'transparent',
+                  borderColor:
+                    profile.unit === 'ml' ? theme.primary : theme.border,
+                },
+              ]}
               activeOpacity={0.8}
             >
-              <Text style={[styles.unitPillText, { color: profile.unit === 'ml' ? theme.primaryDark : theme.textSecondary }]}>ml</Text>
+              <Text
+                style={[
+                  styles.unitPillText,
+                  {
+                    color:
+                      profile.unit === 'ml'
+                        ? theme.primaryDark
+                        : theme.textSecondary,
+                  },
+                ]}
+              >
+                ml
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => dispatch(setUnit('oz'))}
-              style={[styles.unitPill, { 
-                backgroundColor: profile.unit === 'oz' ? theme.primary + '20' : 'transparent',
-                borderColor: profile.unit === 'oz' ? theme.primary : theme.border,
-              }]}
+              style={[
+                styles.unitPill,
+                {
+                  backgroundColor:
+                    profile.unit === 'oz'
+                      ? theme.primary + '20'
+                      : 'transparent',
+                  borderColor:
+                    profile.unit === 'oz' ? theme.primary : theme.border,
+                },
+              ]}
               activeOpacity={0.8}
             >
-              <Text style={[styles.unitPillText, { color: profile.unit === 'oz' ? theme.primaryDark : theme.textSecondary }]}>pint</Text>
+              <Text
+                style={[
+                  styles.unitPillText,
+                  {
+                    color:
+                      profile.unit === 'oz'
+                        ? theme.primaryDark
+                        : theme.textSecondary,
+                  },
+                ]}
+              >
+                pint
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-        
+
+        {/* Language Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t('settings.language')}</Text>
+          <LanguageSelector />
+        </View>
+
         {/* Settings Sections */}
-        {renderSection('Preferences', settingsItems)}
-        {renderSection('Developer', developerItems)}
+        {renderSection(t('settings.preferences'), settingsItems)}
+        {renderSection(t('settings.developer'), developerItems)}
 
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={[styles.footerText, { color: theme.textSecondary }]}>
-            Stay hydrated! 💧
+            {t('settings.stayHydrated')}
           </Text>
         </View>
       </ScrollView>
@@ -225,101 +285,102 @@ const SettingsScreen: React.FC = () => {
   );
 };
 
-const getStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  unitCard: {
-    marginTop: 20,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  unitLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 8,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  unitPillsRow: {
-    flexDirection: 'row',
-  },
-  unitPill: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 999,
-    borderWidth: 1,
-    marginRight: 10,
-  },
-  unitPillText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  section: {
-    marginTop: 32,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 12,
-    paddingHorizontal: 4,
-  },
-  sectionContent: {
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.border,
-  },
-  settingItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  settingIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  settingInfo: {
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 2,
-  },
-  settingSubtitle: {
-    fontSize: 14,
-  },
-  settingItemRight: {
-    marginLeft: 12,
-  },
-  footer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-  },
-  footerText: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
+const getStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+
+    content: {
+      flex: 1,
+      paddingHorizontal: 20,
+    },
+    unitCard: {
+      marginTop: 20,
+      padding: 16,
+      borderRadius: 12,
+      borderWidth: 1,
+    },
+    unitLabel: {
+      fontSize: 14,
+      fontWeight: '600',
+      marginBottom: 8,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    unitPillsRow: {
+      flexDirection: 'row',
+    },
+    unitPill: {
+      paddingVertical: 10,
+      paddingHorizontal: 16,
+      borderRadius: 999,
+      borderWidth: 1,
+      marginRight: 10,
+    },
+    unitPillText: {
+      fontSize: 14,
+      fontWeight: '600',
+    },
+    section: {
+      marginTop: 32,
+    },
+    sectionTitle: {
+      fontSize: 14,
+      fontWeight: '600',
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      marginBottom: 12,
+      paddingHorizontal: 4,
+    },
+    sectionContent: {
+      borderRadius: 12,
+      overflow: 'hidden',
+    },
+    settingItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.border,
+    },
+    settingItemLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+    },
+    settingIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 12,
+    },
+    settingInfo: {
+      flex: 1,
+    },
+    settingTitle: {
+      fontSize: 16,
+      fontWeight: '500',
+      marginBottom: 2,
+    },
+    settingSubtitle: {
+      fontSize: 14,
+    },
+    settingItemRight: {
+      marginLeft: 12,
+    },
+    footer: {
+      alignItems: 'center',
+      paddingVertical: 32,
+    },
+    footerText: {
+      fontSize: 16,
+      textAlign: 'center',
+    },
+  });
 
 export default SettingsScreen;
