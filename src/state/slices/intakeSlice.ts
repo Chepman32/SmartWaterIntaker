@@ -3,6 +3,10 @@ import { IntakeEvent } from '../../types/models';
 import { StorageService } from '../../services/storage';
 import type { RootState } from '../store';
 
+function getLocalDateString(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 type IntakeState = {
   events: IntakeEvent[];
   todayTotalMl: number;
@@ -21,12 +25,20 @@ const intakeSlice = createSlice({
   reducers: {
     addEvent(state, action: PayloadAction<IntakeEvent>) {
       state.events.unshift(action.payload);
-      state.todayTotalMl += action.payload.amountMl;
+      const todayStr = getLocalDateString(new Date());
+      const eventDateStr = getLocalDateString(new Date(action.payload.timestamp));
+      if (eventDateStr === todayStr) {
+        state.todayTotalMl += action.payload.amountMl;
+      }
     },
     deleteEvent(state, action: PayloadAction<string>) {
       const idx = state.events.findIndex(e => e.id === action.payload);
       if (idx !== -1) {
-        state.todayTotalMl -= state.events[idx].amountMl;
+        const todayStr = getLocalDateString(new Date());
+        const eventDateStr = getLocalDateString(new Date(state.events[idx].timestamp));
+        if (eventDateStr === todayStr) {
+          state.todayTotalMl -= state.events[idx].amountMl;
+        }
         state.events.splice(idx, 1);
       }
     },
@@ -38,9 +50,9 @@ const intakeSlice = createSlice({
     },
     setEvents(state, action: PayloadAction<IntakeEvent[]>) {
       state.events = action.payload.sort((a, b) => b.timestamp - a.timestamp);
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateString(new Date());
       state.todayTotalMl = state.events
-        .filter(e => new Date(e.timestamp).toISOString().slice(0,10) === todayStr)
+        .filter(e => getLocalDateString(new Date(e.timestamp)) === todayStr)
         .reduce((sum, e) => sum + e.amountMl, 0);
     },
   },

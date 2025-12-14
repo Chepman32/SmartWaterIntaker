@@ -19,6 +19,10 @@ function getStartOfDay(date: Date) {
   return d;
 }
 
+function getLocalDateString(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 function formatDayLabel(date: Date) {
   return date.toLocaleDateString(undefined, { weekday: 'short' });
 }
@@ -123,7 +127,7 @@ export default function StatisticsScreen() {
 
   const selectedDateKey = useMemo(() => {
     if (!selectedDate) return null;
-    return getStartOfDay(selectedDate).toISOString().split('T')[0];
+    return getLocalDateString(getStartOfDay(selectedDate));
   }, [selectedDate]);
 
   const dayEvents = useMemo(() => {
@@ -131,7 +135,7 @@ export default function StatisticsScreen() {
 
     return events
       .filter((event) => {
-        const eventDate = new Date(event.timestamp).toISOString().split('T')[0];
+        const eventDate = getLocalDateString(new Date(event.timestamp));
         return eventDate === selectedDateKey;
       })
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
@@ -441,7 +445,7 @@ export default function StatisticsScreen() {
     for (const e of events) {
       const d = new Date(e.timestamp);
       if (d.getFullYear() === year && d.getMonth() === month) {
-        const key = d.toISOString().split('T')[0];
+        const key = getLocalDateString(d);
         dailyIntake.set(key, (dailyIntake.get(key) || 0) + e.amountMl);
       }
     }
@@ -463,7 +467,7 @@ export default function StatisticsScreen() {
     // Fill in the days of the month
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const date = new Date(year, month, day);
-      const key = date.toISOString().split('T')[0];
+      const key = getLocalDateString(date);
       const totalMl = dailyIntake.get(key) || 0;
       const future = isFutureDate(date);
 
@@ -492,15 +496,13 @@ export default function StatisticsScreen() {
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(today.getDate() - i);
-      const key = d.toISOString().split('T')[0];
+      const key = getLocalDateString(d);
       bucketMap.set(key, 0);
     }
 
     for (const e of events) {
       const d = new Date(e.timestamp);
-      const key = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-        .toISOString()
-        .split('T')[0];
+      const key = getLocalDateString(d);
       if (bucketMap.has(key)) {
         bucketMap.set(key, (bucketMap.get(key) || 0) + e.amountMl);
       }

@@ -4,6 +4,10 @@ import { UserProfile, Settings, IntakeEvent, Container, DailyGoal } from '../typ
 // MMKV storage for settings, profile
 const storage = new MMKV();
 
+function getLocalDateString(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 export const StorageService = {
   // Profile operations
   getProfile(): UserProfile | null {
@@ -60,7 +64,7 @@ export const StorageService = {
 
   addIntakeEvent(event: Omit<IntakeEvent, 'id'>): IntakeEvent {
     const withId: IntakeEvent = { ...event, id: `${Date.now()}` } as IntakeEvent;
-    const dateISO = new Date(event.timestamp).toISOString().slice(0, 10);
+    const dateISO = getLocalDateString(new Date(event.timestamp));
     const key = `intake_${dateISO}`;
     const existing = this.getIntakeEvents(dateISO);
     existing.push(withId);
