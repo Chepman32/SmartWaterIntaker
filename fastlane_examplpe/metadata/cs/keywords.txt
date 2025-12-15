@@ -1,1 +1,0 @@
-převodník,jednotky,kalkulačka,metrický,imperiální,offline,převod,fyzika,inženýrství,nástroje

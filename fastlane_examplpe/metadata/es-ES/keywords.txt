@@ -1,1 +1,0 @@
-conversor,unidades,calculadora,métrico,imperial,offline,conversión,física,ingeniería,herramientas
