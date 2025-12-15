@@ -91,27 +91,33 @@ const getInitialLanguage = (): string => {
   const deviceLocale = getDeviceLocale();
 
   // Check if we support the device locale
+  let detectedLanguage = 'en';
   if (resources[deviceLocale as keyof typeof resources]) {
-    return deviceLocale;
+    detectedLanguage = deviceLocale;
   }
 
-  // Default to English
-  return 'en';
+  // Persist the detected language so Redux can pick it up
+  try {
+    const settings = StorageService.getSettings();
+    StorageService.setSettings({ ...settings, language: detectedLanguage });
+  } catch (error) {
+    console.log('Failed to save detected language:', error);
+  }
+
+  return detectedLanguage;
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    compatibilityJSON: 'v3',
-    resources,
-    lng: getInitialLanguage(),
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false,
-    },
-    react: {
-      useSuspense: false,
-    },
-  });
+i18n.use(initReactI18next).init({
+  compatibilityJSON: 'v3',
+  resources,
+  lng: getInitialLanguage(),
+  fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false,
+  },
+  react: {
+    useSuspense: false,
+  },
+});
 
 export default i18n;
