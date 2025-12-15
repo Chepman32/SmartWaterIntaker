@@ -1,0 +1,50 @@
+Metryvo is the unit converter you've been waiting for — fast, precise, and beautifully designed. Whether you're an engineer calculating pressures, a chef converting recipes, a student solving physics problems, or a traveler navigating foreign measurements, Metryvo has you covered.
+
+POWERFUL CONVERSION ENGINE
+• 29 measurement categories including Length, Mass, Temperature, Volume, Area, Speed, Time, Pressure, Energy, Power, Data, Angle, Frequency, and more
+• 700+ built-in units with high-precision decimal math
+• Real-time results as you type — no waiting, no lag
+• Custom units: Create your own units for specialized needs
+
+PRIVACY FIRST
+• 100% offline — no internet required, ever
+• All data stays on your device
+• No accounts, no tracking, no ads
+• Your conversions are yours alone
+
+DESIGNED FOR YOU
+• Five stunning themes: Light, Dark, Solar, Mono, and System-matching
+• Customize number formatting with adjustable decimal places (0-12)
+• Choose your rounding mode: standard, floor, ceiling, or banker's rounding
+• Toggle thousands grouping and set your preferred locale
+• Select Metric or Imperial as your default system
+
+WORK SMARTER
+• Favorites: Save your most-used conversion pairs for instant access
+• History: Complete log of every conversion with timestamps
+• Multiple copy modes: Copy just the value, value with unit, or the full expression
+• Quick swap: Instantly reverse your conversion direction
+• Recent units: Your frequently used units are always at your fingertips
+
+CATEGORIES INCLUDE
+Length • Mass • Temperature • Volume • Area • Speed • Time • Pressure • Energy • Power • Data (SI & binary) • Angle • Frequency • Fuel Efficiency • Force • Torque • Density • Flow • Electric • Acceleration • Capacitance • Conductance • Inductance • Illuminance • Luminance • Luminous Flux • Electric Charge • and more
+
+ACCESSIBILITY
+• Reduce Motion option for users sensitive to animations
+• Haptic feedback toggle
+• High contrast themes available
+• VoiceOver compatible
+
+PRECISION YOU CAN TRUST
+Metryvo uses advanced decimal mathematics to deliver accurate results without the floating-point errors found in basic calculators. From converting nanometers to light-years, or milligrams to tons, every calculation is precise.
+
+Perfect for:
+• Engineers and scientists needing accurate conversions
+• Students studying physics, chemistry, or engineering
+• Cooks and bakers scaling recipes
+• Travelers converting currencies and measurements
+• DIY enthusiasts working with mixed unit systems
+• Health and fitness tracking
+• Anyone who values privacy and precision
+
+Download Metryvo today and experience the most elegant, powerful, and private unit converter available.

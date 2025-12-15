@@ -1,8 +1,32 @@
-import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useWindowDimensions, LayoutChangeEvent, Modal, TouchableWithoutFeedback, ScrollView, Animated as RNAnimated, Image } from 'react-native';
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  useWindowDimensions,
+  LayoutChangeEvent,
+  Modal,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Animated as RNAnimated,
+  Image,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { RootState } from '../state/store';
@@ -20,7 +44,10 @@ function getStartOfDay(date: Date) {
 }
 
 function getLocalDateString(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    '0',
+  )}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
 function formatDayLabel(date: Date) {
@@ -41,7 +68,11 @@ function isFutureDate(date: Date) {
   return date > today;
 }
 
-function interpolateColor(startColor: string, endColor: string, factor: number) {
+function interpolateColor(
+  startColor: string,
+  endColor: string,
+  factor: number,
+) {
   // Parse hex colors
   const parseHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -57,7 +88,9 @@ function interpolateColor(startColor: string, endColor: string, factor: number) 
   const g = Math.round(start.g + (end.g - start.g) * factor);
   const b = Math.round(start.b + (end.b - start.b) * factor);
 
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  return `#${r.toString(16).padStart(2, '0')}${g
+    .toString(16)
+    .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
 function getContrastColor(bgColor: string) {
@@ -96,11 +129,15 @@ export default function StatisticsScreen() {
   const [period, setPeriod] = useState<Period>('week');
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const { width: windowWidth } = useWindowDimensions();
-  const [calendarContainerWidth, setCalendarContainerWidth] = useState<number | null>(null);
+  const [calendarContainerWidth, setCalendarContainerWidth] = useState<
+    number | null
+  >(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDayModalVisible, setIsDayModalVisible] = useState(false);
   const [isAddWaterModalVisible, setIsAddWaterModalVisible] = useState(false);
-  const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
+  const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(
+    null,
+  );
   const dayOverlayOpacity = useRef(new RNAnimated.Value(0)).current;
   const dayModalTranslate = useRef(new RNAnimated.Value(20)).current;
   const dayModalScale = useRef(new RNAnimated.Value(0.96)).current;
@@ -110,10 +147,12 @@ export default function StatisticsScreen() {
   const progressBarWidth = useRef(new RNAnimated.Value(0)).current;
   const isFirstProgressAnimation = useRef(true);
 
-  const { events, dailyGoalMl } = useSelector((state: RootState) => state.intake);
+  const { events, dailyGoalMl } = useSelector(
+    (state: RootState) => state.intake,
+  );
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
   const containers = useSelector((state: RootState) => state.containers.items);
-  const favoriteContainers = containers.filter((c) => c.favorite);
+  const favoriteContainers = containers.filter(c => c.favorite);
 
   const convertAmount = (amountMl: number) => {
     if (unit === 'oz') {
@@ -136,15 +175,22 @@ export default function StatisticsScreen() {
     if (!selectedDateKey) return [];
 
     return events
-      .filter((event) => {
+      .filter(event => {
         const eventDate = getLocalDateString(new Date(event.timestamp));
         return eventDate === selectedDateKey;
       })
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      .sort(
+        (a, b) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+      );
   }, [events, selectedDateKey]);
 
-  const totalIntakeForDay = useMemo(() => dayEvents.reduce((sum, event) => sum + event.amountMl, 0), [dayEvents]);
-  const progressPercent = dailyGoalMl > 0 ? Math.round((totalIntakeForDay / dailyGoalMl) * 100) : 0;
+  const totalIntakeForDay = useMemo(
+    () => dayEvents.reduce((sum, event) => sum + event.amountMl, 0),
+    [dayEvents],
+  );
+  const progressPercent =
+    dailyGoalMl > 0 ? Math.round((totalIntakeForDay / dailyGoalMl) * 100) : 0;
 
   useEffect(() => {
     if (isDayModalVisible && progressPercent >= 0) {
@@ -171,9 +217,13 @@ export default function StatisticsScreen() {
   const selectedDateLabel = useMemo(
     () =>
       selectedDate
-        ? selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+        ? selectedDate.toLocaleDateString(undefined, {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+          })
         : '',
-    [selectedDate]
+    [selectedDate],
   );
 
   const getCellColors = (totalMl: number, isFuture: boolean) => {
@@ -191,14 +241,18 @@ export default function StatisticsScreen() {
     const lightBlue = '#E0F2FE';
     const primaryBlue = theme.primary;
 
-    const backgroundColor = interpolateColor(lightBlue, primaryBlue, percentage);
+    const backgroundColor = interpolateColor(
+      lightBlue,
+      primaryBlue,
+      percentage,
+    );
     const textColor = getContrastColor(backgroundColor);
 
     return { backgroundColor, textColor };
   };
 
   const goToPreviousMonth = useCallback(() => {
-    setSelectedMonth((prev) => {
+    setSelectedMonth(prev => {
       const newDate = new Date(prev);
       newDate.setMonth(prev.getMonth() - 1);
       return newDate;
@@ -212,7 +266,10 @@ export default function StatisticsScreen() {
     nextMonth.setMonth(selectedMonth.getMonth() + 1);
 
     // Don't go beyond current month
-    if (nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth()) {
+    if (
+      nextMonth <= currentMonth ||
+      nextMonth.getMonth() === currentMonth.getMonth()
+    ) {
       setSelectedMonth(nextMonth);
     }
   }, [selectedMonth]);
@@ -222,7 +279,10 @@ export default function StatisticsScreen() {
     currentMonth.setDate(1);
     const nextMonth = new Date(selectedMonth);
     nextMonth.setMonth(selectedMonth.getMonth() + 1);
-    return nextMonth <= currentMonth || nextMonth.getMonth() === currentMonth.getMonth();
+    return (
+      nextMonth <= currentMonth ||
+      nextMonth.getMonth() === currentMonth.getMonth()
+    );
   }, [selectedMonth]);
 
   const openDayModal = useCallback(
@@ -252,7 +312,7 @@ export default function StatisticsScreen() {
         }),
       ]).start();
     },
-    [dayModalScale, dayModalTranslate, dayOverlayOpacity, progressBarWidth]
+    [dayModalScale, dayModalTranslate, dayOverlayOpacity, progressBarWidth],
   );
 
   const closeDayModal = useCallback(() => {
@@ -281,7 +341,13 @@ export default function StatisticsScreen() {
         addWaterOpacity.setValue(0);
       }
     });
-  }, [addWaterOpacity, addWaterSlide, dayModalScale, dayModalTranslate, dayOverlayOpacity]);
+  }, [
+    addWaterOpacity,
+    addWaterSlide,
+    dayModalScale,
+    dayModalTranslate,
+    dayOverlayOpacity,
+  ]);
 
   const openAddWaterModal = useCallback(() => {
     setSelectedDrinkType(null);
@@ -325,23 +391,29 @@ export default function StatisticsScreen() {
     });
   }, [addWaterOpacity, addWaterSlide, carouselAnim]);
 
-  const handleCalendarCellPress = useCallback((date: Date | null) => {
-    if (!date) return;
-    openDayModal(date);
-  }, [openDayModal]);
+  const handleCalendarCellPress = useCallback(
+    (date: Date | null) => {
+      if (!date) return;
+      openDayModal(date);
+    },
+    [openDayModal],
+  );
 
   const handleAddWaterPress = useCallback(() => {
     openAddWaterModal();
   }, [openAddWaterModal]);
 
-  const handleDrinkTypeSelect = useCallback((type: DrinkType) => {
-    setSelectedDrinkType(type);
-    RNAnimated.timing(carouselAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, [carouselAnim]);
+  const handleDrinkTypeSelect = useCallback(
+    (type: DrinkType) => {
+      setSelectedDrinkType(type);
+      RNAnimated.timing(carouselAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    },
+    [carouselAnim],
+  );
 
   const handleChangeDrinkType = useCallback(() => {
     RNAnimated.timing(carouselAnim, {
@@ -351,12 +423,29 @@ export default function StatisticsScreen() {
     }).start(() => setSelectedDrinkType(null));
   }, [carouselAnim]);
 
+  // Use a ref to always have the latest selectedDate value
+  const selectedDateRef = useRef<Date | null>(selectedDate);
+  useEffect(() => {
+    selectedDateRef.current = selectedDate;
+  }, [selectedDate]);
+
   const handleContainerSelect = useCallback(
     (container: any) => {
-      const dateForEntry = selectedDate ? new Date(selectedDate) : new Date();
-      dateForEntry.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), 0);
+      // Use ref to get the latest selectedDate value to avoid stale closure issues
+      const currentSelectedDate = selectedDateRef.current;
+      const dateForEntry = currentSelectedDate
+        ? new Date(currentSelectedDate)
+        : new Date();
+      dateForEntry.setHours(
+        new Date().getHours(),
+        new Date().getMinutes(),
+        new Date().getSeconds(),
+        0,
+      );
 
-      const notePrefix = selectedDrinkType ? `${selectedDrinkType.name} - ` : '';
+      const notePrefix = selectedDrinkType
+        ? `${selectedDrinkType.name} - `
+        : '';
 
       dispatch(
         logIntakeEvent({
@@ -366,20 +455,22 @@ export default function StatisticsScreen() {
           timestamp: dateForEntry.getTime(),
           drinkTypeId: selectedDrinkType?.id,
           note: `${notePrefix}${container.name} (${container.sizeMl}ml)`,
-        })
+        }),
       );
 
       closeAddWaterModal();
     },
-    [closeAddWaterModal, dispatch, selectedDate, selectedDrinkType]
+    [closeAddWaterModal, dispatch, selectedDrinkType],
   );
 
   const estimatedCalendarWidth = useMemo(() => {
-    const totalHorizontalInset = CARD_HORIZONTAL_MARGIN * 2 + CARD_HORIZONTAL_PADDING * 2;
+    const totalHorizontalInset =
+      CARD_HORIZONTAL_MARGIN * 2 + CARD_HORIZONTAL_PADDING * 2;
     return Math.max(windowWidth - totalHorizontalInset, 0);
   }, [windowWidth]);
 
-  const effectiveCalendarWidth = calendarContainerWidth ?? estimatedCalendarWidth;
+  const effectiveCalendarWidth =
+    calendarContainerWidth ?? estimatedCalendarWidth;
 
   const calendarCellSize = useMemo(() => {
     const availableWidth = Math.max(effectiveCalendarWidth, 0);
@@ -396,11 +487,15 @@ export default function StatisticsScreen() {
   const handleCalendarLayout = useCallback(
     (event: LayoutChangeEvent) => {
       const { width } = event.nativeEvent.layout;
-      if (width > 0 && (calendarContainerWidth === null || Math.abs(width - calendarContainerWidth) > 0.5)) {
+      if (
+        width > 0 &&
+        (calendarContainerWidth === null ||
+          Math.abs(width - calendarContainerWidth) > 0.5)
+      ) {
         setCalendarContainerWidth(width);
       }
     },
-    [calendarContainerWidth]
+    [calendarContainerWidth],
   );
 
   // Animation values
@@ -420,30 +515,48 @@ export default function StatisticsScreen() {
   const swipeGesture = useMemo(
     () =>
       Gesture.Pan()
-        .onUpdate((event) => {
+        .onUpdate(event => {
           translateX.value = event.translationX;
         })
-        .onEnd((event) => {
+        .onEnd(event => {
           const SWIPE_THRESHOLD = 50;
 
           if (event.translationX > SWIPE_THRESHOLD) {
             // Swipe right - go to previous month
             opacity.value = withTiming(0, { duration: 150 });
-            translateX.value = withTiming(windowWidth, { duration: 200 }, () => {
-              runOnJS(goToPreviousMonth)();
-            });
-          } else if (event.translationX < -SWIPE_THRESHOLD && canGoToNextMonth) {
+            translateX.value = withTiming(
+              windowWidth,
+              { duration: 200 },
+              () => {
+                runOnJS(goToPreviousMonth)();
+              },
+            );
+          } else if (
+            event.translationX < -SWIPE_THRESHOLD &&
+            canGoToNextMonth
+          ) {
             // Swipe left - go to next month
             opacity.value = withTiming(0, { duration: 150 });
-            translateX.value = withTiming(-windowWidth, { duration: 200 }, () => {
-              runOnJS(goToNextMonth)();
-            });
+            translateX.value = withTiming(
+              -windowWidth,
+              { duration: 200 },
+              () => {
+                runOnJS(goToNextMonth)();
+              },
+            );
           } else {
             // Reset if threshold not met
             translateX.value = withTiming(0, { duration: 200 });
           }
         }),
-    [canGoToNextMonth, windowWidth, translateX, opacity, goToPreviousMonth, goToNextMonth]
+    [
+      canGoToNextMonth,
+      windowWidth,
+      translateX,
+      opacity,
+      goToPreviousMonth,
+      goToNextMonth,
+    ],
   );
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -488,7 +601,13 @@ export default function StatisticsScreen() {
 
     // Fill in empty cells before the first day
     for (let i = 0; i < startDayOfWeek; i++) {
-      grid.push({ date: null, dayNumber: null, totalMl: 0, isFuture: false, isCurrentMonth: false });
+      grid.push({
+        date: null,
+        dayNumber: null,
+        totalMl: 0,
+        isFuture: false,
+        isCurrentMonth: false,
+      });
     }
 
     // Fill in the days of the month
@@ -509,7 +628,13 @@ export default function StatisticsScreen() {
 
     // Fill remaining cells to complete the grid (42 cells total = 6 weeks)
     while (grid.length < 42) {
-      grid.push({ date: null, dayNumber: null, totalMl: 0, isFuture: false, isCurrentMonth: false });
+      grid.push({
+        date: null,
+        dayNumber: null,
+        totalMl: 0,
+        isFuture: false,
+        isCurrentMonth: false,
+      });
     }
 
     return grid;
@@ -542,15 +667,22 @@ export default function StatisticsScreen() {
     });
     arr.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-    const totals = arr.map((b) => b.totalMl);
+    const totals = arr.map(b => b.totalMl);
     const sumMl = totals.reduce((s, v) => s + v, 0);
     const statsAvgMl = sumMl / arr.length;
     const statsBestMl = Math.max(...totals);
     const statsCompletionRate = arr.length
-      ? Math.round((arr.filter((b) => b.totalMl >= dailyGoalMl).length / arr.length) * 100)
+      ? Math.round(
+          (arr.filter(b => b.totalMl >= dailyGoalMl).length / arr.length) * 100,
+        )
       : 0;
 
-    return { buckets: arr, avgMl: statsAvgMl, bestMl: statsBestMl, completionRate: statsCompletionRate };
+    return {
+      buckets: arr,
+      avgMl: statsAvgMl,
+      bestMl: statsBestMl,
+      completionRate: statsCompletionRate,
+    };
   }, [events, period, dailyGoalMl]);
 
   const styles = getStyles(theme);
@@ -560,17 +692,43 @@ export default function StatisticsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.periodToggle}>
-        <ToggleButton label="7 Days" active={period === 'week'} onPress={() => setPeriod('week')} color={theme} />
-        <ToggleButton label="30 Days" active={period === 'month'} onPress={() => setPeriod('month')} color={theme} />
+        <ToggleButton
+          label="7 Days"
+          active={period === 'week'}
+          onPress={() => setPeriod('week')}
+          color={theme}
+        />
+        <ToggleButton
+          label="30 Days"
+          active={period === 'month'}
+          onPress={() => setPeriod('month')}
+          color={theme}
+        />
       </View>
 
       <View style={{ paddingBottom: 24 }}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Overview</Text>
           <View style={styles.metricsRow}>
-            <Metric label="Average" value={`${convertAmount(avgMl).toFixed(unit === 'oz' ? 1 : 0)} ${unit}`} theme={theme} />
-            <Metric label="Best Day" value={`${convertAmount(bestMl).toFixed(unit === 'oz' ? 1 : 0)} ${unit}`} theme={theme} />
-            <Metric label="Goal Hit" value={`${completionRate}%`} theme={theme} />
+            <Metric
+              label="Average"
+              value={`${convertAmount(avgMl).toFixed(
+                unit === 'oz' ? 1 : 0,
+              )} ${unit}`}
+              theme={theme}
+            />
+            <Metric
+              label="Best Day"
+              value={`${convertAmount(bestMl).toFixed(
+                unit === 'oz' ? 1 : 0,
+              )} ${unit}`}
+              theme={theme}
+            />
+            <Metric
+              label="Goal Hit"
+              value={`${completionRate}%`}
+              theme={theme}
+            />
           </View>
         </View>
 
@@ -581,29 +739,46 @@ export default function StatisticsScreen() {
             <>
               {/* Month Navigation */}
               <View style={styles.monthNavigation}>
-                <TouchableOpacity onPress={goToPreviousMonth} style={styles.navButton}>
+                <TouchableOpacity
+                  onPress={goToPreviousMonth}
+                  style={styles.navButton}
+                >
                   <Text style={styles.navButtonText}>←</Text>
                 </TouchableOpacity>
-                <Text style={styles.monthLabel}>{formatMonthYear(selectedMonth)}</Text>
+                <Text style={styles.monthLabel}>
+                  {formatMonthYear(selectedMonth)}
+                </Text>
                 <TouchableOpacity
                   onPress={goToNextMonth}
                   style={styles.navButton}
                   disabled={!canGoNext()}
                 >
-                  <Text style={[styles.navButtonText, !canGoNext() && styles.navButtonDisabled]}>→</Text>
+                  <Text
+                    style={[
+                      styles.navButtonText,
+                      !canGoNext() && styles.navButtonDisabled,
+                    ]}
+                  >
+                    →
+                  </Text>
                 </TouchableOpacity>
               </View>
 
               <GestureDetector gesture={swipeGesture}>
                 <Animated.View style={animatedStyle}>
-                  <View onLayout={handleCalendarLayout} style={{ width: '100%' }}>
+                  <View
+                    onLayout={handleCalendarLayout}
+                    style={{ width: '100%' }}
+                  >
                     {/* Day Headers */}
                     <View style={styles.calendarHeader}>
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-                        <View key={day} style={styles.dayHeader}>
-                          <Text style={styles.dayHeaderText}>{day}</Text>
-                        </View>
-                      ))}
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
+                        day => (
+                          <View key={day} style={styles.dayHeader}>
+                            <Text style={styles.dayHeaderText}>{day}</Text>
+                          </View>
+                        ),
+                      )}
                     </View>
 
                     {/* Calendar Grid */}
@@ -619,11 +794,23 @@ export default function StatisticsScreen() {
 
                         if (!cell.isCurrentMonth) {
                           // Empty cell
-                          return <View key={`empty-${index}`} style={baseCellStyle} />;
+                          return (
+                            <View
+                              key={`empty-${index}`}
+                              style={baseCellStyle}
+                            />
+                          );
                         }
 
-                        const { backgroundColor, textColor } = getCellColors(cell.totalMl, cell.isFuture);
-                        const displayAmount = cell.isFuture ? '' : `${convertAmount(cell.totalMl).toLocaleString()} ${unit}`;
+                        const { backgroundColor, textColor } = getCellColors(
+                          cell.totalMl,
+                          cell.isFuture,
+                        );
+                        const displayAmount = cell.isFuture
+                          ? ''
+                          : `${convertAmount(
+                              cell.totalMl,
+                            ).toLocaleString()} ${unit}`;
 
                         return (
                           <TouchableOpacity
@@ -632,12 +819,20 @@ export default function StatisticsScreen() {
                             activeOpacity={0.85}
                             onPress={() => handleCalendarCellPress(cell.date)}
                           >
-                            <Text style={[styles.cellDayNumber, { color: textColor }]}>
+                            <Text
+                              style={[
+                                styles.cellDayNumber,
+                                { color: textColor },
+                              ]}
+                            >
                               {cell.dayNumber}
                             </Text>
                             {!cell.isFuture && (
                               <Text
-                                style={[styles.cellAmount, { color: textColor }]}
+                                style={[
+                                  styles.cellAmount,
+                                  { color: textColor },
+                                ]}
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
                               >
@@ -656,9 +851,14 @@ export default function StatisticsScreen() {
             <>
               {/* Week View - Bar Chart */}
               <View style={[styles.chart, { height: chartHeight }]}>
-                {buckets.map((b) => {
-                  const h = Math.max(4, Math.round((b.totalMl / dailyGoalMl) * (chartHeight - 24)));
-                  const isToday = getStartOfDay(new Date()).getTime() === getStartOfDay(b.date).getTime();
+                {buckets.map(b => {
+                  const h = Math.max(
+                    4,
+                    Math.round((b.totalMl / dailyGoalMl) * (chartHeight - 24)),
+                  );
+                  const isToday =
+                    getStartOfDay(new Date()).getTime() ===
+                    getStartOfDay(b.date).getTime();
                   return (
                     <View key={b.key} style={styles.barWrapper}>
                       <View
@@ -666,13 +866,17 @@ export default function StatisticsScreen() {
                           styles.bar,
                           {
                             height: h,
-                            backgroundColor: isToday ? theme.primary : theme.progressFill,
+                            backgroundColor: isToday
+                              ? theme.primary
+                              : theme.progressFill,
                             opacity: isToday ? 1 : 0.7,
                           },
                         ]}
                       />
                       <Text style={styles.barLabel}>
-                        {period === 'week' ? formatDayLabel(b.date) : formatDateLabel(b.date)}
+                        {period === 'week'
+                          ? formatDayLabel(b.date)
+                          : formatDateLabel(b.date)}
                       </Text>
                     </View>
                   );
@@ -680,7 +884,9 @@ export default function StatisticsScreen() {
               </View>
               <View style={styles.legendRow}>
                 <Text style={styles.legendText}>Goal</Text>
-                <Text style={styles.legendText}>{convertAmount(dailyGoalMl)} {unit}</Text>
+                <Text style={styles.legendText}>
+                  {convertAmount(dailyGoalMl)} {unit}
+                </Text>
               </View>
             </>
           )}
@@ -693,42 +899,86 @@ export default function StatisticsScreen() {
         transparent
         onRequestClose={closeDayModal}
       >
-        <RNAnimated.View style={[styles.modalOverlay, { opacity: dayOverlayOpacity }]}>
-          <TouchableOpacity style={StyleSheet.absoluteFillObject} activeOpacity={1} onPress={closeDayModal} />
+        <RNAnimated.View
+          style={[styles.modalOverlay, { opacity: dayOverlayOpacity }]}
+        >
+          <TouchableOpacity
+            style={StyleSheet.absoluteFillObject}
+            activeOpacity={1}
+            onPress={closeDayModal}
+          />
           <TouchableWithoutFeedback onPress={() => {}}>
             <RNAnimated.View
               style={[
                 styles.dayModalCard,
                 {
                   backgroundColor: theme.card,
-                  transform: [{ translateY: dayModalTranslate }, { scale: dayModalScale }],
+                  transform: [
+                    { translateY: dayModalTranslate },
+                    { scale: dayModalScale },
+                  ],
                 },
               ]}
             >
               <View style={styles.dayModalHeader}>
                 <View>
                   <Text style={styles.modalTitle}>Daily Details</Text>
-                  {!!selectedDateLabel && <Text style={styles.modalSubtitle}>{selectedDateLabel}</Text>}
+                  {!!selectedDateLabel && (
+                    <Text style={styles.modalSubtitle}>
+                      {selectedDateLabel}
+                    </Text>
+                  )}
                 </View>
-                <TouchableOpacity style={styles.modalCloseButton} onPress={closeDayModal}>
+                <TouchableOpacity
+                  style={styles.modalCloseButton}
+                  onPress={closeDayModal}
+                >
                   <Text style={styles.modalCloseText}>×</Text>
                 </TouchableOpacity>
               </View>
 
-              <View style={[styles.modalSummaryCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+              <View
+                style={[
+                  styles.modalSummaryCard,
+                  { backgroundColor: theme.surface, borderColor: theme.border },
+                ]}
+              >
                 <View style={styles.modalSummaryRow}>
-                  <Text style={[styles.modalSummaryLabel, { color: theme.textSecondary }]}>Total Intake</Text>
-                  <Text style={[styles.modalSummaryValue, { color: theme.text }]}>
+                  <Text
+                    style={[
+                      styles.modalSummaryLabel,
+                      { color: theme.textSecondary },
+                    ]}
+                  >
+                    Total Intake
+                  </Text>
+                  <Text
+                    style={[styles.modalSummaryValue, { color: theme.text }]}
+                  >
                     {convertAmount(totalIntakeForDay)} {unit}
                   </Text>
                 </View>
                 <View style={styles.modalSummaryRow}>
-                  <Text style={[styles.modalSummaryLabel, { color: theme.textSecondary }]}>Daily Goal</Text>
-                  <Text style={[styles.modalSummaryValue, { color: theme.text }]}>
+                  <Text
+                    style={[
+                      styles.modalSummaryLabel,
+                      { color: theme.textSecondary },
+                    ]}
+                  >
+                    Daily Goal
+                  </Text>
+                  <Text
+                    style={[styles.modalSummaryValue, { color: theme.text }]}
+                  >
                     {convertAmount(dailyGoalMl)} {unit}
                   </Text>
                 </View>
-                <View style={[styles.modalProgressBar, { backgroundColor: theme.border }]}>
+                <View
+                  style={[
+                    styles.modalProgressBar,
+                    { backgroundColor: theme.border },
+                  ]}
+                >
                   <RNAnimated.View
                     style={[
                       styles.modalProgressFill,
@@ -742,17 +992,39 @@ export default function StatisticsScreen() {
                     ]}
                   />
                 </View>
-                <Text style={[styles.modalProgressText, { color: theme.textSecondary }]}>
+                <Text
+                  style={[
+                    styles.modalProgressText,
+                    { color: theme.textSecondary },
+                  ]}
+                >
                   {progressPercent}% of goal
                 </Text>
               </View>
 
               {dayEvents.length === 0 ? (
                 <View style={styles.modalEmptyState}>
-                  <Text style={[styles.modalEmptyTitle, { color: theme.textSecondary }]}>No water logged for this day</Text>
-                  <Text style={[styles.modalEmptySubtitle, { color: theme.textSecondary }]}>No data available</Text>
+                  <Text
+                    style={[
+                      styles.modalEmptyTitle,
+                      { color: theme.textSecondary },
+                    ]}
+                  >
+                    No water logged for this day
+                  </Text>
+                  <Text
+                    style={[
+                      styles.modalEmptySubtitle,
+                      { color: theme.textSecondary },
+                    ]}
+                  >
+                    No data available
+                  </Text>
                   <TouchableOpacity
-                    style={[styles.modalAddButton, { backgroundColor: theme.primary }]}
+                    style={[
+                      styles.modalAddButton,
+                      { backgroundColor: theme.primary },
+                    ]}
                     onPress={handleAddWaterPress}
                     activeOpacity={0.8}
                   >
@@ -760,28 +1032,75 @@ export default function StatisticsScreen() {
                   </TouchableOpacity>
                 </View>
               ) : (
-                <ScrollView style={styles.modalEventsList} showsVerticalScrollIndicator={false}>
-                  {dayEvents.map((event) => (
-                    <View key={event.id} style={[styles.modalEventCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                      <View style={styles.modalEventRow}>
-                        <Text style={[styles.modalEventAmount, { color: theme.text }]}>
-                          {convertAmount(event.amountMl)} {unit}
-                        </Text>
-                        <Text style={[styles.modalEventTime, { color: theme.textSecondary }]}>{formatTime(event.timestamp)}</Text>
+                <View style={styles.modalEventsContainer}>
+                  <ScrollView
+                    style={styles.modalEventsList}
+                    showsVerticalScrollIndicator={false}
+                  >
+                    {dayEvents.map(event => (
+                      <View
+                        key={event.id}
+                        style={[
+                          styles.modalEventCard,
+                          {
+                            backgroundColor: theme.surface,
+                            borderColor: theme.border,
+                          },
+                        ]}
+                      >
+                        <View style={styles.modalEventRow}>
+                          <Text
+                            style={[
+                              styles.modalEventAmount,
+                              { color: theme.text },
+                            ]}
+                          >
+                            {convertAmount(event.amountMl)} {unit}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.modalEventTime,
+                              { color: theme.textSecondary },
+                            ]}
+                          >
+                            {formatTime(event.timestamp)}
+                          </Text>
+                        </View>
+                        {event.note ? (
+                          <Text
+                            style={[
+                              styles.modalEventNote,
+                              { color: theme.textSecondary },
+                            ]}
+                            numberOfLines={1}
+                          >
+                            {event.note}
+                          </Text>
+                        ) : null}
                       </View>
-                      {event.note ? (
-                        <Text style={[styles.modalEventNote, { color: theme.textSecondary }]} numberOfLines={1}>
-                          {event.note}
-                        </Text>
-                      ) : null}
-                    </View>
-                  ))}
-                </ScrollView>
+                    ))}
+                  </ScrollView>
+                  <View style={styles.modalAddButtonRow}>
+                    <TouchableOpacity
+                      style={[
+                        styles.modalAddButtonFloating,
+                        { backgroundColor: theme.primary },
+                      ]}
+                      onPress={handleAddWaterPress}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.modalAddButtonText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               )}
             </RNAnimated.View>
           </TouchableWithoutFeedback>
           {isAddWaterModalVisible && (
-            <RNAnimated.View style={[styles.inlineAddContainer, { opacity: addWaterOpacity }]} pointerEvents="box-none">
+            <RNAnimated.View
+              style={[styles.inlineAddContainer, { opacity: addWaterOpacity }]}
+              pointerEvents="box-none"
+            >
               <TouchableOpacity
                 style={styles.inlineAddBackdrop}
                 activeOpacity={1}
@@ -798,9 +1117,21 @@ export default function StatisticsScreen() {
                 ]}
               >
                 <View style={styles.addModalHeader}>
-                  <Text style={[styles.addModalTitle, { color: theme.text }]}>Add Water Intake</Text>
-                  <TouchableOpacity style={[styles.modalCloseButton, { backgroundColor: theme.border }]} onPress={closeAddWaterModal}>
-                    <Text style={[styles.modalCloseText, { color: theme.text }]}>×</Text>
+                  <Text style={[styles.addModalTitle, { color: theme.text }]}>
+                    Add Water Intake
+                  </Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.modalCloseButton,
+                      { backgroundColor: theme.border },
+                    ]}
+                    onPress={closeAddWaterModal}
+                  >
+                    <Text
+                      style={[styles.modalCloseText, { color: theme.text }]}
+                    >
+                      ×
+                    </Text>
                   </TouchableOpacity>
                 </View>
 
@@ -809,12 +1140,14 @@ export default function StatisticsScreen() {
                     style={[
                       styles.modalCarouselInner,
                       {
-                        transform: [{
-                          translateY: carouselAnim.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, -MODAL_CAROUSEL_HEIGHT],
-                          }),
-                        }],
+                        transform: [
+                          {
+                            translateY: carouselAnim.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [0, -MODAL_CAROUSEL_HEIGHT],
+                            }),
+                          },
+                        ],
                       },
                     ]}
                     pointerEvents={selectedDrinkType ? 'none' : 'auto'}
@@ -832,12 +1165,14 @@ export default function StatisticsScreen() {
                     style={[
                       styles.modalCarouselInner,
                       {
-                        transform: [{
-                          translateY: carouselAnim.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [MODAL_CAROUSEL_HEIGHT, 0],
-                          }),
-                        }],
+                        transform: [
+                          {
+                            translateY: carouselAnim.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [MODAL_CAROUSEL_HEIGHT, 0],
+                            }),
+                          },
+                        ],
                       },
                     ]}
                     pointerEvents={selectedDrinkType ? 'auto' : 'none'}
@@ -845,11 +1180,32 @@ export default function StatisticsScreen() {
                     {selectedDrinkType && (
                       <View style={styles.selectedDrinkHeader}>
                         <View>
-                          <Text style={[styles.selectedDrinkLabel, { color: theme.textSecondary }]}>Selected drink</Text>
-                          <Text style={[styles.selectedDrinkName, { color: selectedDrinkType.color }]}>{selectedDrinkType.name}</Text>
+                          <Text
+                            style={[
+                              styles.selectedDrinkLabel,
+                              { color: theme.textSecondary },
+                            ]}
+                          >
+                            Selected drink
+                          </Text>
+                          <Text
+                            style={[
+                              styles.selectedDrinkName,
+                              { color: selectedDrinkType.color },
+                            ]}
+                          >
+                            {selectedDrinkType.name}
+                          </Text>
                         </View>
                         <TouchableOpacity onPress={handleChangeDrinkType}>
-                          <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>Change</Text>
+                          <Text
+                            style={[
+                              styles.changeTypeText,
+                              { color: selectedDrinkType.color },
+                            ]}
+                          >
+                            Change
+                          </Text>
                         </TouchableOpacity>
                       </View>
                     )}
@@ -858,35 +1214,84 @@ export default function StatisticsScreen() {
                       showsHorizontalScrollIndicator={false}
                       contentContainerStyle={styles.modalScrollContent}
                     >
-                      {favoriteContainers.map((container) => (
+                      {favoriteContainers.map(container => (
                         <TouchableOpacity
                           key={container.id}
                           style={[
                             styles.modalContainerItem,
-                            { backgroundColor: container.color + '20', borderColor: container.color },
+                            {
+                              backgroundColor: container.color + '20',
+                              borderColor: container.color,
+                            },
                           ]}
                           onPress={() => handleContainerSelect(container)}
                           activeOpacity={0.7}
                         >
-                          <View style={[styles.modalIconContainer, { backgroundColor: container.color }]}>
-                            {(container.id?.startsWith('cup') || container.name === 'Cup') ? (
-                              <Image source={cupImage} style={styles.modalIconImage} resizeMode="contain" />
-                            ) : (container.id?.startsWith('glass') || container.name === 'Glass') ? (
-                              <Image source={glassImage} style={styles.modalIconImage} resizeMode="contain" />
-                            ) : (container.id?.startsWith('bottle') || container.name === 'Bottle' || container.name === 'Water Bottle') ? (
-                              <Image source={bottleImage} style={styles.modalIconImage} resizeMode="contain" />
-                            ) : (container.id?.startsWith('tumbler') || container.name === 'Tumbler') ? (
-                              <Image source={tumblerImage} style={styles.modalIconImage} resizeMode="contain" />
-                            ) : (container.id?.startsWith('pitcher') || container.name === 'Pitcher') ? (
-                              <Image source={pitcherImage} style={styles.modalIconImage} resizeMode="contain" />
+                          <View
+                            style={[
+                              styles.modalIconContainer,
+                              { backgroundColor: container.color },
+                            ]}
+                          >
+                            {container.id?.startsWith('cup') ||
+                            container.name === 'Cup' ? (
+                              <Image
+                                source={cupImage}
+                                style={styles.modalIconImage}
+                                resizeMode="contain"
+                              />
+                            ) : container.id?.startsWith('glass') ||
+                              container.name === 'Glass' ? (
+                              <Image
+                                source={glassImage}
+                                style={styles.modalIconImage}
+                                resizeMode="contain"
+                              />
+                            ) : container.id?.startsWith('bottle') ||
+                              container.name === 'Bottle' ||
+                              container.name === 'Water Bottle' ? (
+                              <Image
+                                source={bottleImage}
+                                style={styles.modalIconImage}
+                                resizeMode="contain"
+                              />
+                            ) : container.id?.startsWith('tumbler') ||
+                              container.name === 'Tumbler' ? (
+                              <Image
+                                source={tumblerImage}
+                                style={styles.modalIconImage}
+                                resizeMode="contain"
+                              />
+                            ) : container.id?.startsWith('pitcher') ||
+                              container.name === 'Pitcher' ? (
+                              <Image
+                                source={pitcherImage}
+                                style={styles.modalIconImage}
+                                resizeMode="contain"
+                              />
                             ) : (
-                              <Text style={styles.modalIconText}>{container.icon}</Text>
+                              <Text style={styles.modalIconText}>
+                                {container.icon}
+                              </Text>
                             )}
                           </View>
-                          <Text style={[styles.modalContainerName, { color: theme.text }]} numberOfLines={1}>
+                          <Text
+                            style={[
+                              styles.modalContainerName,
+                              { color: theme.text },
+                            ]}
+                            numberOfLines={1}
+                          >
                             {container.name}
                           </Text>
-                          <Text style={[styles.modalContainerSize, { color: theme.text }]}>{container.sizeMl}ml</Text>
+                          <Text
+                            style={[
+                              styles.modalContainerSize,
+                              { color: theme.text },
+                            ]}
+                          >
+                            {container.sizeMl}ml
+                          </Text>
                         </TouchableOpacity>
                       ))}
                     </ScrollView>
@@ -901,7 +1306,17 @@ export default function StatisticsScreen() {
   );
 }
 
-function ToggleButton({ label, active, onPress, color }: { label: string; active: boolean; onPress: () => void; color: any }) {
+function ToggleButton({
+  label,
+  active,
+  onPress,
+  color,
+}: {
+  label: string;
+  active: boolean;
+  onPress: () => void;
+  color: any;
+}) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -916,16 +1331,45 @@ function ToggleButton({ label, active, onPress, color }: { label: string; active
         marginHorizontal: 4,
       }}
     >
-      <Text style={{ color: active ? '#fff' : color.text, fontWeight: '600' }}>{label}</Text>
+      <Text style={{ color: active ? '#fff' : color.text, fontWeight: '600' }}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 }
 
-function Metric({ label, value, theme }: { label: string; value: string | number; theme: any }) {
+function Metric({
+  label,
+  value,
+  theme,
+}: {
+  label: string;
+  value: string | number;
+  theme: any;
+}) {
   return (
-    <View style={{ flex: 1, padding: 12, backgroundColor: theme.card, borderRadius: 10, borderWidth: 1, borderColor: theme.border, marginRight: 10 }}>
+    <View
+      style={{
+        flex: 1,
+        padding: 12,
+        backgroundColor: theme.card,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: theme.border,
+        marginRight: 10,
+      }}
+    >
       <Text style={{ color: theme.textSecondary, fontSize: 12 }}>{label}</Text>
-      <Text style={{ color: theme.text, fontSize: 18, fontWeight: '700', marginTop: 2 }}>{value}</Text>
+      <Text
+        style={{
+          color: theme.text,
+          fontSize: 18,
+          fontWeight: '700',
+          marginTop: 2,
+        }}
+      >
+        {value}
+      </Text>
     </View>
   );
 }
@@ -1171,9 +1615,26 @@ const getStyles = (theme: any) =>
       fontWeight: '600',
       lineHeight: 32,
     },
+    modalEventsContainer: {},
     modalEventsList: {
-      maxHeight: 260,
+      maxHeight: 220,
       marginTop: 4,
+    },
+    modalAddButtonRow: {
+      alignItems: 'center',
+      marginTop: 16,
+    },
+    modalAddButtonFloating: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
     },
     modalEventCard: {
       padding: 12,

@@ -1,0 +1,1 @@
+mértékegység,átváltó,számológép,metrikus,birodalmi,offline,konverzió,fizika,mérnöki,eszközök

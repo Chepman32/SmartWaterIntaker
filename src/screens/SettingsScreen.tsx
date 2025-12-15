@@ -112,17 +112,6 @@ const SettingsScreen: React.FC = () => {
     },
   ];
 
-  const developerItems: SettingItem[] = [
-    {
-      id: 'reset-onboarding',
-      title: t('settings.resetOnboarding'),
-      subtitle: t('settings.resetOnboardingDesc'),
-      icon: 'refresh',
-      type: 'navigation',
-      onPress: () => navigation.navigate('UnitsScreen'),
-    },
-  ];
-
   const renderSettingItem = (item: SettingItem) => {
     return (
       <TouchableOpacity
@@ -272,7 +261,6 @@ const SettingsScreen: React.FC = () => {
 
         {/* Settings Sections */}
         {renderSection(t('settings.preferences'), settingsItems)}
-        {renderSection(t('settings.developer'), developerItems)}
 
         {/* Footer */}
         <View style={styles.footer}>

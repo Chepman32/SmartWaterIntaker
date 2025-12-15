@@ -1,0 +1,50 @@
+Metryvo là ứng dụng chuyển đổi đơn vị mà bạn đang chờ đợi — nhanh, chính xác và được thiết kế đẹp mắt. Dù bạn là kỹ sư tính toán áp suất, đầu bếp chuyển đổi công thức, sinh viên giải bài tập vật lý, hay du khách tìm hiểu đơn vị đo lường nước ngoài, Metryvo luôn sẵn sàng hỗ trợ bạn.
+
+CÔNG CỤ CHUYỂN ĐỔI MẠNH MẼ
+• 29 danh mục đo lường bao gồm Chiều dài, Khối lượng, Nhiệt độ, Thể tích, Diện tích, Tốc độ, Thời gian, Áp suất, Năng lượng, Công suất, Dữ liệu, Góc, Tần số và nhiều hơn nữa
+• 700+ đơn vị tích hợp với toán học thập phân độ chính xác cao
+• Kết quả theo thời gian thực khi bạn nhập — không chờ đợi, không trễ
+• Đơn vị tùy chỉnh: Tạo đơn vị riêng cho nhu cầu chuyên biệt
+
+BẢO MẬT LÀ TRÊN HẾT
+• 100% ngoại tuyến — không bao giờ cần internet
+• Tất cả dữ liệu đều ở trên thiết bị của bạn
+• Không tài khoản, không theo dõi, không quảng cáo
+• Các chuyển đổi của bạn chỉ thuộc về bạn
+
+THIẾT KẾ DÀNH CHO BẠN
+• Năm giao diện tuyệt đẹp: Sáng, Tối, Solar, Mono và Theo hệ thống
+• Tùy chỉnh định dạng số với chữ số thập phân có thể điều chỉnh (0-12)
+• Chọn chế độ làm tròn: tiêu chuẩn, làm tròn xuống, làm tròn lên hoặc làm tròn ngân hàng
+• Bật/tắt nhóm hàng nghìn và đặt cài đặt vùng ưa thích
+• Chọn Hệ mét hoặc Hệ Anh làm mặc định
+
+LÀM VIỆC THÔNG MINH HƠN
+• Yêu thích: Lưu các cặp chuyển đổi thường dùng để truy cập ngay lập tức
+• Lịch sử: Nhật ký đầy đủ của mọi chuyển đổi với dấu thời gian
+• Nhiều chế độ sao chép: Sao chép chỉ giá trị, giá trị với đơn vị, hoặc biểu thức đầy đủ
+• Hoán đổi nhanh: Đảo ngược hướng chuyển đổi ngay lập tức
+• Đơn vị gần đây: Các đơn vị thường dùng luôn trong tầm tay
+
+DANH MỤC BAO GỒM
+Chiều dài • Khối lượng • Nhiệt độ • Thể tích • Diện tích • Tốc độ • Thời gian • Áp suất • Năng lượng • Công suất • Dữ liệu (SI & nhị phân) • Góc • Tần số • Hiệu suất nhiên liệu • Lực • Mô-men xoắn • Mật độ • Lưu lượng • Điện • Gia tốc • Điện dung • Độ dẫn • Độ tự cảm • Độ rọi • Độ chói • Quang thông • Điện tích • và nhiều hơn nữa
+
+KHẢ NĂNG TIẾP CẬN
+• Tùy chọn giảm chuyển động cho người dùng nhạy cảm với hoạt ảnh
+• Công tắc phản hồi xúc giác
+• Có sẵn giao diện độ tương phản cao
+• Tương thích VoiceOver
+
+ĐỘ CHÍNH XÁC BẠN CÓ THỂ TIN TƯỞNG
+Metryvo sử dụng toán học thập phân tiên tiến để cung cấp kết quả chính xác mà không có lỗi dấu phẩy động tìm thấy trong máy tính cơ bản. Từ chuyển đổi nanomet sang năm ánh sáng, hay miligam sang tấn — mọi phép tính đều chính xác.
+
+Hoàn hảo cho:
+• Kỹ sư và nhà khoa học cần chuyển đổi chính xác
+• Sinh viên học vật lý, hóa học hoặc kỹ thuật
+• Đầu bếp và thợ làm bánh điều chỉnh công thức
+• Du khách chuyển đổi tiền tệ và đơn vị đo
+• Người đam mê DIY làm việc với hệ thống đơn vị hỗn hợp
+• Theo dõi sức khỏe và thể dục
+• Bất kỳ ai coi trọng quyền riêng tư và độ chính xác
+
+Tải Metryvo ngay hôm nay và trải nghiệm ứng dụng chuyển đổi đơn vị thanh lịch, mạnh mẽ và riêng tư nhất hiện có.
