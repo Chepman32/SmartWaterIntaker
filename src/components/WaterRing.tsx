@@ -11,6 +11,7 @@ import Animated, {
   useAnimatedSensor,
   SensorType,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -63,9 +64,10 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
   onAnimationEnd,
   performance = 'performance',
 }, ref) {
+  const { t } = useTranslation();
   const radius = (size - strokeWidth) / 2;
   const center = size / 2;
-  
+
   // Check for system reduce motion setting
   const [isSystemReduceMotion, setIsSystemReduceMotion] = React.useState(false);
   useEffect(() => {
@@ -580,10 +582,10 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
           {Math.round(valueMl)}
         </Text>
         <Text style={[styles.unitText, { color: colors.text }]}>
-          ml
+          {t('common.ml')}
         </Text>
         <Text style={[styles.goalText, { color: colors.textSecondary }]}>
-          of {Math.round(goalMl)} ml
+          of {Math.round(goalMl)} {t('common.ml')}
         </Text>
         <Text style={[styles.percentText, { color: colors.textSecondary }]}>
           {Math.round(progress * 100)}%

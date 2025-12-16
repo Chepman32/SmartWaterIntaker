@@ -17,14 +17,16 @@
     "kg": "kg",
     "lbs": "ポンド",
     "perDay": "1日あたり",
-    "ofGoal": "% 達成"
+    "ofGoal": "% 達成",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "ホーム",
     "history": "履歴",
     "stats": "統計",
     "ai": "AI",
-    "settings": "設定"
+    "settings": "設定",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "水",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "エラー"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

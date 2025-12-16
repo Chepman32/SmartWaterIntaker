@@ -17,14 +17,16 @@
     "kg": "kg",
     "lbs": "pound",
     "perDay": "Mỗi ngày",
-    "ofGoal": "% đạt được"
+    "ofGoal": "% đạt được",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "Trang chủ",
     "history": "Lịch sử",
     "stats": "Thống kê",
     "ai": "AI",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "Nước",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "Lỗi"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

@@ -17,14 +17,16 @@
     "kg": "千克",
     "lbs": "磅",
     "perDay": "每天",
-    "ofGoal": "% 已完成"
+    "ofGoal": "% 已完成",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "首页",
     "history": "历史",
     "stats": "统计",
     "ai": "AI",
-    "settings": "设置"
+    "settings": "设置",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "水",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "错误"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

@@ -128,6 +128,7 @@ function MainTabNavigator() {
 }
 
 export default function AppNavigator() {
+  const { t } = useTranslation();
   const { theme, mode } = useTheme();
 
   return (
@@ -214,12 +215,12 @@ export default function AppNavigator() {
         <Stack.Screen
           name="Notifications"
           component={NotificationsScreen}
-          options={{ title: 'Notifications' }}
+          options={{ title: t('tabs.notifications') }}
         />
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
-          options={{ title: 'Settings' }}
+          options={{ title: t('tabs.settings') }}
         />
         {/* TODO: Add modal screens like LogWater, ContainerEditor */}
       </Stack.Navigator>

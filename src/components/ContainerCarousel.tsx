@@ -88,7 +88,7 @@ export default function ContainerCarousel({
                 { color: selectedDrinkType.color },
               ]}
             >
-              Change
+              {t('common.change')}
             </Text>
           </TouchableOpacity>
         )}

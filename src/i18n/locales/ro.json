@@ -17,14 +17,16 @@
     "lbs": "livre",
     "perDay": "Pe zi",
     "ofGoal": "% atins",
-    "pint": "halbă"
+    "pint": "halbă",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "Acasă",
     "history": "Istoric",
     "stats": "Statistici",
     "ai": "AI",
-    "settings": "Setări"
+    "settings": "Setări",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "Apă",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "Eroare"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

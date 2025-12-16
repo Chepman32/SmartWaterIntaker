@@ -17,14 +17,16 @@
     "kg": "kg",
     "lbs": "pon",
     "perDay": "Per hari",
-    "ofGoal": "% tercapai"
+    "ofGoal": "% tercapai",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "Beranda",
     "history": "Riwayat",
     "stats": "Statistik",
     "ai": "AI",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "Air",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "Kesalahan"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

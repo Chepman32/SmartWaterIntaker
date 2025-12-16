@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 import {
@@ -28,22 +29,23 @@ const formatGapDuration = (hours: number) => {
   return `${whole}h ${minutes}m`;
 };
 
-const formatVolume = (amountMl: number, unit: Unit, precisionOverride?: number) => {
+const formatVolume = (amountMl: number, unit: Unit, precisionOverride?: number, t?: any) => {
   if (unit === 'oz') {
     const ounces = amountMl * 0.033814;
     const precision = precisionOverride ?? (ounces >= 10 ? 0 : 1);
     const value = Number(ounces.toFixed(precision));
-    return `${value} oz`;
+    return `${value} ${t ? t('common.oz') : 'oz'}`;
   }
   const precision = precisionOverride ?? 0;
   if (precision > 0) {
     const value = Number(amountMl.toFixed(precision));
-    return `${value} ml`;
+    return `${value} ${t ? t('common.ml') : 'ml'}`;
   }
-  return `${Math.round(amountMl)} ml`;
+  return `${Math.round(amountMl)} ${t ? t('common.ml') : 'ml'}`;
 };
 
 const AIScreen: React.FC = () => {
+  const { t } = useTranslation();
   const theme = useThemeColors();
   const { events, dailyGoalMl, todayTotalMl } = useSelector((state: RootState) => state.intake);
   const profile = useSelector((state: RootState) => state.settings.profile);
@@ -86,29 +88,29 @@ const AIScreen: React.FC = () => {
 
   const remainingQuietLabel =
     summary.minutesUntilQuiet > 0
-      ? `${(summary.minutesUntilQuiet / 60).toFixed(1)}h until quiet window`
-      : 'Quiet hours active';
+      ? `${(summary.minutesUntilQuiet / 60).toFixed(1)}h ${t('ai.hoursUntilQuiet')}`
+      : t('ai.quietHoursActive');
 
   const statCards = [
     {
-      label: 'Today',
-      value: formatVolume(todayTotalMl, unit),
-      meta: `Goal ${formatVolume(dailyGoalMl, unit)}`,
+      label: t('ai.statToday'),
+      value: formatVolume(todayTotalMl, unit, undefined, t),
+      meta: `${t('ai.statGoal')} ${formatVolume(dailyGoalMl, unit, undefined, t)}`,
     },
     {
-      label: 'Remaining',
-      value: formatVolume(summary.remainingMl, unit),
+      label: t('ai.statRemaining'),
+      value: formatVolume(summary.remainingMl, unit, undefined, t),
       meta: remainingQuietLabel,
     },
     {
-      label: 'Longest dry streak',
+      label: t('ai.statLongestDryStreak'),
       value: formatGapDuration(summary.longestDryStreakHours),
-      meta: 'Last 72h',
+      meta: t('ai.statLast72h'),
     },
     {
-      label: '7-day avg',
-      value: formatVolume(summary.avg7Day, unit),
-      meta: `${summary.trendDelta >= 0 ? '+' : ''}${formatVolume(summary.trendDelta, unit)} vs prev`,
+      label: t('ai.stat7DayAvg'),
+      value: formatVolume(summary.avg7Day, unit, undefined, t),
+      meta: `${summary.trendDelta >= 0 ? '+' : ''}${formatVolume(summary.trendDelta, unit, undefined, t)} ${t('ai.statVsPrev')}`,
     },
   ];
 
@@ -118,7 +120,7 @@ const AIScreen: React.FC = () => {
         <View style={[styles.heroCard, { backgroundColor: theme.card, borderColor: theme.border }]}>
           <View style={styles.heroHeader}>
             <View>
-              <Text style={[styles.heroTitle, { color: theme.text }]}>AI Hydration Coach</Text>
+              <Text style={[styles.heroTitle, { color: theme.text }]}>{t('ai.title')}</Text>
               <Text style={[styles.heroSubtitle, { color: theme.textSecondary }]}>
                 {summary.statusLabel}
               </Text>
@@ -127,7 +129,7 @@ const AIScreen: React.FC = () => {
               <Text style={[styles.scoreValue, { color: theme.text }]}>
                 {Math.round(summary.hydrationScore)}
               </Text>
-              <Text style={[styles.scoreLabel, { color: theme.textSecondary }]}>Score</Text>
+              <Text style={[styles.scoreLabel, { color: theme.textSecondary }]}>{t('ai.score')}</Text>
             </View>
           </View>
 
@@ -157,22 +159,22 @@ const AIScreen: React.FC = () => {
           </View>
           <View style={styles.progressLabels}>
             <Text style={[styles.progressText, { color: theme.text }]}>
-              Actual {Math.round(summary.progressPercent)}%
+              {t('ai.actualPercent')} {Math.round(summary.progressPercent)}%
             </Text>
             <Text style={[styles.progressText, { color: theme.textSecondary }]}>
-              Expected {Math.round(summary.expectedPercent)}%
+              {t('ai.expectedPercent')} {Math.round(summary.expectedPercent)}%
             </Text>
           </View>
 
           <View style={styles.heroMetaRow}>
             <View style={styles.metaItem}>
-              <Text style={[styles.metaLabel, { color: theme.textSecondary }]}>Next action</Text>
+              <Text style={[styles.metaLabel, { color: theme.textSecondary }]}>{t('ai.nextAction')}</Text>
               <Text style={[styles.metaValue, { color: theme.text }]}>{nextActionLabel}</Text>
             </View>
             <View style={styles.metaItem}>
-              <Text style={[styles.metaLabel, { color: theme.textSecondary }]}>Suggested sip</Text>
+              <Text style={[styles.metaLabel, { color: theme.textSecondary }]}>{t('ai.suggestedSip')}</Text>
               <Text style={[styles.metaValue, { color: theme.text }]}>
-                {formatVolume(summary.recommendedSipMl, unit)}
+                {formatVolume(summary.recommendedSipMl, unit, undefined, t)}
               </Text>
             </View>
           </View>
@@ -191,9 +193,9 @@ const AIScreen: React.FC = () => {
           ))}
         </View>
 
-        <Text style={[styles.sectionTitle, { color: theme.text }]}>Smart notifications</Text>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>{t('ai.smartNotifications')}</Text>
         <Text style={[styles.sectionSubtitle, { color: theme.textSecondary }]}>
-          Offline heuristics ranked by urgency, powered by your logs.
+          {t('ai.smartNotificationsDesc')}
         </Text>
 
         <View style={styles.notificationsList}>
@@ -228,10 +230,11 @@ type NotificationCardProps = {
 };
 
 const NotificationCard: React.FC<NotificationCardProps> = ({ item, unit, theme }) => {
+  const { t } = useTranslation();
   const accent = toneColors[item.tone];
   const suggestion =
     item.suggestedAmountMl !== undefined
-      ? formatVolume(item.suggestedAmountMl, unit)
+      ? formatVolume(item.suggestedAmountMl, unit, undefined, t)
       : item.suggestedTimeLabel;
 
   return (

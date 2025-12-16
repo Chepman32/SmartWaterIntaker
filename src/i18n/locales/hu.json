@@ -17,14 +17,16 @@
     "lbs": "font",
     "perDay": "Naponta",
     "ofGoal": "% teljesítve",
-    "pint": "korsó"
+    "pint": "korsó",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "Főoldal",
     "history": "Előzmények",
     "stats": "Statisztikák",
     "ai": "AI",
-    "settings": "Beállítások"
+    "settings": "Beállítások",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "Víz",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "Hiba"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

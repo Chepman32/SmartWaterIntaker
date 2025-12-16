@@ -17,14 +17,16 @@
     "kg": "kg",
     "lbs": "pound",
     "perDay": "Günlük",
-    "ofGoal": "% tamamlandı"
+    "ofGoal": "% tamamlandı",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "Ana Sayfa",
     "history": "Geçmiş",
     "stats": "İstatistikler",
     "ai": "Yapay Zeka",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "Su",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "Hata"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

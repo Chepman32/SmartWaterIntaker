@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../state/store';
 import { logIntakeEvent } from '../state/slices/intakeSlice';
 import { IntakeEvent } from '../types/models';
@@ -19,6 +20,7 @@ export default function QuickAddChip({
   textColor = '#1F2937',
   style,
 }: QuickAddChipProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
 
@@ -26,7 +28,7 @@ export default function QuickAddChip({
     dispatch(logIntakeEvent({
       amountMl,
       source: 'chip',
-      note: `Quick add ${amountMl}ml`,
+      note: `${t('common.quickAdd')} ${amountMl}${t('common.ml')}`,
     }));
     if (hapticsEnabled) {
       ReactNativeHapticFeedback.trigger('impactLight', {
@@ -46,7 +48,7 @@ export default function QuickAddChip({
       onPress={handlePress}
       activeOpacity={0.7}
     >
-      <Text style={[styles.chipText, { color: textColor }]}>+{amountMl}ml</Text>
+      <Text style={[styles.chipText, { color: textColor }]}>+{amountMl}{t('common.ml')}</Text>
     </TouchableOpacity>
   );
 }

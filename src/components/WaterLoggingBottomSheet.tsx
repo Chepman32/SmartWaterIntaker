@@ -148,7 +148,7 @@ export default function WaterLoggingBottomSheet({
                 <Text
                   style={[styles.containerSize, { color: theme.textSecondary }]}
                 >
-                  {container.sizeMl}ml
+                  {container.sizeMl}{t('common.ml')}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -177,7 +177,7 @@ export default function WaterLoggingBottomSheet({
               keyboardType="numeric"
               onFocus={() => setSelectedContainer(null)}
             />
-            <Text style={[styles.unitLabel, { color: theme.text }]}>ml</Text>
+            <Text style={[styles.unitLabel, { color: theme.text }]}>{t('common.ml')}</Text>
           </View>
 
           {/* Quick Amount Buttons */}
@@ -204,7 +204,7 @@ export default function WaterLoggingBottomSheet({
                 }}
               >
                 <Text style={[styles.quickAmountText, { color: theme.text }]}>
-                  {amount}ml
+                  {amount}{t('common.ml')}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -255,10 +255,10 @@ export default function WaterLoggingBottomSheet({
           <Text style={styles.logButtonText}>
             {t('waterLogging.log')}{' '}
             {selectedContainer
-              ? `${selectedContainer.sizeMl}ml`
+              ? `${selectedContainer.sizeMl}${t('common.ml')}`
               : customAmount
-              ? `${customAmount}ml`
-              : '0ml'}
+              ? `${customAmount}${t('common.ml')}`
+              : `0${t('common.ml')}`}
           </Text>
         </TouchableOpacity>
       </BottomSheetView>

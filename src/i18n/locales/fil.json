@@ -17,14 +17,16 @@
     "lbs": "libra",
     "perDay": "Bawat araw",
     "ofGoal": "% naabot",
-    "pint": "pinta"
+    "pint": "pinta",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "Home",
     "history": "Kasaysayan",
     "stats": "Estadistika",
     "ai": "AI",
-    "settings": "Mga Setting"
+    "settings": "Mga Setting",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "Tubig",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "Error"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }

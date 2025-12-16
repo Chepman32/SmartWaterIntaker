@@ -218,7 +218,7 @@ const SettingsScreen: React.FC = () => {
                   },
                 ]}
               >
-                ml
+                {t('common.ml')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -247,7 +247,7 @@ const SettingsScreen: React.FC = () => {
                   },
                 ]}
               >
-                {t('common.pint')}
+                {t('common.oz')}
               </Text>
             </TouchableOpacity>
           </View>

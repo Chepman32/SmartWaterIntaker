@@ -17,14 +17,16 @@
     "kg": "ק״ג",
     "lbs": "ליברות",
     "perDay": "ליום",
-    "ofGoal": "% הושג"
+    "ofGoal": "% הושג",
+    "quickAdd": "Quick add"
   },
   "tabs": {
     "home": "בית",
     "history": "היסטוריה",
     "stats": "סטטיסטיקות",
     "ai": "בינה מלאכותית",
-    "settings": "הגדרות"
+    "settings": "הגדרות",
+    "notifications": "Notifications"
   },
   "drinkTypes": {
     "water": "מים",
@@ -248,5 +250,24 @@
   },
   "error": {
     "title": "שגיאה"
+  },
+  "ai": {
+    "title": "AI Hydration Coach",
+    "score": "Score",
+    "nextAction": "Next action",
+    "suggestedSip": "Suggested sip",
+    "smartNotifications": "Smart notifications",
+    "smartNotificationsDesc": "Offline heuristics ranked by urgency, powered by your logs.",
+    "statToday": "Today",
+    "statGoal": "Goal",
+    "statRemaining": "Remaining",
+    "statLongestDryStreak": "Longest dry streak",
+    "statLast72h": "Last 72h",
+    "stat7DayAvg": "7-day avg",
+    "statVsPrev": "vs prev",
+    "actualPercent": "Actual",
+    "expectedPercent": "Expected",
+    "hoursUntilQuiet": "until quiet window",
+    "quietHoursActive": "Quiet hours active"
   }
 }
