@@ -13,13 +13,45 @@
     "ml": "मिली",
     "oz": "औंस",
     "flOz": "तरल औंस",
+    "pint": "पिंट",
     "kg": "किग्रा",
     "lbs": "पाउंड",
     "perDay": "प्रति दिन",
     "ofGoal": "% पूर्ण"
   },
+  "tabs": {
+    "home": "होम",
+    "history": "इतिहास",
+    "stats": "आंकड़े",
+    "ai": "AI",
+    "settings": "सेटिंग्स"
+  },
+  "drinkTypes": {
+    "water": "पानी",
+    "waterDesc": "शुद्ध हाइड्रेशन",
+    "tea": "चाय",
+    "teaDesc": "आरामदायक पेय",
+    "coffee": "कॉफी",
+    "coffeeDesc": "ऊर्जा बूस्ट",
+    "juice": "जूस",
+    "juiceDesc": "फलों की शक्ति",
+    "soda": "सोडा",
+    "sodaDesc": "खुद को ट्रीट दें",
+    "smoothie": "स्मूदी",
+    "smoothieDesc": "ताज़ा मिश्रण"
+  },
   "home": {
-    "chooseDrink": "पेय चुनें"
+    "chooseDrink": "पेय चुनें",
+    "drinkTypes": "पेय के प्रकार"
+  },
+  "waterLogging": {
+    "title": "पानी का सेवन दर्ज करें",
+    "chooseContainer": "कंटेनर चुनें",
+    "enterCustomAmount": "या कस्टम मात्रा दर्ज करें",
+    "enterAmount": "मात्रा दर्ज करें",
+    "addNote": "नोट जोड़ें (वैकल्पिक)",
+    "addNotePlaceholder": "इस सेवन के बारे में नोट जोड़ें...",
+    "log": "दर्ज करें"
   },
   "statistics": {
     "toggleWeek": "7 दिन",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "यहां देखने के लिए पसंदीदा कंटेनर जोड़ें",
-    "favorites": "पसंदीदा"
+    "favorites": "पसंदीदा",
+    "glass": "गिलास",
+    "bottle": "बोतल",
+    "waterBottle": "पानी की बोतल",
+    "tumbler": "टम्बलर",
+    "pitcher": "जग",
+    "cup": "कप",
+    "container": "कंटेनर"
   },
   "error": {
     "title": "त्रुटि"

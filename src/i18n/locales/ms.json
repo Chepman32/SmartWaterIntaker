@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "paun",
     "perDay": "Sehari",
-    "ofGoal": "% tercapai"
+    "ofGoal": "% tercapai",
+    "pint": "pain"
+  },
+  "tabs": {
+    "home": "Utama",
+    "history": "Sejarah",
+    "stats": "Statistik",
+    "ai": "AI",
+    "settings": "Tetapan"
+  },
+  "drinkTypes": {
+    "water": "Air",
+    "waterDesc": "Penghidratan tulen",
+    "tea": "Teh",
+    "teaDesc": "Infusi menenangkan",
+    "coffee": "Kopi",
+    "coffeeDesc": "Rangsangan tenaga",
+    "juice": "Jus",
+    "juiceDesc": "Kuasa buah",
+    "soda": "Soda",
+    "sodaDesc": "Manjakan diri",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Campuran segar"
   },
   "home": {
-    "chooseDrink": "Pilih minuman"
+    "chooseDrink": "Pilih minuman",
+    "drinkTypes": "Jenis minuman"
+  },
+  "waterLogging": {
+    "title": "Log pengambilan air",
+    "chooseContainer": "Pilih bekas",
+    "enterCustomAmount": "Atau masukkan jumlah tersuai",
+    "enterAmount": "Masukkan jumlah",
+    "addNote": "Tambah nota (Pilihan)",
+    "addNotePlaceholder": "Tambah nota tentang pengambilan ini...",
+    "log": "Log"
   },
   "statistics": {
     "toggleWeek": "7 hari",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Tambah bekas kegemaran untuk melihatnya di sini",
-    "favorites": "Kegemaran"
+    "favorites": "Kegemaran",
+    "glass": "Gelas",
+    "bottle": "Botol",
+    "waterBottle": "Botol air",
+    "tumbler": "Cawan termos",
+    "pitcher": "Jag",
+    "cup": "Cawan",
+    "container": "Bekas"
   },
   "error": {
     "title": "Ralat"

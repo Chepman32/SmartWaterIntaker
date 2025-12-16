@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
@@ -54,6 +55,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function MainTabNavigator() {
   const theme = useThemeColors();
+  const { t } = useTranslation();
 
   return (
     <Tab.Navigator
@@ -96,30 +98,30 @@ function MainTabNavigator() {
         headerShadowVisible: false,
       })}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{ headerShown: false }}
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false, tabBarLabel: t('tabs.home') }}
       />
-      <Tab.Screen 
-        name="History" 
-        component={HistoryScreen} 
-        options={{ title: 'History' }}
+      <Tab.Screen
+        name="History"
+        component={HistoryScreen}
+        options={{ title: t('tabs.history'), tabBarLabel: t('tabs.history') }}
       />
-      <Tab.Screen 
-        name="Stats" 
-        component={StatisticsScreen} 
-        options={{ title: 'Statistics' }}
+      <Tab.Screen
+        name="Stats"
+        component={StatisticsScreen}
+        options={{ title: t('tabs.stats'), tabBarLabel: t('tabs.stats') }}
       />
       <Tab.Screen
         name="AI"
         component={AIScreen}
-        options={{ title: 'AI' }}
+        options={{ title: t('tabs.ai'), tabBarLabel: t('tabs.ai') }}
       />
-      <Tab.Screen 
-        name="Profile" 
-        component={SettingsScreen} 
-        options={{ title: 'Settings' }}
+      <Tab.Screen
+        name="Profile"
+        component={SettingsScreen}
+        options={{ title: t('tabs.settings'), tabBarLabel: t('tabs.settings') }}
       />
     </Tab.Navigator>
   );
@@ -169,9 +171,9 @@ export default function AppNavigator() {
           headerShadowVisible: false,
         }}
       >
-        <Stack.Screen 
-          name="MainTabs" 
-          component={MainTabNavigator} 
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabNavigator}
           options={{ headerShown: false }}
         />
         <Stack.Screen

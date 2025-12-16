@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "font",
     "perDay": "Naponta",
-    "ofGoal": "% teljesítve"
+    "ofGoal": "% teljesítve",
+    "pint": "korsó"
+  },
+  "tabs": {
+    "home": "Főoldal",
+    "history": "Előzmények",
+    "stats": "Statisztikák",
+    "ai": "AI",
+    "settings": "Beállítások"
+  },
+  "drinkTypes": {
+    "water": "Víz",
+    "waterDesc": "Tiszta hidratálás",
+    "tea": "Tea",
+    "teaDesc": "Relaxáló főzet",
+    "coffee": "Kávé",
+    "coffeeDesc": "Energia lökés",
+    "juice": "Gyümölcslé",
+    "juiceDesc": "Gyümölcs erő",
+    "soda": "Üdítő",
+    "sodaDesc": "Kényeztesd magad",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Friss keverék"
   },
   "home": {
-    "chooseDrink": "Válasszon italt"
+    "chooseDrink": "Válasszon italt",
+    "drinkTypes": "Ital típusok"
+  },
+  "waterLogging": {
+    "title": "Folyadékbevitel rögzítése",
+    "chooseContainer": "Válasszon tárolót",
+    "enterCustomAmount": "Vagy adjon meg egyéni mennyiséget",
+    "enterAmount": "Adja meg a mennyiséget",
+    "addNote": "Jegyzet hozzáadása (Opcionális)",
+    "addNotePlaceholder": "Jegyzet hozzáadása ehhez a bevitelhez...",
+    "log": "Rögzítés"
   },
   "statistics": {
     "toggleWeek": "7 nap",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Adjon hozzá kedvenc tárolókat, hogy itt láthassa őket",
-    "favorites": "Kedvencek"
+    "favorites": "Kedvencek",
+    "glass": "Pohár",
+    "bottle": "Palack",
+    "waterBottle": "Vizes palack",
+    "tumbler": "Termosz bögre",
+    "pitcher": "Kancsó",
+    "cup": "Csésze",
+    "container": "Tároló"
   },
   "error": {
     "title": "Hiba"

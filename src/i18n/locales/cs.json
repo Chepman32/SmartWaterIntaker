@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "libry",
     "perDay": "Denně",
-    "ofGoal": "% dosaženo"
+    "ofGoal": "% dosaženo",
+    "pint": "pinta"
+  },
+  "tabs": {
+    "home": "Domů",
+    "history": "Historie",
+    "stats": "Statistiky",
+    "ai": "AI",
+    "settings": "Nastavení"
+  },
+  "drinkTypes": {
+    "water": "Voda",
+    "waterDesc": "Čistá hydratace",
+    "tea": "Čaj",
+    "teaDesc": "Relaxační nálev",
+    "coffee": "Káva",
+    "coffeeDesc": "Energetický boost",
+    "juice": "Džus",
+    "juiceDesc": "Ovocná síla",
+    "soda": "Limonáda",
+    "sodaDesc": "Dopřejte si",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Čerstvá směs"
   },
   "home": {
-    "chooseDrink": "Vyberte nápoj"
+    "chooseDrink": "Vyberte nápoj",
+    "drinkTypes": "Typy nápojů"
+  },
+  "waterLogging": {
+    "title": "Zaznamenat příjem vody",
+    "chooseContainer": "Vyberte nádobu",
+    "enterCustomAmount": "Nebo zadejte vlastní množství",
+    "enterAmount": "Zadejte množství",
+    "addNote": "Přidat poznámku (Volitelné)",
+    "addNotePlaceholder": "Přidejte poznámku k tomuto příjmu...",
+    "log": "Zaznamenat"
   },
   "statistics": {
     "toggleWeek": "7 dní",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Přidejte oblíbené nádoby, abyste je viděli zde",
-    "favorites": "Oblíbené"
+    "favorites": "Oblíbené",
+    "glass": "Sklenice",
+    "bottle": "Láhev",
+    "waterBottle": "Láhev na vodu",
+    "tumbler": "Termohrnek",
+    "pitcher": "Džbán",
+    "cup": "Hrnek",
+    "container": "Nádoba"
   },
   "error": {
     "title": "Chyba"

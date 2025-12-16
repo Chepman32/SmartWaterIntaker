@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "ons",
     "flOz": "ons cair",
+    "pint": "pint",
     "kg": "kg",
     "lbs": "pon",
     "perDay": "Per hari",
     "ofGoal": "% tercapai"
   },
+  "tabs": {
+    "home": "Beranda",
+    "history": "Riwayat",
+    "stats": "Statistik",
+    "ai": "AI",
+    "settings": "Pengaturan"
+  },
+  "drinkTypes": {
+    "water": "Air",
+    "waterDesc": "Hidrasi murni",
+    "tea": "Teh",
+    "teaDesc": "Minuman menenangkan",
+    "coffee": "Kopi",
+    "coffeeDesc": "Dorongan energi",
+    "juice": "Jus",
+    "juiceDesc": "Kekuatan buah",
+    "soda": "Soda",
+    "sodaDesc": "Manjakan diri",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Campuran segar"
+  },
   "home": {
-    "chooseDrink": "Pilih minuman"
+    "chooseDrink": "Pilih minuman",
+    "drinkTypes": "Jenis minuman"
+  },
+  "waterLogging": {
+    "title": "Catat asupan air",
+    "chooseContainer": "Pilih wadah",
+    "enterCustomAmount": "Atau masukkan jumlah kustom",
+    "enterAmount": "Masukkan jumlah",
+    "addNote": "Tambah catatan (Opsional)",
+    "addNotePlaceholder": "Tambahkan catatan tentang asupan ini...",
+    "log": "Catat"
   },
   "statistics": {
     "toggleWeek": "7 hari",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Tambahkan wadah favorit untuk melihatnya di sini",
-    "favorites": "Favorit"
+    "favorites": "Favorit",
+    "glass": "Gelas",
+    "bottle": "Botol",
+    "waterBottle": "Botol air",
+    "tumbler": "Tumbler",
+    "pitcher": "Teko",
+    "cup": "Cangkir",
+    "container": "Wadah"
   },
   "error": {
     "title": "Kesalahan"

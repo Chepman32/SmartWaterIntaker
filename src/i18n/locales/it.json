@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "once",
     "flOz": "once fluide",
+    "pint": "pinta",
     "kg": "kg",
     "lbs": "libbre",
     "perDay": "Al giorno",
     "ofGoal": "% raggiunto"
   },
+  "tabs": {
+    "home": "Home",
+    "history": "Cronologia",
+    "stats": "Statistiche",
+    "ai": "IA",
+    "settings": "Impostazioni"
+  },
+  "drinkTypes": {
+    "water": "Acqua",
+    "waterDesc": "Idratazione pura",
+    "tea": "Tè",
+    "teaDesc": "Infuso rilassante",
+    "coffee": "Caffè",
+    "coffeeDesc": "Carica di energia",
+    "juice": "Succo",
+    "juiceDesc": "Energia fruttata",
+    "soda": "Bibita",
+    "sodaDesc": "Concediti qualcosa",
+    "smoothie": "Frullato",
+    "smoothieDesc": "Mix fresco"
+  },
   "home": {
-    "chooseDrink": "Scegli una bevanda"
+    "chooseDrink": "Scegli una bevanda",
+    "drinkTypes": "Tipi di bevande"
+  },
+  "waterLogging": {
+    "title": "Registra assunzione acqua",
+    "chooseContainer": "Scegli contenitore",
+    "enterCustomAmount": "O inserisci quantità personalizzata",
+    "enterAmount": "Inserisci quantità",
+    "addNote": "Aggiungi nota (Opzionale)",
+    "addNotePlaceholder": "Aggiungi una nota su questa assunzione...",
+    "log": "Registra"
   },
   "statistics": {
     "toggleWeek": "7 giorni",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Aggiungi contenitori preferiti per vederli qui",
-    "favorites": "Preferiti"
+    "favorites": "Preferiti",
+    "glass": "Bicchiere",
+    "bottle": "Bottiglia",
+    "waterBottle": "Bottiglia d'acqua",
+    "tumbler": "Bicchiere termico",
+    "pitcher": "Caraffa",
+    "cup": "Tazza",
+    "container": "Contenitore"
   },
   "error": {
     "title": "Errore"

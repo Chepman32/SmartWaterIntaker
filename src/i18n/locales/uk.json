@@ -13,13 +13,45 @@
     "ml": "мл",
     "oz": "унції",
     "flOz": "рідкі унції",
+    "pint": "пінта",
     "kg": "кг",
     "lbs": "фунти",
     "perDay": "На день",
     "ofGoal": "% виконано"
   },
+  "tabs": {
+    "home": "Головна",
+    "history": "Історія",
+    "stats": "Статистика",
+    "ai": "ШІ",
+    "settings": "Налаштування"
+  },
+  "drinkTypes": {
+    "water": "Вода",
+    "waterDesc": "Чиста гідратація",
+    "tea": "Чай",
+    "teaDesc": "Розслаблюючий настій",
+    "coffee": "Кава",
+    "coffeeDesc": "Заряд енергії",
+    "juice": "Сік",
+    "juiceDesc": "Фруктова сила",
+    "soda": "Газована вода",
+    "sodaDesc": "Побалуйте себе",
+    "smoothie": "Смузі",
+    "smoothieDesc": "Свіжий мікс"
+  },
   "home": {
-    "chooseDrink": "Обрати напій"
+    "chooseDrink": "Обрати напій",
+    "drinkTypes": "Види напоїв"
+  },
+  "waterLogging": {
+    "title": "Записати споживання води",
+    "chooseContainer": "Обрати контейнер",
+    "enterCustomAmount": "Або введіть свою кількість",
+    "enterAmount": "Введіть кількість",
+    "addNote": "Додати нотатку (Необов'язково)",
+    "addNotePlaceholder": "Додати нотатку про це споживання...",
+    "log": "Записати"
   },
   "statistics": {
     "toggleWeek": "7 днів",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Додайте улюблені контейнери, щоб побачити їх тут",
-    "favorites": "Улюблене"
+    "favorites": "Улюблене",
+    "glass": "Склянка",
+    "bottle": "Пляшка",
+    "waterBottle": "Пляшка для води",
+    "tumbler": "Термокружка",
+    "pitcher": "Глечик",
+    "cup": "Чашка",
+    "container": "Контейнер"
   },
   "error": {
     "title": "Помилка"

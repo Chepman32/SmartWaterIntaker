@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "onces",
     "flOz": "onces liquides",
+    "pint": "pinte",
     "kg": "kg",
     "lbs": "livres",
     "perDay": "Par jour",
     "ofGoal": "% atteint"
   },
+  "tabs": {
+    "home": "Accueil",
+    "history": "Historique",
+    "stats": "Statistiques",
+    "ai": "IA",
+    "settings": "Paramètres"
+  },
+  "drinkTypes": {
+    "water": "Eau",
+    "waterDesc": "Hydratation pure",
+    "tea": "Thé",
+    "teaDesc": "Infusion relaxante",
+    "coffee": "Café",
+    "coffeeDesc": "Boost d'énergie",
+    "juice": "Jus",
+    "juiceDesc": "Énergie fruitée",
+    "soda": "Soda",
+    "sodaDesc": "Faites-vous plaisir",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Mélange frais"
+  },
   "home": {
-    "chooseDrink": "Choisir une boisson"
+    "chooseDrink": "Choisir une boisson",
+    "drinkTypes": "Types de boissons"
+  },
+  "waterLogging": {
+    "title": "Enregistrer l'hydratation",
+    "chooseContainer": "Choisir un contenant",
+    "enterCustomAmount": "Ou entrer une quantité personnalisée",
+    "enterAmount": "Entrer la quantité",
+    "addNote": "Ajouter une note (Optionnel)",
+    "addNotePlaceholder": "Ajouter une note sur cette consommation...",
+    "log": "Enregistrer"
   },
   "statistics": {
     "toggleWeek": "7 jours",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Ajoutez des contenants favoris pour les voir ici",
-    "favorites": "Favoris"
+    "favorites": "Favoris",
+    "glass": "Verre",
+    "bottle": "Bouteille",
+    "waterBottle": "Bouteille d'eau",
+    "tumbler": "Gobelet isotherme",
+    "pitcher": "Carafe",
+    "cup": "Tasse",
+    "container": "Contenant"
   },
   "error": {
     "title": "Erreur"

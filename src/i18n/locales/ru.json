@@ -13,13 +13,45 @@
     "ml": "мл",
     "oz": "унции",
     "flOz": "жидкие унции",
+    "pint": "пинта",
     "kg": "кг",
     "lbs": "фунты",
     "perDay": "В день",
     "ofGoal": "% выполнено"
   },
+  "tabs": {
+    "home": "Главная",
+    "history": "История",
+    "stats": "Статистика",
+    "ai": "ИИ",
+    "settings": "Настройки"
+  },
+  "drinkTypes": {
+    "water": "Вода",
+    "waterDesc": "Чистая гидратация",
+    "tea": "Чай",
+    "teaDesc": "Расслабляющий настой",
+    "coffee": "Кофе",
+    "coffeeDesc": "Заряд энергии",
+    "juice": "Сок",
+    "juiceDesc": "Фруктовая сила",
+    "soda": "Газировка",
+    "sodaDesc": "Побалуйте себя",
+    "smoothie": "Смузи",
+    "smoothieDesc": "Свежий микс"
+  },
   "home": {
-    "chooseDrink": "Выберите напиток"
+    "chooseDrink": "Выберите напиток",
+    "drinkTypes": "Виды напитков"
+  },
+  "waterLogging": {
+    "title": "Записать потребление воды",
+    "chooseContainer": "Выберите контейнер",
+    "enterCustomAmount": "Или введите свое количество",
+    "enterAmount": "Введите количество",
+    "addNote": "Добавить заметку (Необязательно)",
+    "addNotePlaceholder": "Добавить заметку об этом потреблении...",
+    "log": "Записать"
   },
   "statistics": {
     "toggleWeek": "7 дней",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Добавьте избранные контейнеры, чтобы увидеть их здесь",
-    "favorites": "Избранное"
+    "favorites": "Избранное",
+    "glass": "Стакан",
+    "bottle": "Бутылка",
+    "waterBottle": "Бутылка воды",
+    "tumbler": "Термокружка",
+    "pitcher": "Кувшин",
+    "cup": "Чашка",
+    "container": "Контейнер"
   },
   "error": {
     "title": "Ошибка"

@@ -13,13 +13,45 @@
     "ml": "מ״ל",
     "oz": "אונקיות",
     "flOz": "אונקיות נוזל",
+    "pint": "פיינט",
     "kg": "ק״ג",
     "lbs": "ליברות",
     "perDay": "ליום",
     "ofGoal": "% הושג"
   },
+  "tabs": {
+    "home": "בית",
+    "history": "היסטוריה",
+    "stats": "סטטיסטיקות",
+    "ai": "בינה מלאכותית",
+    "settings": "הגדרות"
+  },
+  "drinkTypes": {
+    "water": "מים",
+    "waterDesc": "הידרציה טהורה",
+    "tea": "תה",
+    "teaDesc": "משקה מרגיע",
+    "coffee": "קפה",
+    "coffeeDesc": "דחיפת אנרגיה",
+    "juice": "מיץ",
+    "juiceDesc": "כוח הפירות",
+    "soda": "סודה",
+    "sodaDesc": "פנקו את עצמכם",
+    "smoothie": "שייק",
+    "smoothieDesc": "תערובת טרייה"
+  },
   "home": {
-    "chooseDrink": "בחר משקה"
+    "chooseDrink": "בחר משקה",
+    "drinkTypes": "סוגי משקאות"
+  },
+  "waterLogging": {
+    "title": "רשום צריכת מים",
+    "chooseContainer": "בחר מיכל",
+    "enterCustomAmount": "או הזן כמות מותאמת אישית",
+    "enterAmount": "הזן כמות",
+    "addNote": "הוסף הערה (אופציונלי)",
+    "addNotePlaceholder": "הוסף הערה על צריכה זו...",
+    "log": "רשום"
   },
   "statistics": {
     "toggleWeek": "7 ימים",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "הוסף מכלים מועדפים כדי לראות אותם כאן",
-    "favorites": "מועדפים"
+    "favorites": "מועדפים",
+    "glass": "כוס",
+    "bottle": "בקבוק",
+    "waterBottle": "בקבוק מים",
+    "tumbler": "כוס תרמית",
+    "pitcher": "קנקן",
+    "cup": "ספל",
+    "container": "מיכל"
   },
   "error": {
     "title": "שגיאה"

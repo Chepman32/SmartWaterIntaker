@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "ons",
     "flOz": "sıvı ons",
+    "pint": "pint",
     "kg": "kg",
     "lbs": "pound",
     "perDay": "Günlük",
     "ofGoal": "% tamamlandı"
   },
+  "tabs": {
+    "home": "Ana Sayfa",
+    "history": "Geçmiş",
+    "stats": "İstatistikler",
+    "ai": "Yapay Zeka",
+    "settings": "Ayarlar"
+  },
+  "drinkTypes": {
+    "water": "Su",
+    "waterDesc": "Saf hidrasyon",
+    "tea": "Çay",
+    "teaDesc": "Rahatlatıcı demleme",
+    "coffee": "Kahve",
+    "coffeeDesc": "Enerji patlaması",
+    "juice": "Meyve suyu",
+    "juiceDesc": "Meyve gücü",
+    "soda": "Gazlı içecek",
+    "sodaDesc": "Kendinizi şımartın",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Taze karışım"
+  },
   "home": {
-    "chooseDrink": "İçecek seç"
+    "chooseDrink": "İçecek seç",
+    "drinkTypes": "İçecek türleri"
+  },
+  "waterLogging": {
+    "title": "Su alımı kaydet",
+    "chooseContainer": "Kap seç",
+    "enterCustomAmount": "Veya özel miktar gir",
+    "enterAmount": "Miktar gir",
+    "addNote": "Not ekle (İsteğe bağlı)",
+    "addNotePlaceholder": "Bu alım hakkında not ekle...",
+    "log": "Kaydet"
   },
   "statistics": {
     "toggleWeek": "7 gün",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Burada görmek için favori kaplar ekle",
-    "favorites": "Favoriler"
+    "favorites": "Favoriler",
+    "glass": "Bardak",
+    "bottle": "Şişe",
+    "waterBottle": "Su şişesi",
+    "tumbler": "Termos bardak",
+    "pitcher": "Sürahi",
+    "cup": "Fincan",
+    "container": "Kap"
   },
   "error": {
     "title": "Hata"

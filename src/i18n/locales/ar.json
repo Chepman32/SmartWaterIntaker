@@ -13,13 +13,45 @@
     "ml": "مل",
     "oz": "أونصة",
     "flOz": "أونصة سائلة",
+    "pint": "باينت",
     "kg": "كجم",
     "lbs": "رطل",
     "perDay": "في اليوم",
     "ofGoal": "% مكتمل"
   },
+  "tabs": {
+    "home": "الرئيسية",
+    "history": "السجل",
+    "stats": "الإحصائيات",
+    "ai": "الذكاء الاصطناعي",
+    "settings": "الإعدادات"
+  },
+  "drinkTypes": {
+    "water": "ماء",
+    "waterDesc": "ترطيب نقي",
+    "tea": "شاي",
+    "teaDesc": "منقوع مريح",
+    "coffee": "قهوة",
+    "coffeeDesc": "دفعة طاقة",
+    "juice": "عصير",
+    "juiceDesc": "طاقة الفواكه",
+    "soda": "مشروب غازي",
+    "sodaDesc": "دلل نفسك",
+    "smoothie": "سموذي",
+    "smoothieDesc": "مزيج طازج"
+  },
   "home": {
-    "chooseDrink": "اختر مشروباً"
+    "chooseDrink": "اختر مشروباً",
+    "drinkTypes": "أنواع المشروبات"
+  },
+  "waterLogging": {
+    "title": "تسجيل شرب الماء",
+    "chooseContainer": "اختر الحاوية",
+    "enterCustomAmount": "أو أدخل كمية مخصصة",
+    "enterAmount": "أدخل الكمية",
+    "addNote": "إضافة ملاحظة (اختياري)",
+    "addNotePlaceholder": "أضف ملاحظة حول هذا الاستهلاك...",
+    "log": "تسجيل"
   },
   "statistics": {
     "toggleWeek": "7 أيام",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "أضف حاويات مفضلة لرؤيتها هنا",
-    "favorites": "المفضلة"
+    "favorites": "المفضلة",
+    "glass": "كوب زجاجي",
+    "bottle": "زجاجة",
+    "waterBottle": "زجاجة ماء",
+    "tumbler": "كوب حراري",
+    "pitcher": "إبريق",
+    "cup": "فنجان",
+    "container": "حاوية"
   },
   "error": {
     "title": "خطأ"

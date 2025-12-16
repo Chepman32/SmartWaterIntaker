@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "uncje",
     "flOz": "uncje płynu",
+    "pint": "pinta",
     "kg": "kg",
     "lbs": "funty",
     "perDay": "Dziennie",
     "ofGoal": "% osiągnięte"
   },
+  "tabs": {
+    "home": "Główna",
+    "history": "Historia",
+    "stats": "Statystyki",
+    "ai": "AI",
+    "settings": "Ustawienia"
+  },
+  "drinkTypes": {
+    "water": "Woda",
+    "waterDesc": "Czyste nawodnienie",
+    "tea": "Herbata",
+    "teaDesc": "Relaksujący napar",
+    "coffee": "Kawa",
+    "coffeeDesc": "Zastrzyk energii",
+    "juice": "Sok",
+    "juiceDesc": "Moc owoców",
+    "soda": "Napój gazowany",
+    "sodaDesc": "Pozwól sobie",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Świeży mix"
+  },
   "home": {
-    "chooseDrink": "Wybierz napój"
+    "chooseDrink": "Wybierz napój",
+    "drinkTypes": "Rodzaje napojów"
+  },
+  "waterLogging": {
+    "title": "Zapisz spożycie wody",
+    "chooseContainer": "Wybierz pojemnik",
+    "enterCustomAmount": "Lub wprowadź własną ilość",
+    "enterAmount": "Wprowadź ilość",
+    "addNote": "Dodaj notatkę (Opcjonalnie)",
+    "addNotePlaceholder": "Dodaj notatkę o tym spożyciu...",
+    "log": "Zapisz"
   },
   "statistics": {
     "toggleWeek": "7 dni",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Dodaj ulubione pojemniki, aby je tu zobaczyć",
-    "favorites": "Ulubione"
+    "favorites": "Ulubione",
+    "glass": "Szklanka",
+    "bottle": "Butelka",
+    "waterBottle": "Butelka na wodę",
+    "tumbler": "Kubek termiczny",
+    "pitcher": "Dzbanek",
+    "cup": "Kubek",
+    "container": "Pojemnik"
   },
   "error": {
     "title": "Błąd"

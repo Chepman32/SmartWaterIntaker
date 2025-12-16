@@ -1157,7 +1157,6 @@ export default function StatisticsScreen() {
                       subtitleColor={theme.textSecondary}
                       onSelect={handleDrinkTypeSelect}
                       selectedDrinkTypeId={selectedDrinkType?.id}
-                      title="Choose a drink"
                     />
                   </RNAnimated.View>
 

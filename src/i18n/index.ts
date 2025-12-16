@@ -67,12 +67,46 @@ const resources = {
   fil: { translation: fil },
 };
 
-// Get device locale
-const getDeviceLocale = (): string => {
+// Get device locale with regional variant support
+const getDeviceLocale = (): { languageCode: string; languageTag: string } => {
   const locales = RNLocalize.getLocales();
   if (locales && locales.length > 0) {
-    return locales[0].languageCode;
+    return {
+      languageCode: locales[0].languageCode,
+      languageTag: locales[0].languageTag,
+    };
   }
+  return { languageCode: 'en', languageTag: 'en' };
+};
+
+// Find the best matching language from supported languages
+const findBestLanguageMatch = (
+  languageCode: string,
+  languageTag: string,
+): string => {
+  // First, try exact match with language tag (e.g., pt-BR)
+  if (resources[languageTag as keyof typeof resources]) {
+    return languageTag;
+  }
+
+  // Try with language code only (e.g., pt -> pt-BR for Portuguese)
+  if (resources[languageCode as keyof typeof resources]) {
+    return languageCode;
+  }
+
+  // Special handling for regional variants
+  const regionalMappings: { [key: string]: string } = {
+    pt: 'pt-BR', // Portuguese defaults to Brazilian Portuguese
+    nb: 'no', // Norwegian Bokmål maps to Norwegian
+    nn: 'no', // Norwegian Nynorsk maps to Norwegian
+    tl: 'fil', // Tagalog maps to Filipino
+  };
+
+  if (regionalMappings[languageCode]) {
+    return regionalMappings[languageCode];
+  }
+
+  // Fallback to English
   return 'en';
 };
 
@@ -81,20 +115,18 @@ const getInitialLanguage = (): string => {
   try {
     const settings = StorageService.getSettings();
     if (settings?.language) {
-      return settings.language;
+      // Verify the stored language is still supported
+      if (resources[settings.language as keyof typeof resources]) {
+        return settings.language;
+      }
     }
   } catch (error) {
     console.log('Failed to load stored language:', error);
   }
 
   // Fallback to device locale
-  const deviceLocale = getDeviceLocale();
-
-  // Check if we support the device locale
-  let detectedLanguage = 'en';
-  if (resources[deviceLocale as keyof typeof resources]) {
-    detectedLanguage = deviceLocale;
-  }
+  const { languageCode, languageTag } = getDeviceLocale();
+  const detectedLanguage = findBestLanguageMatch(languageCode, languageTag);
 
   // Persist the detected language so Redux can pick it up
   try {

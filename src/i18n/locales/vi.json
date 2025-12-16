@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "ounce",
     "flOz": "ounce chất lỏng",
+    "pint": "pint",
     "kg": "kg",
     "lbs": "pound",
     "perDay": "Mỗi ngày",
     "ofGoal": "% đạt được"
   },
+  "tabs": {
+    "home": "Trang chủ",
+    "history": "Lịch sử",
+    "stats": "Thống kê",
+    "ai": "AI",
+    "settings": "Cài đặt"
+  },
+  "drinkTypes": {
+    "water": "Nước",
+    "waterDesc": "Bù nước tinh khiết",
+    "tea": "Trà",
+    "teaDesc": "Thức uống thư giãn",
+    "coffee": "Cà phê",
+    "coffeeDesc": "Tăng năng lượng",
+    "juice": "Nước ép",
+    "juiceDesc": "Năng lượng trái cây",
+    "soda": "Nước ngọt",
+    "sodaDesc": "Tự thưởng cho mình",
+    "smoothie": "Sinh tố",
+    "smoothieDesc": "Hỗn hợp tươi mát"
+  },
   "home": {
-    "chooseDrink": "Chọn đồ uống"
+    "chooseDrink": "Chọn đồ uống",
+    "drinkTypes": "Loại đồ uống"
+  },
+  "waterLogging": {
+    "title": "Ghi lại lượng nước",
+    "chooseContainer": "Chọn bình chứa",
+    "enterCustomAmount": "Hoặc nhập lượng tùy chỉnh",
+    "enterAmount": "Nhập lượng",
+    "addNote": "Thêm ghi chú (Tùy chọn)",
+    "addNotePlaceholder": "Thêm ghi chú về lần uống này...",
+    "log": "Ghi lại"
   },
   "statistics": {
     "toggleWeek": "7 ngày",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Thêm container yêu thích để xem ở đây",
-    "favorites": "Yêu thích"
+    "favorites": "Yêu thích",
+    "glass": "Ly thủy tinh",
+    "bottle": "Chai",
+    "waterBottle": "Bình nước",
+    "tumbler": "Ly giữ nhiệt",
+    "pitcher": "Bình",
+    "cup": "Cốc",
+    "container": "Bình chứa"
   },
   "error": {
     "title": "Lỗi"

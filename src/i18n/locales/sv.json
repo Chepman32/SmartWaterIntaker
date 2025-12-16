@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "ounce",
     "flOz": "fluid ounce",
+    "pint": "pint",
     "kg": "kg",
     "lbs": "pund",
     "perDay": "Per dag",
     "ofGoal": "% uppnått"
   },
+  "tabs": {
+    "home": "Hem",
+    "history": "Historik",
+    "stats": "Statistik",
+    "ai": "AI",
+    "settings": "Inställningar"
+  },
+  "drinkTypes": {
+    "water": "Vatten",
+    "waterDesc": "Ren hydrering",
+    "tea": "Te",
+    "teaDesc": "Avkopplande infusion",
+    "coffee": "Kaffe",
+    "coffeeDesc": "Energiboost",
+    "juice": "Juice",
+    "juiceDesc": "Fruktkraft",
+    "soda": "Läsk",
+    "sodaDesc": "Unna dig",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Färsk mix"
+  },
   "home": {
-    "chooseDrink": "Välj dryck"
+    "chooseDrink": "Välj dryck",
+    "drinkTypes": "Dryckestyper"
+  },
+  "waterLogging": {
+    "title": "Logga vattenintag",
+    "chooseContainer": "Välj behållare",
+    "enterCustomAmount": "Eller ange anpassad mängd",
+    "enterAmount": "Ange mängd",
+    "addNote": "Lägg till anteckning (Valfritt)",
+    "addNotePlaceholder": "Lägg till en anteckning om detta intag...",
+    "log": "Logga"
   },
   "statistics": {
     "toggleWeek": "7 dagar",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Lägg till favoritbehållare för att se dem här",
-    "favorites": "Favoriter"
+    "favorites": "Favoriter",
+    "glass": "Glas",
+    "bottle": "Flaska",
+    "waterBottle": "Vattenflaska",
+    "tumbler": "Termomugg",
+    "pitcher": "Kanna",
+    "cup": "Kopp",
+    "container": "Behållare"
   },
   "error": {
     "title": "Fel"

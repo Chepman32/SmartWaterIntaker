@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "onzas",
     "flOz": "onzas líquidas",
+    "pint": "pinta",
     "kg": "kg",
     "lbs": "libras",
     "perDay": "Por día",
     "ofGoal": "% alcanzado"
   },
+  "tabs": {
+    "home": "Inicio",
+    "history": "Historial",
+    "stats": "Estadísticas",
+    "ai": "IA",
+    "settings": "Ajustes"
+  },
+  "drinkTypes": {
+    "water": "Agua",
+    "waterDesc": "Hidratación pura",
+    "tea": "Té",
+    "teaDesc": "Infusión relajante",
+    "coffee": "Café",
+    "coffeeDesc": "Impulso de energía",
+    "juice": "Jugo",
+    "juiceDesc": "Energía frutal",
+    "soda": "Refresco",
+    "sodaDesc": "Date un gusto",
+    "smoothie": "Batido",
+    "smoothieDesc": "Mezcla fresca"
+  },
   "home": {
-    "chooseDrink": "Elegir bebida"
+    "chooseDrink": "Elegir bebida",
+    "drinkTypes": "Tipos de bebidas"
+  },
+  "waterLogging": {
+    "title": "Registrar hidratación",
+    "chooseContainer": "Elegir recipiente",
+    "enterCustomAmount": "O ingresar cantidad personalizada",
+    "enterAmount": "Ingresar cantidad",
+    "addNote": "Agregar nota (Opcional)",
+    "addNotePlaceholder": "Agregar una nota sobre este consumo...",
+    "log": "Registrar"
   },
   "statistics": {
     "toggleWeek": "7 días",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Agrega recipientes favoritos para verlos aquí",
-    "favorites": "Favoritos"
+    "favorites": "Favoritos",
+    "glass": "Vaso",
+    "bottle": "Botella",
+    "waterBottle": "Botella de agua",
+    "tumbler": "Vaso térmico",
+    "pitcher": "Jarra",
+    "cup": "Taza",
+    "container": "Recipiente"
   },
   "error": {
     "title": "Error"

@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { DRINK_TYPES } from '../constants/drinkTypes';
 import { DrinkType } from '../types/models';
 
@@ -16,18 +24,26 @@ export default function DrinkTypeCarousel({
   subtitleColor = '#94A3B8',
   onSelect,
   selectedDrinkTypeId,
-  title = 'Drink Types',
+  title,
 }: DrinkTypeCarouselProps) {
+  const { t } = useTranslation();
+  const displayTitle = title || t('home.drinkTypes');
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: textColor }]}>{title}</Text>
+      <Text style={[styles.title, { color: textColor }]}>{displayTitle}</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {DRINK_TYPES.map((type) => {
+        {DRINK_TYPES.map(type => {
           const isSelected = type.id === selectedDrinkTypeId;
+          const translatedName = t(`drinkTypes.${type.id}`, {
+            defaultValue: type.name,
+          });
+          const translatedDesc = t(`drinkTypes.${type.id}Desc`, {
+            defaultValue: type.description,
+          });
           return (
             <TouchableOpacity
               key={type.id}
@@ -41,17 +57,25 @@ export default function DrinkTypeCarousel({
               onPress={() => onSelect(type)}
               activeOpacity={0.75}
             >
-              <View style={[styles.iconContainer, { backgroundColor: type.color }]}>
+              <View
+                style={[styles.iconContainer, { backgroundColor: type.color }]}
+              >
                 {type.image ? (
-                  <Image source={type.image} style={styles.iconImage} resizeMode="contain" />
+                  <Image
+                    source={type.image}
+                    style={styles.iconImage}
+                    resizeMode="contain"
+                  />
                 ) : (
                   <Text style={styles.iconText}>{type.icon}</Text>
                 )}
               </View>
-              <Text style={[styles.name, { color: textColor }]}>{type.name}</Text>
+              <Text style={[styles.name, { color: textColor }]}>
+                {translatedName}
+              </Text>
               {type.description && (
                 <Text style={[styles.description, { color: subtitleColor }]}>
-                  {type.description}
+                  {translatedDesc}
                 </Text>
               )}
             </TouchableOpacity>

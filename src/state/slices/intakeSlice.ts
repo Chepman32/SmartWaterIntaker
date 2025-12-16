@@ -4,7 +4,10 @@ import { StorageService } from '../../services/storage';
 import type { RootState } from '../store';
 
 function getLocalDateString(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    '0',
+  )}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
 type IntakeState = {
@@ -26,7 +29,9 @@ const intakeSlice = createSlice({
     addEvent(state, action: PayloadAction<IntakeEvent>) {
       state.events.unshift(action.payload);
       const todayStr = getLocalDateString(new Date());
-      const eventDateStr = getLocalDateString(new Date(action.payload.timestamp));
+      const eventDateStr = getLocalDateString(
+        new Date(action.payload.timestamp),
+      );
       if (eventDateStr === todayStr) {
         state.todayTotalMl += action.payload.amountMl;
       }
@@ -35,7 +40,9 @@ const intakeSlice = createSlice({
       const idx = state.events.findIndex(e => e.id === action.payload);
       if (idx !== -1) {
         const todayStr = getLocalDateString(new Date());
-        const eventDateStr = getLocalDateString(new Date(state.events[idx].timestamp));
+        const eventDateStr = getLocalDateString(
+          new Date(state.events[idx].timestamp),
+        );
         if (eventDateStr === todayStr) {
           state.todayTotalMl -= state.events[idx].amountMl;
         }
@@ -58,14 +65,15 @@ const intakeSlice = createSlice({
   },
 });
 
-export const { addEvent, deleteEvent, resetDay, setDailyGoal, setEvents } = intakeSlice.actions;
+export const { addEvent, deleteEvent, resetDay, setDailyGoal, setEvents } =
+  intakeSlice.actions;
 export default intakeSlice.reducer;
 
 // Thunks for persistence
 export const initIntakeFromStorage = () => (dispatch: any) => {
   try {
-    const allEvents = StorageService.getAllIntakeEvents?.()
-      ?? StorageService.getIntakeEvents();
+    const allEvents =
+      StorageService.getAllIntakeEvents?.() ?? StorageService.getIntakeEvents();
     dispatch(setEvents(allEvents));
     const goal = StorageService.getDailyGoal();
     if (goal?.computed) {
@@ -76,22 +84,47 @@ export const initIntakeFromStorage = () => (dispatch: any) => {
   }
 };
 
-export const logIntakeEvent = (
-  payload: Omit<IntakeEvent, 'id' | 'timestamp'> & { amountMl: number; timestamp?: number }
-) => (dispatch: any) => {
-  const timestamp = payload.timestamp ?? Date.now();
-  const saved = StorageService.addIntakeEvent({
-    timestamp,
-    amountMl: payload.amountMl,
-    source: payload.source,
-    containerId: payload.containerId,
-    drinkTypeId: payload.drinkTypeId,
-    note: payload.note,
-  });
-  dispatch(addEvent(saved));
-};
+export const logIntakeEvent =
+  (
+    payload: Omit<IntakeEvent, 'id' | 'timestamp'> & {
+      amountMl: number;
+      timestamp?: number;
+    },
+  ) =>
+  (dispatch: any) => {
+    try {
+      const timestamp = payload.timestamp ?? Date.now();
+      const saved = StorageService.addIntakeEvent({
+        timestamp,
+        amountMl: payload.amountMl,
+        source: payload.source,
+        containerId: payload.containerId,
+        drinkTypeId: payload.drinkTypeId,
+        note: payload.note,
+      });
+      dispatch(addEvent(saved));
+    } catch (error) {
+      console.warn('Failed to log intake event:', error);
+      // Still dispatch the event to update UI even if storage fails
+      const fallbackEvent: IntakeEvent = {
+        id: `${Date.now()}`,
+        timestamp: payload.timestamp ?? Date.now(),
+        amountMl: payload.amountMl,
+        source: payload.source,
+        containerId: payload.containerId,
+        drinkTypeId: payload.drinkTypeId,
+        note: payload.note,
+      };
+      dispatch(addEvent(fallbackEvent));
+    }
+  };
 
-export const deleteIntakeEventAndPersist = (id: string, dateISO: string) => (dispatch: any) => {
-  StorageService.deleteIntakeEvent(id, dateISO);
-  dispatch(deleteEvent(id));
-};
+export const deleteIntakeEventAndPersist =
+  (id: string, dateISO: string) => (dispatch: any) => {
+    try {
+      StorageService.deleteIntakeEvent(id, dateISO);
+    } catch (error) {
+      console.warn('Failed to delete intake event from storage:', error);
+    }
+    dispatch(deleteEvent(id));
+  };

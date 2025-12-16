@@ -13,13 +13,45 @@
     "ml": "毫升",
     "oz": "盎司",
     "flOz": "液量盎司",
+    "pint": "品脱",
     "kg": "千克",
     "lbs": "磅",
     "perDay": "每天",
     "ofGoal": "% 已完成"
   },
+  "tabs": {
+    "home": "首页",
+    "history": "历史",
+    "stats": "统计",
+    "ai": "AI",
+    "settings": "设置"
+  },
+  "drinkTypes": {
+    "water": "水",
+    "waterDesc": "纯净补水",
+    "tea": "茶",
+    "teaDesc": "放松身心",
+    "coffee": "咖啡",
+    "coffeeDesc": "提神醒脑",
+    "juice": "果汁",
+    "juiceDesc": "水果能量",
+    "soda": "汽水",
+    "sodaDesc": "犒劳自己",
+    "smoothie": "奶昔",
+    "smoothieDesc": "新鲜混合"
+  },
   "home": {
-    "chooseDrink": "选择饮料"
+    "chooseDrink": "选择饮料",
+    "drinkTypes": "饮料类型"
+  },
+  "waterLogging": {
+    "title": "记录饮水",
+    "chooseContainer": "选择容器",
+    "enterCustomAmount": "或输入自定义量",
+    "enterAmount": "输入量",
+    "addNote": "添加备注（可选）",
+    "addNotePlaceholder": "添加关于此次饮水的备注...",
+    "log": "记录"
   },
   "statistics": {
     "toggleWeek": "7 天",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "添加常用容器以在此处查看",
-    "favorites": "常用"
+    "favorites": "常用",
+    "glass": "玻璃杯",
+    "bottle": "瓶子",
+    "waterBottle": "水瓶",
+    "tumbler": "保温杯",
+    "pitcher": "水壶",
+    "cup": "杯子",
+    "container": "容器"
   },
   "error": {
     "title": "错误"

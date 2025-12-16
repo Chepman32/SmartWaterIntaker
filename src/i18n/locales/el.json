@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "λίβρες",
     "perDay": "Ανά ημέρα",
-    "ofGoal": "% επιτεύχθηκε"
+    "ofGoal": "% επιτεύχθηκε",
+    "pint": "πίντα"
+  },
+  "tabs": {
+    "home": "Αρχική",
+    "history": "Ιστορικό",
+    "stats": "Στατιστικά",
+    "ai": "AI",
+    "settings": "Ρυθμίσεις"
+  },
+  "drinkTypes": {
+    "water": "Νερό",
+    "waterDesc": "Καθαρή ενυδάτωση",
+    "tea": "Τσάι",
+    "teaDesc": "Χαλαρωτικό αφέψημα",
+    "coffee": "Καφές",
+    "coffeeDesc": "Ενεργειακή ώθηση",
+    "juice": "Χυμός",
+    "juiceDesc": "Δύναμη φρούτων",
+    "soda": "Αναψυκτικό",
+    "sodaDesc": "Κάντε χάρη στον εαυτό σας",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Φρέσκο μείγμα"
   },
   "home": {
-    "chooseDrink": "Επιλέξτε ποτό"
+    "chooseDrink": "Επιλέξτε ποτό",
+    "drinkTypes": "Τύποι ποτών"
+  },
+  "waterLogging": {
+    "title": "Καταγραφή πρόσληψης νερού",
+    "chooseContainer": "Επιλέξτε δοχείο",
+    "enterCustomAmount": "Ή εισάγετε προσαρμοσμένη ποσότητα",
+    "enterAmount": "Εισάγετε ποσότητα",
+    "addNote": "Προσθήκη σημείωσης (Προαιρετικό)",
+    "addNotePlaceholder": "Προσθέστε σημείωση για αυτή την πρόσληψη...",
+    "log": "Καταγραφή"
   },
   "statistics": {
     "toggleWeek": "7 ημέρες",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Προσθέστε αγαπημένα δοχεία για να τα δείτε εδώ",
-    "favorites": "Αγαπημένα"
+    "favorites": "Αγαπημένα",
+    "glass": "Ποτήρι",
+    "bottle": "Μπουκάλι",
+    "waterBottle": "Μπουκάλι νερού",
+    "tumbler": "Θερμός κούπα",
+    "pitcher": "Κανάτα",
+    "cup": "Φλιτζάνι",
+    "container": "Δοχείο"
   },
   "error": {
     "title": "Σφάλμα"

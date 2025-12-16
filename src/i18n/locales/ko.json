@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "온스",
     "flOz": "액량 온스",
+    "pint": "파인트",
     "kg": "kg",
     "lbs": "파운드",
     "perDay": "하루",
     "ofGoal": "% 달성"
   },
+  "tabs": {
+    "home": "홈",
+    "history": "기록",
+    "stats": "통계",
+    "ai": "AI",
+    "settings": "설정"
+  },
+  "drinkTypes": {
+    "water": "물",
+    "waterDesc": "순수한 수분 보충",
+    "tea": "차",
+    "teaDesc": "편안한 음료",
+    "coffee": "커피",
+    "coffeeDesc": "에너지 충전",
+    "juice": "주스",
+    "juiceDesc": "과일 에너지",
+    "soda": "탄산음료",
+    "sodaDesc": "자신에게 선물",
+    "smoothie": "스무디",
+    "smoothieDesc": "신선한 블렌드"
+  },
   "home": {
-    "chooseDrink": "음료 선택"
+    "chooseDrink": "음료 선택",
+    "drinkTypes": "음료 종류"
+  },
+  "waterLogging": {
+    "title": "수분 섭취 기록",
+    "chooseContainer": "용기 선택",
+    "enterCustomAmount": "또는 직접 입력",
+    "enterAmount": "양 입력",
+    "addNote": "메모 추가 (선택)",
+    "addNotePlaceholder": "이 섭취에 대한 메모 추가...",
+    "log": "기록"
   },
   "statistics": {
     "toggleWeek": "7일",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "자주 사용하는 용기를 추가하면 여기에 표시됩니다",
-    "favorites": "즐겨찾기"
+    "favorites": "즐겨찾기",
+    "glass": "유리컵",
+    "bottle": "병",
+    "waterBottle": "물병",
+    "tumbler": "텀블러",
+    "pitcher": "물주전자",
+    "cup": "컵",
+    "container": "용기"
   },
   "error": {
     "title": "오류"

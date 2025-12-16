@@ -9,6 +9,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { RootState } from '../state/store';
@@ -26,42 +27,54 @@ export default function WaterLoggingBottomSheet({
   onClose,
 }: WaterLoggingBottomSheetProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
-  const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
-  
+  const hapticsEnabled = useSelector(
+    (state: RootState) => state.settings.settings.haptics,
+  );
+
   const containers = useSelector((state: RootState) => state.containers.items);
-  const [selectedContainer, setSelectedContainer] = useState<Container | null>(null);
+  const [selectedContainer, setSelectedContainer] = useState<Container | null>(
+    null,
+  );
   const [customAmount, setCustomAmount] = useState('');
   const [note, setNote] = useState('');
-  
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
 
-  const handleSheetChanges = useCallback((index: number) => {
-    if (index === -1) {
-      onClose();
-    }
-  }, [onClose]);
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === -1) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
 
   const handleLog = useCallback(() => {
-    const amount = selectedContainer ? selectedContainer.sizeMl : parseInt(customAmount) || 0;
-    
+    const amount = selectedContainer
+      ? selectedContainer.sizeMl
+      : parseInt(customAmount) || 0;
+
     if (amount <= 0) return;
 
-    dispatch(logIntakeEvent({
-      amountMl: amount,
-      source: selectedContainer ? 'container' : 'custom',
-      containerId: selectedContainer?.id,
-      note: note.trim() || undefined,
-    }));
+    dispatch(
+      logIntakeEvent({
+        amountMl: amount,
+        source: selectedContainer ? 'container' : 'custom',
+        containerId: selectedContainer?.id,
+        note: note.trim() || undefined,
+      }),
+    );
     if (hapticsEnabled) {
       ReactNativeHapticFeedback.trigger('impactLight', {
         enableVibrateFallback: true,
         ignoreAndroidSystemSettings: false,
       });
     }
-    
+
     // Reset form
     setSelectedContainer(null);
     setCustomAmount('');
@@ -83,36 +96,58 @@ export default function WaterLoggingBottomSheet({
       backgroundStyle={{ backgroundColor: theme.surface }}
       handleIndicatorStyle={{ backgroundColor: theme.border }}
     >
-      <BottomSheetView style={[styles.container, { backgroundColor: theme.surface }]}>
-        <Text style={[styles.title, { color: theme.text }]}>Log Water Intake</Text>
-        
+      <BottomSheetView
+        style={[styles.container, { backgroundColor: theme.surface }]}
+      >
+        <Text style={[styles.title, { color: theme.text }]}>
+          {t('waterLogging.title')}
+        </Text>
+
         {/* Container Selection */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>Choose Container</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.containerScroll}>
-            {containers.map((container) => (
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            {t('waterLogging.chooseContainer')}
+          </Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.containerScroll}
+          >
+            {containers.map(container => (
               <TouchableOpacity
                 key={container.id}
                 style={[
                   styles.containerOption,
                   {
-                    backgroundColor: selectedContainer?.id === container.id 
-                      ? container.color + '40' 
-                      : theme.background,
-                    borderColor: selectedContainer?.id === container.id 
-                      ? container.color 
-                      : theme.border,
-                  }
+                    backgroundColor:
+                      selectedContainer?.id === container.id
+                        ? container.color + '40'
+                        : theme.background,
+                    borderColor:
+                      selectedContainer?.id === container.id
+                        ? container.color
+                        : theme.border,
+                  },
                 ]}
                 onPress={() => setSelectedContainer(container)}
               >
-                <View style={[styles.containerIcon, { backgroundColor: container.color }]}>
+                <View
+                  style={[
+                    styles.containerIcon,
+                    { backgroundColor: container.color },
+                  ]}
+                >
                   <Text style={styles.containerIconText}>{container.icon}</Text>
                 </View>
-                <Text style={[styles.containerName, { color: theme.text }]} numberOfLines={1}>
+                <Text
+                  style={[styles.containerName, { color: theme.text }]}
+                  numberOfLines={1}
+                >
                   {container.name}
                 </Text>
-                <Text style={[styles.containerSize, { color: theme.textSecondary }]}>
+                <Text
+                  style={[styles.containerSize, { color: theme.textSecondary }]}
+                >
                   {container.sizeMl}ml
                 </Text>
               </TouchableOpacity>
@@ -122,49 +157,55 @@ export default function WaterLoggingBottomSheet({
 
         {/* Custom Amount */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>Or Enter Custom Amount</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            {t('waterLogging.enterCustomAmount')}
+          </Text>
           <View style={styles.customAmountContainer}>
             <TextInput
               style={[
                 styles.customAmountInput,
-                { 
+                {
                   backgroundColor: theme.background,
                   borderColor: theme.border,
                   color: theme.text,
-                }
+                },
               ]}
               value={customAmount}
               onChangeText={setCustomAmount}
-              placeholder="Enter amount"
+              placeholder={t('waterLogging.enterAmount')}
               placeholderTextColor={theme.textSecondary}
               keyboardType="numeric"
               onFocus={() => setSelectedContainer(null)}
             />
             <Text style={[styles.unitLabel, { color: theme.text }]}>ml</Text>
           </View>
-          
+
           {/* Quick Amount Buttons */}
           <View style={styles.quickAmountsContainer}>
-            {quickAmounts.map((amount) => (
+            {quickAmounts.map(amount => (
               <TouchableOpacity
                 key={amount}
                 style={[
                   styles.quickAmountButton,
-                  { 
-                    backgroundColor: customAmount === amount.toString() 
-                      ? theme.primary + '40' 
-                      : theme.background,
-                    borderColor: customAmount === amount.toString() 
-                      ? theme.primary 
-                      : theme.border,
-                  }
+                  {
+                    backgroundColor:
+                      customAmount === amount.toString()
+                        ? theme.primary + '40'
+                        : theme.background,
+                    borderColor:
+                      customAmount === amount.toString()
+                        ? theme.primary
+                        : theme.border,
+                  },
                 ]}
                 onPress={() => {
                   setCustomAmount(amount.toString());
                   setSelectedContainer(null);
                 }}
               >
-                <Text style={[styles.quickAmountText, { color: theme.text }]}>{amount}ml</Text>
+                <Text style={[styles.quickAmountText, { color: theme.text }]}>
+                  {amount}ml
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -172,19 +213,21 @@ export default function WaterLoggingBottomSheet({
 
         {/* Note */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>Add Note (Optional)</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            {t('waterLogging.addNote')}
+          </Text>
           <TextInput
             style={[
               styles.noteInput,
-              { 
+              {
                 backgroundColor: theme.background,
                 borderColor: theme.border,
                 color: theme.text,
-              }
+              },
             ]}
             value={note}
             onChangeText={setNote}
-            placeholder="Add a note about this intake..."
+            placeholder={t('waterLogging.addNotePlaceholder')}
             placeholderTextColor={theme.textSecondary}
             multiline
             numberOfLines={3}
@@ -195,16 +238,27 @@ export default function WaterLoggingBottomSheet({
         <TouchableOpacity
           style={[
             styles.logButton,
-            { 
+            {
               backgroundColor: theme.primary,
-              opacity: (selectedContainer || (customAmount && parseInt(customAmount) > 0)) ? 1 : 0.5,
-            }
+              opacity:
+                selectedContainer ||
+                (customAmount && parseInt(customAmount) > 0)
+                  ? 1
+                  : 0.5,
+            },
           ]}
           onPress={handleLog}
-          disabled={!selectedContainer && (!customAmount || parseInt(customAmount) <= 0)}
+          disabled={
+            !selectedContainer && (!customAmount || parseInt(customAmount) <= 0)
+          }
         >
           <Text style={styles.logButtonText}>
-            Log {selectedContainer ? `${selectedContainer.sizeMl}ml` : customAmount ? `${customAmount}ml` : '0ml'}
+            {t('waterLogging.log')}{' '}
+            {selectedContainer
+              ? `${selectedContainer.sizeMl}ml`
+              : customAmount
+              ? `${customAmount}ml`
+              : '0ml'}
           </Text>
         </TouchableOpacity>
       </BottomSheetView>

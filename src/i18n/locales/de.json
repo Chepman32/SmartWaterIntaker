@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "Unzen",
     "flOz": "Flüssigunzen",
+    "pint": "Pint",
     "kg": "kg",
     "lbs": "Pfund",
     "perDay": "Pro Tag",
     "ofGoal": "% erreicht"
   },
+  "tabs": {
+    "home": "Start",
+    "history": "Verlauf",
+    "stats": "Statistik",
+    "ai": "KI",
+    "settings": "Einstellungen"
+  },
+  "drinkTypes": {
+    "water": "Wasser",
+    "waterDesc": "Reine Hydration",
+    "tea": "Tee",
+    "teaDesc": "Entspannender Aufguss",
+    "coffee": "Kaffee",
+    "coffeeDesc": "Energieschub",
+    "juice": "Saft",
+    "juiceDesc": "Fruchtkraft",
+    "soda": "Limonade",
+    "sodaDesc": "Gönn dir was",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Frischer Mix"
+  },
   "home": {
-    "chooseDrink": "Getränk wählen"
+    "chooseDrink": "Getränk wählen",
+    "drinkTypes": "Getränkearten"
+  },
+  "waterLogging": {
+    "title": "Flüssigkeitsaufnahme erfassen",
+    "chooseContainer": "Behälter wählen",
+    "enterCustomAmount": "Oder eigene Menge eingeben",
+    "enterAmount": "Menge eingeben",
+    "addNote": "Notiz hinzufügen (Optional)",
+    "addNotePlaceholder": "Notiz zu dieser Aufnahme hinzufügen...",
+    "log": "Erfassen"
   },
   "statistics": {
     "toggleWeek": "7 Tage",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Füge bevorzugte Behälter hinzu, um sie hier zu sehen",
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "glass": "Glas",
+    "bottle": "Flasche",
+    "waterBottle": "Wasserflasche",
+    "tumbler": "Thermobecher",
+    "pitcher": "Krug",
+    "cup": "Tasse",
+    "container": "Behälter"
   },
   "error": {
     "title": "Fehler"

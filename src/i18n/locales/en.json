@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "oz",
     "flOz": "fl oz",
+    "pint": "pint",
     "kg": "kg",
     "lbs": "lbs",
     "perDay": "per day",
     "ofGoal": "% of goal"
   },
+  "tabs": {
+    "home": "Home",
+    "history": "History",
+    "stats": "Statistics",
+    "ai": "AI",
+    "settings": "Settings"
+  },
+  "drinkTypes": {
+    "water": "Water",
+    "waterDesc": "Pure hydration",
+    "tea": "Tea",
+    "teaDesc": "Relaxing infusion",
+    "coffee": "Coffee",
+    "coffeeDesc": "Energy boost",
+    "juice": "Juice",
+    "juiceDesc": "Fruit powered",
+    "soda": "Soda",
+    "sodaDesc": "Treat yourself",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Fresh blend"
+  },
   "home": {
-    "chooseDrink": "Choose a drink"
+    "chooseDrink": "Choose a drink",
+    "drinkTypes": "Drink Types"
+  },
+  "waterLogging": {
+    "title": "Log Water Intake",
+    "chooseContainer": "Choose Container",
+    "enterCustomAmount": "Or Enter Custom Amount",
+    "enterAmount": "Enter amount",
+    "addNote": "Add Note (Optional)",
+    "addNotePlaceholder": "Add a note about this intake...",
+    "log": "Log"
   },
   "statistics": {
     "toggleWeek": "7 Days",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Add favorite containers to see them here",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "glass": "Glass",
+    "bottle": "Bottle",
+    "waterBottle": "Water Bottle",
+    "tumbler": "Tumbler",
+    "pitcher": "Pitcher",
+    "cup": "Cup",
+    "container": "Container"
   },
   "error": {
     "title": "Error"

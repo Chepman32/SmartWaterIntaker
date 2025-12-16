@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "ounce",
     "flOz": "vloeibare ounce",
+    "pint": "pint",
     "kg": "kg",
     "lbs": "pond",
     "perDay": "Per dag",
     "ofGoal": "% behaald"
   },
+  "tabs": {
+    "home": "Home",
+    "history": "Geschiedenis",
+    "stats": "Statistieken",
+    "ai": "AI",
+    "settings": "Instellingen"
+  },
+  "drinkTypes": {
+    "water": "Water",
+    "waterDesc": "Pure hydratatie",
+    "tea": "Thee",
+    "teaDesc": "Ontspannende infusie",
+    "coffee": "Koffie",
+    "coffeeDesc": "Energieboost",
+    "juice": "Sap",
+    "juiceDesc": "Fruitkracht",
+    "soda": "Frisdrank",
+    "sodaDesc": "Trakteer jezelf",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Verse mix"
+  },
   "home": {
-    "chooseDrink": "Kies een drankje"
+    "chooseDrink": "Kies een drankje",
+    "drinkTypes": "Dranksoorten"
+  },
+  "waterLogging": {
+    "title": "Vochtinname registreren",
+    "chooseContainer": "Kies container",
+    "enterCustomAmount": "Of voer aangepaste hoeveelheid in",
+    "enterAmount": "Voer hoeveelheid in",
+    "addNote": "Notitie toevoegen (Optioneel)",
+    "addNotePlaceholder": "Voeg een notitie toe over deze inname...",
+    "log": "Registreren"
   },
   "statistics": {
     "toggleWeek": "7 dagen",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Voeg favoriete containers toe om ze hier te zien",
-    "favorites": "Favorieten"
+    "favorites": "Favorieten",
+    "glass": "Glas",
+    "bottle": "Fles",
+    "waterBottle": "Waterfles",
+    "tumbler": "Thermosbeker",
+    "pitcher": "Kan",
+    "cup": "Kopje",
+    "container": "Container"
   },
   "error": {
     "title": "Fout"

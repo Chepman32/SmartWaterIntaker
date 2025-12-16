@@ -13,13 +13,45 @@
     "ml": "ml",
     "oz": "オンス",
     "flOz": "液量オンス",
+    "pint": "パイント",
     "kg": "kg",
     "lbs": "ポンド",
     "perDay": "1日あたり",
     "ofGoal": "% 達成"
   },
+  "tabs": {
+    "home": "ホーム",
+    "history": "履歴",
+    "stats": "統計",
+    "ai": "AI",
+    "settings": "設定"
+  },
+  "drinkTypes": {
+    "water": "水",
+    "waterDesc": "純粋な水分補給",
+    "tea": "お茶",
+    "teaDesc": "リラックス",
+    "coffee": "コーヒー",
+    "coffeeDesc": "エネルギー補給",
+    "juice": "ジュース",
+    "juiceDesc": "フルーツパワー",
+    "soda": "炭酸飲料",
+    "sodaDesc": "ご褒美に",
+    "smoothie": "スムージー",
+    "smoothieDesc": "フレッシュブレンド"
+  },
   "home": {
-    "chooseDrink": "飲み物を選択"
+    "chooseDrink": "飲み物を選択",
+    "drinkTypes": "飲み物の種類"
+  },
+  "waterLogging": {
+    "title": "水分補給を記録",
+    "chooseContainer": "容器を選択",
+    "enterCustomAmount": "またはカスタム量を入力",
+    "enterAmount": "量を入力",
+    "addNote": "メモを追加（任意）",
+    "addNotePlaceholder": "この摂取についてのメモを追加...",
+    "log": "記録"
   },
   "statistics": {
     "toggleWeek": "7日間",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "よく使う容器を追加するとここに表示されます",
-    "favorites": "お気に入り"
+    "favorites": "お気に入り",
+    "glass": "グラス",
+    "bottle": "ボトル",
+    "waterBottle": "水筒",
+    "tumbler": "タンブラー",
+    "pitcher": "ピッチャー",
+    "cup": "カップ",
+    "container": "容器"
   },
   "error": {
     "title": "エラー"

@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "naula",
     "perDay": "Päivässä",
-    "ofGoal": "% saavutettu"
+    "ofGoal": "% saavutettu",
+    "pint": "tuoppi"
+  },
+  "tabs": {
+    "home": "Koti",
+    "history": "Historia",
+    "stats": "Tilastot",
+    "ai": "AI",
+    "settings": "Asetukset"
+  },
+  "drinkTypes": {
+    "water": "Vesi",
+    "waterDesc": "Puhdas nesteytys",
+    "tea": "Tee",
+    "teaDesc": "Rentouttava infuusio",
+    "coffee": "Kahvi",
+    "coffeeDesc": "Energiapiristys",
+    "juice": "Mehu",
+    "juiceDesc": "Hedelmävoimaa",
+    "soda": "Limonadi",
+    "sodaDesc": "Hemmottele itseäsi",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Raikas sekoitus"
   },
   "home": {
-    "chooseDrink": "Valitse juoma"
+    "chooseDrink": "Valitse juoma",
+    "drinkTypes": "Juomatyypit"
+  },
+  "waterLogging": {
+    "title": "Kirjaa nesteen saanti",
+    "chooseContainer": "Valitse astia",
+    "enterCustomAmount": "Tai syötä mukautettu määrä",
+    "enterAmount": "Syötä määrä",
+    "addNote": "Lisää muistiinpano (Valinnainen)",
+    "addNotePlaceholder": "Lisää muistiinpano tästä saannista...",
+    "log": "Kirjaa"
   },
   "statistics": {
     "toggleWeek": "7 päivää",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Lisää suosikkisäiliöt nähdäksesi ne täällä",
-    "favorites": "Suosikit"
+    "favorites": "Suosikit",
+    "glass": "Lasi",
+    "bottle": "Pullo",
+    "waterBottle": "Vesipullo",
+    "tumbler": "Termomuki",
+    "pitcher": "Kannu",
+    "cup": "Kuppi",
+    "container": "Säiliö"
   },
   "error": {
     "title": "Virhe"

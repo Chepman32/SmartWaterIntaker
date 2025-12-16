@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RootState } from '../state/store';
 import { logIntakeEvent } from '../state/slices/intakeSlice';
@@ -24,9 +32,12 @@ export default function ContainerCarousel({
   const tumblerImage = require('../../assets/images/tumbler.png');
   const pitcherImage = require('../../assets/images/pitcher.png');
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const containers = useSelector((state: RootState) => state.containers.items);
   const favoriteContainers = containers.filter((c: Container) => c.favorite);
-  const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
+  const hapticsEnabled = useSelector(
+    (state: RootState) => state.settings.settings.haptics,
+  );
 
   const handleContainerPress = (container: Container) => {
     if (onContainerSelect) {
@@ -34,12 +45,14 @@ export default function ContainerCarousel({
       return;
     }
 
-    dispatch(logIntakeEvent({
-      amountMl: container.sizeMl,
-      source: 'container',
-      containerId: container.id,
-      note: `${container.name} (${container.sizeMl}ml)`,
-    }));
+    dispatch(
+      logIntakeEvent({
+        amountMl: container.sizeMl,
+        source: 'container',
+        containerId: container.id,
+        note: `${container.name} (${container.sizeMl}ml)`,
+      }),
+    );
 
     if (hapticsEnabled) {
       ReactNativeHapticFeedback.trigger('impactLight', {
@@ -53,7 +66,7 @@ export default function ContainerCarousel({
     return (
       <View style={styles.emptyContainer}>
         <Text style={[styles.emptyText, { color: textColor }]}>
-          Add favorite containers to see them here
+          {t('containers.addFavorites')}
         </Text>
       </View>
     );
@@ -63,51 +76,71 @@ export default function ContainerCarousel({
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={[styles.title, { color: textColor }]}>
-          {selectedDrinkType ? `${selectedDrinkType.name} Favorites` : 'Favorites'}
+          {selectedDrinkType
+            ? `${selectedDrinkType.name} ${t('containers.favorites')}`
+            : t('containers.favorites')}
         </Text>
         {selectedDrinkType && onChangeDrinkType && (
           <TouchableOpacity onPress={onChangeDrinkType}>
-            <Text style={[styles.changeTypeText, { color: selectedDrinkType.color }]}>
+            <Text
+              style={[
+                styles.changeTypeText,
+                { color: selectedDrinkType.color },
+              ]}
+            >
               Change
             </Text>
           </TouchableOpacity>
         )}
       </View>
-      <ScrollView 
-        horizontal 
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {favoriteContainers.map((container) => (
+        {favoriteContainers.map(container => (
           <TouchableOpacity
             key={container.id}
             style={[
               styles.containerItem,
-              { backgroundColor: container.color + '20', borderColor: container.color }
+              {
+                backgroundColor: container.color + '20',
+                borderColor: container.color,
+              },
             ]}
             onPress={() => handleContainerPress(container)}
             activeOpacity={0.7}
           >
-            <View style={[styles.iconContainer, { backgroundColor: container.color }]}>
-              {(container.id?.startsWith('glass') || container.name === 'Glass') ? (
+            <View
+              style={[
+                styles.iconContainer,
+                { backgroundColor: container.color },
+              ]}
+            >
+              {container.id?.startsWith('glass') ||
+              container.name === 'Glass' ? (
                 <Image
                   source={glassImage}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
-              ) : (container.id?.startsWith('bottle') || container.name === 'Bottle' || container.name === 'Water Bottle') ? (
+              ) : container.id?.startsWith('bottle') ||
+                container.name === 'Bottle' ||
+                container.name === 'Water Bottle' ? (
                 <Image
                   source={bottleImage}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
-              ) : (container.id?.startsWith('tumbler') || container.name === 'Tumbler') ? (
+              ) : container.id?.startsWith('tumbler') ||
+                container.name === 'Tumbler' ? (
                 <Image
                   source={tumblerImage}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
-              ) : (container.id?.startsWith('pitcher') || container.name === 'Pitcher') ? (
+              ) : container.id?.startsWith('pitcher') ||
+                container.name === 'Pitcher' ? (
                 <Image
                   source={pitcherImage}
                   style={styles.iconImage}
@@ -117,7 +150,10 @@ export default function ContainerCarousel({
                 <Text style={styles.iconText}>{container.icon}</Text>
               )}
             </View>
-            <Text style={[styles.containerName, { color: textColor }]} numberOfLines={1}>
+            <Text
+              style={[styles.containerName, { color: textColor }]}
+              numberOfLines={1}
+            >
               {container.name}
             </Text>
             <Text style={[styles.containerSize, { color: textColor }]}>

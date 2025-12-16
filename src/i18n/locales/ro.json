@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "livre",
     "perDay": "Pe zi",
-    "ofGoal": "% atins"
+    "ofGoal": "% atins",
+    "pint": "halbă"
+  },
+  "tabs": {
+    "home": "Acasă",
+    "history": "Istoric",
+    "stats": "Statistici",
+    "ai": "AI",
+    "settings": "Setări"
+  },
+  "drinkTypes": {
+    "water": "Apă",
+    "waterDesc": "Hidratare pură",
+    "tea": "Ceai",
+    "teaDesc": "Infuzie relaxantă",
+    "coffee": "Cafea",
+    "coffeeDesc": "Boost de energie",
+    "juice": "Suc",
+    "juiceDesc": "Putere din fructe",
+    "soda": "Suc carbogazos",
+    "sodaDesc": "Răsfață-te",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Amestec proaspăt"
   },
   "home": {
-    "chooseDrink": "Alege băutură"
+    "chooseDrink": "Alege băutură",
+    "drinkTypes": "Tipuri de băuturi"
+  },
+  "waterLogging": {
+    "title": "Înregistrează aportul de apă",
+    "chooseContainer": "Alege recipient",
+    "enterCustomAmount": "Sau introdu cantitate personalizată",
+    "enterAmount": "Introdu cantitatea",
+    "addNote": "Adaugă notă (Opțional)",
+    "addNotePlaceholder": "Adaugă o notă despre acest aport...",
+    "log": "Înregistrează"
   },
   "statistics": {
     "toggleWeek": "7 zile",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Adaugă recipiente favorite pentru a le vedea aici",
-    "favorites": "Favorite"
+    "favorites": "Favorite",
+    "glass": "Pahar",
+    "bottle": "Sticlă",
+    "waterBottle": "Sticlă de apă",
+    "tumbler": "Cană termică",
+    "pitcher": "Ulcior",
+    "cup": "Ceașcă",
+    "container": "Recipient"
   },
   "error": {
     "title": "Eroare"

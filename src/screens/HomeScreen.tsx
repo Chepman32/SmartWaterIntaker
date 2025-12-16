@@ -19,20 +19,26 @@ export default function HomeScreen() {
   const { theme, mode } = useTheme();
   const { width } = useWindowDimensions();
   const carouselAnim = useRef(new Animated.Value(0)).current;
-  const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(null);
-  const hapticsEnabled = useSelector((state: RootState) => state.settings.settings.haptics);
-  
-  const todayTotalMl = useSelector((state: RootState) => 
+  const [selectedDrinkType, setSelectedDrinkType] = useState<DrinkType | null>(
+    null,
+  );
+  const hapticsEnabled = useSelector(
+    (state: RootState) => state.settings.settings.haptics,
+  );
+
+  const todayTotalMl = useSelector((state: RootState) =>
     state.intake.events
       .filter(event => {
         const today = new Date();
         const eventDate = new Date(event.timestamp);
         return eventDate.toDateString() === today.toDateString();
       })
-      .reduce((total, event) => total + event.amountMl, 0)
+      .reduce((total, event) => total + event.amountMl, 0),
   );
-  
-  const dailyGoalMl = useSelector((state: RootState) => state.intake.dailyGoalMl);
+
+  const dailyGoalMl = useSelector(
+    (state: RootState) => state.intake.dailyGoalMl,
+  );
   const progress = Math.min(todayTotalMl / dailyGoalMl, 1);
 
   const animateTo = (value: number, onComplete?: () => void) => {
@@ -59,13 +65,15 @@ export default function HomeScreen() {
 
   const handleContainerSelect = (container: Container) => {
     const notePrefix = selectedDrinkType ? `${selectedDrinkType.name} - ` : '';
-    dispatch(logIntakeEvent({
-      amountMl: container.sizeMl,
-      source: 'container',
-      containerId: container.id,
-      drinkTypeId: selectedDrinkType?.id,
-      note: `${notePrefix}${container.name} (${container.sizeMl}ml)`,
-    }));
+    dispatch(
+      logIntakeEvent({
+        amountMl: container.sizeMl,
+        source: 'container',
+        containerId: container.id,
+        drinkTypeId: selectedDrinkType?.id,
+        note: `${notePrefix}${container.name} (${container.sizeMl}ml)`,
+      }),
+    );
 
     if (hapticsEnabled) {
       ReactNativeHapticFeedback.trigger('impactLight', {
@@ -86,7 +94,10 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+      edges={['top', 'left', 'right']}
+    >
       <View style={styles.progressContainer}>
         <WaterRing
           size={Math.floor(width * 0.99)}
@@ -117,7 +128,6 @@ export default function HomeScreen() {
             subtitleColor={theme.textSecondary}
             onSelect={handleDrinkTypeSelect}
             selectedDrinkTypeId={selectedDrinkType?.id}
-            title="Choose a drink"
           />
         </Animated.View>
 
@@ -142,9 +152,9 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#fff' 
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
 
   progressContainer: {
@@ -161,6 +171,4 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: 8,
   },
-
-
 });

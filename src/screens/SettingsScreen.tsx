@@ -247,7 +247,7 @@ const SettingsScreen: React.FC = () => {
                   },
                 ]}
               >
-                pint
+                {t('common.pint')}
               </Text>
             </TouchableOpacity>
           </View>

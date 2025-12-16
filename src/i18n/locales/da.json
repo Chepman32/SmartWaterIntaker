@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "pund",
     "perDay": "Per dag",
-    "ofGoal": "% opnået"
+    "ofGoal": "% opnået",
+    "pint": "pint"
+  },
+  "tabs": {
+    "home": "Hjem",
+    "history": "Historik",
+    "stats": "Statistik",
+    "ai": "AI",
+    "settings": "Indstillinger"
+  },
+  "drinkTypes": {
+    "water": "Vand",
+    "waterDesc": "Ren hydrering",
+    "tea": "Te",
+    "teaDesc": "Afslappende infusion",
+    "coffee": "Kaffe",
+    "coffeeDesc": "Energiboost",
+    "juice": "Juice",
+    "juiceDesc": "Frugtdrevet",
+    "soda": "Sodavand",
+    "sodaDesc": "Forkæl dig selv",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Frisk blanding"
   },
   "home": {
-    "chooseDrink": "Vælg drikkevare"
+    "chooseDrink": "Vælg drikkevare",
+    "drinkTypes": "Drikketyper"
+  },
+  "waterLogging": {
+    "title": "Log vandindtag",
+    "chooseContainer": "Vælg beholder",
+    "enterCustomAmount": "Eller indtast tilpasset mængde",
+    "enterAmount": "Indtast mængde",
+    "addNote": "Tilføj note (Valgfrit)",
+    "addNotePlaceholder": "Tilføj en note om dette indtag...",
+    "log": "Log"
   },
   "statistics": {
     "toggleWeek": "7 dage",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Tilføj favoritbeholdere for at se dem her",
-    "favorites": "Favoritter"
+    "favorites": "Favoritter",
+    "glass": "Glas",
+    "bottle": "Flaske",
+    "waterBottle": "Vandflaske",
+    "tumbler": "Termokrus",
+    "pitcher": "Kande",
+    "cup": "Kop",
+    "container": "Beholder"
   },
   "error": {
     "title": "Fejl"

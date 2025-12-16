@@ -13,13 +13,45 @@
     "ml": "มล.",
     "oz": "ออนซ์",
     "flOz": "ออนซ์ของเหลว",
+    "pint": "ไพนต์",
     "kg": "กก.",
     "lbs": "ปอนด์",
     "perDay": "ต่อวัน",
     "ofGoal": "% สำเร็จ"
   },
+  "tabs": {
+    "home": "หน้าหลัก",
+    "history": "ประวัติ",
+    "stats": "สถิติ",
+    "ai": "AI",
+    "settings": "ตั้งค่า"
+  },
+  "drinkTypes": {
+    "water": "น้ำ",
+    "waterDesc": "ความชุ่มชื้นบริสุทธิ์",
+    "tea": "ชา",
+    "teaDesc": "เครื่องดื่มผ่อนคลาย",
+    "coffee": "กาแฟ",
+    "coffeeDesc": "เพิ่มพลังงาน",
+    "juice": "น้ำผลไม้",
+    "juiceDesc": "พลังจากผลไม้",
+    "soda": "น้ำอัดลม",
+    "sodaDesc": "ให้รางวัลตัวเอง",
+    "smoothie": "สมูทตี้",
+    "smoothieDesc": "เครื่องดื่มปั่นสด"
+  },
   "home": {
-    "chooseDrink": "เลือกเครื่องดื่ม"
+    "chooseDrink": "เลือกเครื่องดื่ม",
+    "drinkTypes": "ประเภทเครื่องดื่ม"
+  },
+  "waterLogging": {
+    "title": "บันทึกการดื่มน้ำ",
+    "chooseContainer": "เลือกภาชนะ",
+    "enterCustomAmount": "หรือใส่ปริมาณเอง",
+    "enterAmount": "ใส่ปริมาณ",
+    "addNote": "เพิ่มบันทึก (ไม่บังคับ)",
+    "addNotePlaceholder": "เพิ่มบันทึกเกี่ยวกับการดื่มนี้...",
+    "log": "บันทึก"
   },
   "statistics": {
     "toggleWeek": "7 วัน",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "เพิ่มภาชนะที่ชื่นชอบเพื่อดูที่นี่",
-    "favorites": "รายการโปรด"
+    "favorites": "รายการโปรด",
+    "glass": "แก้ว",
+    "bottle": "ขวด",
+    "waterBottle": "ขวดน้ำ",
+    "tumbler": "แก้วเก็บความเย็น",
+    "pitcher": "เหยือก",
+    "cup": "ถ้วย",
+    "container": "ภาชนะ"
   },
   "error": {
     "title": "ข้อผิดพลาด"

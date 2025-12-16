@@ -16,10 +16,42 @@
     "kg": "kg",
     "lbs": "libra",
     "perDay": "Bawat araw",
-    "ofGoal": "% naabot"
+    "ofGoal": "% naabot",
+    "pint": "pinta"
+  },
+  "tabs": {
+    "home": "Home",
+    "history": "Kasaysayan",
+    "stats": "Estadistika",
+    "ai": "AI",
+    "settings": "Mga Setting"
+  },
+  "drinkTypes": {
+    "water": "Tubig",
+    "waterDesc": "Purong hydration",
+    "tea": "Tsaa",
+    "teaDesc": "Nakakarelaks na infusion",
+    "coffee": "Kape",
+    "coffeeDesc": "Energy boost",
+    "juice": "Juice",
+    "juiceDesc": "Lakas ng prutas",
+    "soda": "Soda",
+    "sodaDesc": "Bigyan mo ang sarili mo",
+    "smoothie": "Smoothie",
+    "smoothieDesc": "Sariwang halo"
   },
   "home": {
-    "chooseDrink": "Pumili ng inumin"
+    "chooseDrink": "Pumili ng inumin",
+    "drinkTypes": "Mga uri ng inumin"
+  },
+  "waterLogging": {
+    "title": "I-log ang pag-inom ng tubig",
+    "chooseContainer": "Pumili ng lalagyan",
+    "enterCustomAmount": "O maglagay ng custom na halaga",
+    "enterAmount": "Ilagay ang halaga",
+    "addNote": "Magdagdag ng tala (Opsyonal)",
+    "addNotePlaceholder": "Magdagdag ng tala tungkol sa pag-inom na ito...",
+    "log": "I-log"
   },
   "statistics": {
     "toggleWeek": "7 araw",
@@ -205,7 +237,14 @@
   },
   "containers": {
     "addFavorites": "Magdagdag ng mga paboritong lalagyan upang makita ang mga ito dito",
-    "favorites": "Mga paborito"
+    "favorites": "Mga paborito",
+    "glass": "Baso",
+    "bottle": "Bote",
+    "waterBottle": "Bote ng tubig",
+    "tumbler": "Tumbler",
+    "pitcher": "Pitsel",
+    "cup": "Tasa",
+    "container": "Lalagyan"
   },
   "error": {
     "title": "Error"
