@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { WeightPicker } from '../../components/WeightPicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -32,49 +33,8 @@ interface ClimateOption {
   multiplier: number;
 }
 
-const activityOptions: ActivityOption[] = [
-  {
-    id: 'low',
-    title: 'Low Activity',
-    description: 'Mostly sedentary, little to no exercise',
-    multiplier: 1.0,
-  },
-  {
-    id: 'medium',
-    title: 'Moderate Activity',
-    description: 'Light exercise 1-3 days per week',
-    multiplier: 1.2,
-  },
-  {
-    id: 'high',
-    title: 'High Activity',
-    description: 'Intense exercise 4+ days per week',
-    multiplier: 1.4,
-  },
-];
-
-const climateOptions: ClimateOption[] = [
-  {
-    id: 'cool',
-    title: 'Cool Climate',
-    description: 'Average temperature below 20°C (68°F)',
-    multiplier: 1.0,
-  },
-  {
-    id: 'temperate',
-    title: 'Temperate Climate',
-    description: 'Average temperature 20-25°C (68-77°F)',
-    multiplier: 1.1,
-  },
-  {
-    id: 'hot',
-    title: 'Hot Climate',
-    description: 'Average temperature above 25°C (77°F)',
-    multiplier: 1.2,
-  },
-];
-
 export const WeightActivityScreen: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
@@ -89,7 +49,49 @@ export const WeightActivityScreen: React.FC = () => {
   const [weightUnit, setWeightUnit] = useState<'kg' | 'lbs'>(defaultWeightUnit);
   const [selectedActivity, setSelectedActivity] = useState<ActivityLevel>('medium');
   const [selectedClimate, setSelectedClimate] = useState<Climate>('temperate');
-  
+
+  const activityOptions: ActivityOption[] = [
+    {
+      id: 'low',
+      title: t('onboarding.weightActivity.lowActivity'),
+      description: t('onboarding.weightActivity.lowActivityDesc'),
+      multiplier: 1.0,
+    },
+    {
+      id: 'medium',
+      title: t('onboarding.weightActivity.moderateActivity'),
+      description: t('onboarding.weightActivity.moderateActivityDesc'),
+      multiplier: 1.2,
+    },
+    {
+      id: 'high',
+      title: t('onboarding.weightActivity.highActivity'),
+      description: t('onboarding.weightActivity.highActivityDesc'),
+      multiplier: 1.4,
+    },
+  ];
+
+  const climateOptions: ClimateOption[] = [
+    {
+      id: 'cool',
+      title: t('onboarding.weightActivity.coolClimate'),
+      description: t('onboarding.weightActivity.coolClimateDesc'),
+      multiplier: 1.0,
+    },
+    {
+      id: 'temperate',
+      title: t('onboarding.weightActivity.temperateClimate'),
+      description: t('onboarding.weightActivity.temperateClimateDesc'),
+      multiplier: 1.1,
+    },
+    {
+      id: 'hot',
+      title: t('onboarding.weightActivity.hotClimate'),
+      description: t('onboarding.weightActivity.hotClimateDesc'),
+      multiplier: 1.2,
+    },
+  ];
+
   const handleContinue = () => {
     const weightKg = weightUnit === 'kg'
       ? weight
@@ -188,21 +190,21 @@ export const WeightActivityScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
-          <Text style={styles.skipButtonText}>Skip</Text>
+          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>Tell Us About Yourself</Text>
+          <Text style={styles.title}>{t('onboarding.weightActivity.title')}</Text>
           <Text style={styles.subtitle}>
-            This helps us calculate your personalized hydration goal.
+            {t('onboarding.weightActivity.subtitle')}
           </Text>
         </View>
         
         {/* Weight Input */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Weight</Text>
+          <Text style={styles.sectionTitle}>{t('onboarding.weightActivity.yourWeight')}</Text>
           <WeightPicker
             value={weight}
             onValueChange={setWeight}
@@ -214,7 +216,7 @@ export const WeightActivityScreen: React.FC = () => {
         
         {/* Activity Level */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Activity Level</Text>
+          <Text style={styles.sectionTitle}>{t('onboarding.weightActivity.activityLevel')}</Text>
           <View style={styles.optionsContainer}>
             {activityOptions.map(renderActivityOption)}
           </View>
@@ -222,7 +224,7 @@ export const WeightActivityScreen: React.FC = () => {
         
         {/* Climate */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Climate</Text>
+          <Text style={styles.sectionTitle}>{t('onboarding.weightActivity.climate')}</Text>
           <View style={styles.optionsContainer}>
             {climateOptions.map(renderClimateOption)}
           </View>
@@ -235,7 +237,7 @@ export const WeightActivityScreen: React.FC = () => {
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.backButtonText}>Back</Text>
+          <Text style={styles.backButtonText}>{t('common.back')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -251,7 +253,7 @@ export const WeightActivityScreen: React.FC = () => {
             styles.continueButtonText,
             !isValid && styles.continueButtonTextDisabled,
           ]}>
-            Continue
+            {t('common.continue')}
           </Text>
         </TouchableOpacity>
       </View>

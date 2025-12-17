@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { setUnit } from '../../state/slices/settingsSlice';
@@ -22,29 +23,30 @@ interface UnitOption {
   weightUnit: string;
 }
 
-const unitOptions: UnitOption[] = [
-  {
-    id: 'metric',
-    title: 'Metric',
-    subtitle: 'Milliliters and Kilograms',
-    volumeUnit: 'ml',
-    weightUnit: 'kg',
-  },
-  {
-    id: 'imperial',
-    title: 'Imperial',
-    subtitle: 'Fluid Ounces and Pounds',
-    volumeUnit: 'fl oz',
-    weightUnit: 'lbs',
-  },
-];
-
 export const UnitsScreen: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedUnit, setSelectedUnit] = useState<UnitSystem>('metric');
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+
+  const unitOptions: UnitOption[] = [
+    {
+      id: 'metric',
+      title: t('onboarding.units.metric'),
+      subtitle: t('onboarding.units.metricDesc'),
+      volumeUnit: t('common.ml'),
+      weightUnit: t('common.kg'),
+    },
+    {
+      id: 'imperial',
+      title: t('onboarding.units.imperial'),
+      subtitle: t('onboarding.units.imperialDesc'),
+      volumeUnit: t('common.flOz'),
+      weightUnit: t('common.lbs'),
+    },
+  ];
 
   const handleContinue = () => {
     const unit = selectedUnit === 'metric' ? 'ml' : 'oz';
@@ -116,15 +118,15 @@ export const UnitsScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
-          <Text style={styles.skipButtonText}>Skip</Text>
+          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>Choose Your Units</Text>
+          <Text style={styles.title}>{t('onboarding.units.title')}</Text>
           <Text style={styles.subtitle}>
-            Select the measurement system you're most comfortable with.
+            {t('onboarding.units.subtitle')}
           </Text>
         </View>
 
@@ -137,7 +139,7 @@ export const UnitsScreen: React.FC = () => {
           onPress={handleContinue}
           activeOpacity={0.8}
         >
-          <Text style={styles.continueButtonText}>Continue</Text>
+          <Text style={styles.continueButtonText}>{t('common.continue')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
@@ -19,6 +20,7 @@ import { Colors } from '../../constants/colors';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 export const DailyRoutineScreen: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
@@ -209,7 +211,7 @@ export const DailyRoutineScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
-          <Text style={styles.skipButtonText}>Skip</Text>
+          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -219,21 +221,21 @@ export const DailyRoutineScreen: React.FC = () => {
         onScrollBeginDrag={closeAllPickers}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Your Daily Routine</Text>
+          <Text style={styles.title}>{t('onboarding.dailyRoutine.title')}</Text>
           <Text style={styles.subtitle}>
-            Help us send reminders at the right time for you.
+            {t('onboarding.dailyRoutine.subtitle')}
           </Text>
         </View>
 
         {/* Wake Up Time */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Wake Up Time</Text>
+          <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.wakeUpTime')}</Text>
           <TouchableOpacity
             style={styles.timeButton}
             onPress={toggleWakeUpPicker}
             activeOpacity={0.7}
           >
-            <Text style={styles.timeLabel}>I usually wake up at</Text>
+            <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.wakeUpLabel')}</Text>
             <Text style={styles.timeValue}>{formatTime(wakeUpTime)}</Text>
           </TouchableOpacity>
           {(showWakeUpPicker || wakeUpPickerAnim._value > 0) && (
@@ -260,13 +262,13 @@ export const DailyRoutineScreen: React.FC = () => {
 
         {/* Bed Time */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Bed Time</Text>
+          <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.bedTime')}</Text>
           <TouchableOpacity
             style={styles.timeButton}
             onPress={toggleBedTimePicker}
             activeOpacity={0.7}
           >
-            <Text style={styles.timeLabel}>I usually go to bed at</Text>
+            <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.bedTimeLabel')}</Text>
             <Text style={styles.timeValue}>{formatTime(bedTime)}</Text>
           </TouchableOpacity>
           {(showBedTimePicker || bedTimePickerAnim._value > 0) && (
@@ -295,9 +297,9 @@ export const DailyRoutineScreen: React.FC = () => {
         <View style={styles.section}>
           <View style={styles.toggleContainer}>
             <View style={styles.toggleInfo}>
-              <Text style={styles.toggleTitle}>I have a work schedule</Text>
+              <Text style={styles.toggleTitle}>{t('onboarding.dailyRoutine.workSchedule')}</Text>
               <Text style={styles.toggleSubtitle}>
-                Get reminders outside work hours
+                {t('onboarding.dailyRoutine.workScheduleDesc')}
               </Text>
             </View>
             <Switch
@@ -313,13 +315,13 @@ export const DailyRoutineScreen: React.FC = () => {
         {hasWorkSchedule && (
           <>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Work Start Time</Text>
+              <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.workStartTime')}</Text>
               <TouchableOpacity
                 style={styles.timeButton}
                 onPress={toggleWorkStartPicker}
                 activeOpacity={0.7}
               >
-                <Text style={styles.timeLabel}>Work starts at</Text>
+                <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.workStartLabel')}</Text>
                 <Text style={styles.timeValue}>{formatTime(workStartTime)}</Text>
               </TouchableOpacity>
               {(showWorkStartPicker || workStartPickerAnim._value > 0) && (
@@ -345,13 +347,13 @@ export const DailyRoutineScreen: React.FC = () => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Work End Time</Text>
+              <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.workEndTime')}</Text>
               <TouchableOpacity
                 style={styles.timeButton}
                 onPress={toggleWorkEndPicker}
                 activeOpacity={0.7}
               >
-                <Text style={styles.timeLabel}>Work ends at</Text>
+                <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.workEndLabel')}</Text>
                 <Text style={styles.timeValue}>{formatTime(workEndTime)}</Text>
               </TouchableOpacity>
               {(showWorkEndPicker || workEndPickerAnim._value > 0) && (
@@ -379,9 +381,9 @@ export const DailyRoutineScreen: React.FC = () => {
         )}
 
         <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>💡 Smart Scheduling</Text>
+          <Text style={styles.infoTitle}>{t('onboarding.dailyRoutine.smartScheduling')}</Text>
           <Text style={styles.infoText}>
-            We'll use this information to send reminders at optimal times throughout your day, avoiding late night notifications and respecting your work schedule.
+            {t('onboarding.dailyRoutine.smartSchedulingDesc')}
           </Text>
         </View>
       </ScrollView>
@@ -392,7 +394,7 @@ export const DailyRoutineScreen: React.FC = () => {
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.backButtonText}>Back</Text>
+          <Text style={styles.backButtonText}>{t('common.back')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -400,7 +402,7 @@ export const DailyRoutineScreen: React.FC = () => {
           onPress={handleContinue}
           activeOpacity={0.8}
         >
-          <Text style={styles.continueButtonText}>Continue</Text>
+          <Text style={styles.continueButtonText}>{t('common.continue')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

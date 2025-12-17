@@ -7,6 +7,7 @@ import {
   Image,
   ImageSourcePropType,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
@@ -32,50 +33,51 @@ interface MotivationOption {
   description: string;
 }
 
-const motivationOptions: MotivationOption[] = [
-  {
-    id: 'work',
-    title: 'Work Performance',
-    icon: '🏢',
-    description: 'Stay focused and productive',
-  },
-  {
-    id: 'brain',
-    title: 'Mental Clarity',
-    icon: '🧠',
-    description: 'Improve cognitive function',
-  },
-  {
-    id: 'fitness',
-    title: 'Fitness Goals',
-    icon: '🏋️',
-    description: 'Support workout recovery',
-  },
-  {
-    id: 'meditation',
-    title: 'Wellness',
-    icon: '🧘',
-    description: 'Mindfulness and balance',
-  },
-  {
-    id: 'health',
-    title: 'Health',
-    icon: '👩‍⚕️',
-    description: 'Overall health improvement',
-  },
-  {
-    id: 'beauty',
-    title: 'Beauty',
-    icon: '⭐',
-    description: 'Healthy skin and appearance',
-  },
-];
-
 export const MotivationScreen: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
+
+  const motivationOptions: MotivationOption[] = [
+    {
+      id: 'work',
+      title: t('onboarding.motivation.workPerformance'),
+      icon: '🏢',
+      description: t('onboarding.motivation.workPerformanceDesc'),
+    },
+    {
+      id: 'brain',
+      title: t('onboarding.motivation.mentalClarity'),
+      icon: '🧠',
+      description: t('onboarding.motivation.mentalClarityDesc'),
+    },
+    {
+      id: 'fitness',
+      title: t('onboarding.motivation.fitnessGoals'),
+      icon: '🏋️',
+      description: t('onboarding.motivation.fitnessGoalsDesc'),
+    },
+    {
+      id: 'meditation',
+      title: t('onboarding.motivation.wellness'),
+      icon: '🧘',
+      description: t('onboarding.motivation.wellnessDesc'),
+    },
+    {
+      id: 'health',
+      title: t('onboarding.motivation.health'),
+      icon: '👩‍⚕️',
+      description: t('onboarding.motivation.healthDesc'),
+    },
+    {
+      id: 'beauty',
+      title: t('onboarding.motivation.beauty'),
+      icon: '⭐',
+      description: t('onboarding.motivation.beautyDesc'),
+    },
+  ];
 
   const [selectedMotivation, setSelectedMotivation] = useState<MotivationType | null>(null);
 
@@ -113,15 +115,15 @@ export const MotivationScreen: React.FC = () => {
           onPress={handleSkip}
           activeOpacity={0.7}
         >
-          <Text style={styles.skipButtonText}>Skip</Text>
+          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>Why Drink More Water?</Text>
+          <Text style={styles.title}>{t('onboarding.motivation.title')}</Text>
           <Text style={styles.subtitle}>
-            What motivated you to drink more water?
+            {t('onboarding.motivation.subtitle')}
           </Text>
         </View>
 
@@ -182,7 +184,7 @@ export const MotivationScreen: React.FC = () => {
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.backButtonText}>Back</Text>
+          <Text style={styles.backButtonText}>{t('common.back')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -198,7 +200,7 @@ export const MotivationScreen: React.FC = () => {
             styles.continueButtonText,
             !isValid && styles.continueButtonTextDisabled,
           ]}>
-            Continue
+            {t('common.continue')}
           </Text>
         </TouchableOpacity>
       </View>

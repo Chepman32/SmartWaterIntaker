@@ -50,7 +50,7 @@ export default function ContainerCarousel({
         amountMl: container.sizeMl,
         source: 'container',
         containerId: container.id,
-        note: `${container.name} (${container.sizeMl}ml)`,
+        note: `${container.name} (${container.sizeMl}${t('common.ml')})`,
       }),
     );
 
@@ -157,7 +157,7 @@ export default function ContainerCarousel({
               {container.name}
             </Text>
             <Text style={[styles.containerSize, { color: textColor }]}>
-              {container.sizeMl}ml
+              {container.sizeMl}{t('common.ml')}
             </Text>
           </TouchableOpacity>
         ))}

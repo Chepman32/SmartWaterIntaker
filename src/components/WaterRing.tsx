@@ -585,7 +585,7 @@ const WaterRing = forwardRef<WaterRingRef, WaterRingProps>(function WaterRing({
           {t('common.ml')}
         </Text>
         <Text style={[styles.goalText, { color: colors.textSecondary }]}>
-          of {Math.round(goalMl)} {t('common.ml')}
+          {t('common.ofAmount', { amount: Math.round(goalMl), unit: t('common.ml') })}
         </Text>
         <Text style={[styles.percentText, { color: colors.textSecondary }]}>
           {Math.round(progress * 100)}%

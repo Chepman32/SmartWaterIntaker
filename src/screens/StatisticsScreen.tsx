@@ -29,6 +29,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 import DrinkTypeCarousel from '../components/DrinkTypeCarousel';
@@ -50,17 +51,22 @@ function getLocalDateString(date: Date): string {
   )}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
-function formatDayLabel(date: Date) {
-  return date.toLocaleDateString(undefined, { weekday: 'short' });
+function formatDayLabel(date: Date, locale?: string) {
+  return date.toLocaleDateString(locale || undefined, { weekday: 'short' });
 }
 
-function formatDateLabel(date: Date) {
-  const month = date.toLocaleDateString(undefined, { month: 'short' });
+function formatDateLabel(date: Date, locale?: string) {
+  const month = date.toLocaleDateString(locale || undefined, {
+    month: 'short',
+  });
   return `${month} ${date.getDate()}`;
 }
 
-function formatMonthYear(date: Date) {
-  return date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+function formatMonthYear(date: Date, locale?: string) {
+  return date.toLocaleDateString(locale || undefined, {
+    month: 'long',
+    year: 'numeric',
+  });
 }
 
 function isFutureDate(date: Date) {
@@ -114,6 +120,8 @@ const CALENDAR_CELL_GAP = 8;
 const MODAL_CAROUSEL_HEIGHT = 260;
 
 export default function StatisticsScreen() {
+  const { t, i18n } = useTranslation();
+  const currentLocale = i18n.language;
   const theme = useThemeColors();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -151,6 +159,7 @@ export default function StatisticsScreen() {
     (state: RootState) => state.intake,
   );
   const unit = useSelector((state: RootState) => state.settings.profile.unit);
+  const unitLabel = unit === 'oz' ? t('common.oz') : t('common.ml');
   const containers = useSelector((state: RootState) => state.containers.items);
   const favoriteContainers = containers.filter(c => c.favorite);
 
@@ -217,13 +226,13 @@ export default function StatisticsScreen() {
   const selectedDateLabel = useMemo(
     () =>
       selectedDate
-        ? selectedDate.toLocaleDateString(undefined, {
+        ? selectedDate.toLocaleDateString(currentLocale, {
             weekday: 'long',
             month: 'long',
             day: 'numeric',
           })
         : '',
-    [selectedDate],
+    [selectedDate, currentLocale],
   );
 
   const getCellColors = (totalMl: number, isFuture: boolean) => {
@@ -693,13 +702,13 @@ export default function StatisticsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.periodToggle}>
         <ToggleButton
-          label="7 Days"
+          label={t('statistics.toggleWeek')}
           active={period === 'week'}
           onPress={() => setPeriod('week')}
           color={theme}
         />
         <ToggleButton
-          label="30 Days"
+          label={t('statistics.toggleMonth')}
           active={period === 'month'}
           onPress={() => setPeriod('month')}
           color={theme}
@@ -708,24 +717,24 @@ export default function StatisticsScreen() {
 
       <View style={{ paddingBottom: 24 }}>
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Overview</Text>
+          <Text style={styles.cardTitle}>{t('statistics.overview')}</Text>
           <View style={styles.metricsRow}>
             <Metric
-              label="Average"
+              label={t('statistics.average')}
               value={`${convertAmount(avgMl).toFixed(
                 unit === 'oz' ? 1 : 0,
-              )} ${unit}`}
+              )} ${unitLabel}`}
               theme={theme}
             />
             <Metric
-              label="Best Day"
+              label={t('statistics.bestDay')}
               value={`${convertAmount(bestMl).toFixed(
                 unit === 'oz' ? 1 : 0,
-              )} ${unit}`}
+              )} ${unitLabel}`}
               theme={theme}
             />
             <Metric
-              label="Goal Hit"
+              label={t('statistics.goalHit')}
               value={`${completionRate}%`}
               theme={theme}
             />
@@ -733,7 +742,7 @@ export default function StatisticsScreen() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Daily Intake</Text>
+          <Text style={styles.cardTitle}>{t('statistics.dailyIntake')}</Text>
 
           {period === 'month' && calendarData ? (
             <>
@@ -746,7 +755,7 @@ export default function StatisticsScreen() {
                   <Text style={styles.navButtonText}>←</Text>
                 </TouchableOpacity>
                 <Text style={styles.monthLabel}>
-                  {formatMonthYear(selectedMonth)}
+                  {formatMonthYear(selectedMonth, currentLocale)}
                 </Text>
                 <TouchableOpacity
                   onPress={goToNextMonth}
@@ -772,13 +781,19 @@ export default function StatisticsScreen() {
                   >
                     {/* Day Headers */}
                     <View style={styles.calendarHeader}>
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
-                        day => (
-                          <View key={day} style={styles.dayHeader}>
-                            <Text style={styles.dayHeaderText}>{day}</Text>
-                          </View>
-                        ),
-                      )}
+                      {[
+                        t('statistics.monday'),
+                        t('statistics.tuesday'),
+                        t('statistics.wednesday'),
+                        t('statistics.thursday'),
+                        t('statistics.friday'),
+                        t('statistics.saturday'),
+                        t('statistics.sunday'),
+                      ].map(day => (
+                        <View key={day} style={styles.dayHeader}>
+                          <Text style={styles.dayHeaderText}>{day}</Text>
+                        </View>
+                      ))}
                     </View>
 
                     {/* Calendar Grid */}
@@ -810,7 +825,7 @@ export default function StatisticsScreen() {
                           ? ''
                           : `${convertAmount(
                               cell.totalMl,
-                            ).toLocaleString()} ${unit}`;
+                            ).toLocaleString()} ${unitLabel}`;
 
                         return (
                           <TouchableOpacity
@@ -875,17 +890,17 @@ export default function StatisticsScreen() {
                       />
                       <Text style={styles.barLabel}>
                         {period === 'week'
-                          ? formatDayLabel(b.date)
-                          : formatDateLabel(b.date)}
+                          ? formatDayLabel(b.date, currentLocale)
+                          : formatDateLabel(b.date, currentLocale)}
                       </Text>
                     </View>
                   );
                 })}
               </View>
               <View style={styles.legendRow}>
-                <Text style={styles.legendText}>Goal</Text>
+                <Text style={styles.legendText}>{t('statistics.goal')}</Text>
                 <Text style={styles.legendText}>
-                  {convertAmount(dailyGoalMl)} {unit}
+                  {convertAmount(dailyGoalMl)} {unitLabel}
                 </Text>
               </View>
             </>
@@ -922,7 +937,9 @@ export default function StatisticsScreen() {
             >
               <View style={styles.dayModalHeader}>
                 <View>
-                  <Text style={styles.modalTitle}>Daily Details</Text>
+                  <Text style={styles.modalTitle}>
+                    {t('statistics.dailyDetails')}
+                  </Text>
                   {!!selectedDateLabel && (
                     <Text style={styles.modalSubtitle}>
                       {selectedDateLabel}
@@ -950,12 +967,12 @@ export default function StatisticsScreen() {
                       { color: theme.textSecondary },
                     ]}
                   >
-                    Total Intake
+                    {t('statistics.totalIntake')}
                   </Text>
                   <Text
                     style={[styles.modalSummaryValue, { color: theme.text }]}
                   >
-                    {convertAmount(totalIntakeForDay)} {unit}
+                    {convertAmount(totalIntakeForDay)} {unitLabel}
                   </Text>
                 </View>
                 <View style={styles.modalSummaryRow}>
@@ -965,12 +982,12 @@ export default function StatisticsScreen() {
                       { color: theme.textSecondary },
                     ]}
                   >
-                    Daily Goal
+                    {t('statistics.dailyGoal')}
                   </Text>
                   <Text
                     style={[styles.modalSummaryValue, { color: theme.text }]}
                   >
-                    {convertAmount(dailyGoalMl)} {unit}
+                    {convertAmount(dailyGoalMl)} {unitLabel}
                   </Text>
                 </View>
                 <View
@@ -998,7 +1015,8 @@ export default function StatisticsScreen() {
                     { color: theme.textSecondary },
                   ]}
                 >
-                  {progressPercent}% of goal
+                  {progressPercent}
+                  {t('common.ofGoal')}
                 </Text>
               </View>
 
@@ -1010,7 +1028,7 @@ export default function StatisticsScreen() {
                       { color: theme.textSecondary },
                     ]}
                   >
-                    No water logged for this day
+                    {t('statistics.noWaterLogged')}
                   </Text>
                   <Text
                     style={[
@@ -1018,7 +1036,7 @@ export default function StatisticsScreen() {
                       { color: theme.textSecondary },
                     ]}
                   >
-                    No data available
+                    {t('statistics.noDataAvailable')}
                   </Text>
                   <TouchableOpacity
                     style={[
@@ -1055,7 +1073,7 @@ export default function StatisticsScreen() {
                               { color: theme.text },
                             ]}
                           >
-                            {convertAmount(event.amountMl)} {unit}
+                            {convertAmount(event.amountMl)} {unitLabel}
                           </Text>
                           <Text
                             style={[
@@ -1118,7 +1136,7 @@ export default function StatisticsScreen() {
               >
                 <View style={styles.addModalHeader}>
                   <Text style={[styles.addModalTitle, { color: theme.text }]}>
-                    Add Water Intake
+                    {t('statistics.addWaterIntake')}
                   </Text>
                   <TouchableOpacity
                     style={[
@@ -1185,7 +1203,7 @@ export default function StatisticsScreen() {
                               { color: theme.textSecondary },
                             ]}
                           >
-                            Selected drink
+                            {t('statistics.selectedDrink')}
                           </Text>
                           <Text
                             style={[
@@ -1203,7 +1221,7 @@ export default function StatisticsScreen() {
                               { color: selectedDrinkType.color },
                             ]}
                           >
-                            Change
+                            {t('common.change')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -1289,7 +1307,8 @@ export default function StatisticsScreen() {
                               { color: theme.text },
                             ]}
                           >
-                            {container.sizeMl}ml
+                            {container.sizeMl}
+                            {t('common.ml')}
                           </Text>
                         </TouchableOpacity>
                       ))}

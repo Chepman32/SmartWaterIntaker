@@ -183,7 +183,7 @@ const getStyles = (theme: any) => StyleSheet.create({
   },
   flagIcon: {
     width: 32,
-    height: 24,
+    height: 32,
     borderRadius: 4,
     marginRight: 12,
   },

@@ -24,6 +24,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 import {
@@ -47,19 +48,21 @@ const DRINK_TYPE_MAP = DRINK_TYPES.reduce<Record<string, DrinkType>>(
 interface AnimatedEventCardProps {
   event: any;
   theme: any;
-  unit: string;
+  unitLabel: string;
   convertAmount: (amount: number) => number;
   formatTime: (timestamp: number) => string;
   onDelete: (eventId: string) => void;
+  t: (key: string) => string;
 }
 
 const AnimatedEventCard: React.FC<AnimatedEventCardProps> = ({
   event,
   theme,
-  unit,
+  unitLabel,
   convertAmount,
   formatTime,
   onDelete,
+  t,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -114,18 +117,18 @@ const AnimatedEventCard: React.FC<AnimatedEventCardProps> = ({
       <View style={styles.eventCard}>
         <View style={styles.eventInfo}>
           <Text style={styles.eventAmount}>
-            {convertAmount(event.amountMl)} {unit}
+            {convertAmount(event.amountMl)} {unitLabel}
           </Text>
           <Text style={styles.eventTime}>{formatTime(event.timestamp)}</Text>
           {event.drinkTypeId && (
             <Text style={styles.eventDrinkType}>
-              Drink:{' '}
+              {t('history.drink')}:{' '}
               {DRINK_TYPE_MAP[event.drinkTypeId]?.name ?? event.drinkTypeId}
             </Text>
           )}
           {event.containerId && (
             <Text style={styles.eventContainer}>
-              Container: {event.containerId}
+              {t('history.container')}: {event.containerId}
             </Text>
           )}
         </View>
@@ -142,6 +145,8 @@ const AnimatedEventCard: React.FC<AnimatedEventCardProps> = ({
 };
 
 const HistoryScreen: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const currentLocale = i18n.language;
   const dispatch = useDispatch();
   const theme = useThemeColors();
   const insets = useSafeAreaInsets();
@@ -172,6 +177,7 @@ const HistoryScreen: React.FC = () => {
   );
   const { profile } = useSelector((state: RootState) => state.settings);
   const unit = profile.unit;
+  const unitLabel = unit === 'oz' ? t('common.oz') : t('common.ml');
 
   // Filter events for selected date
   const selectedDateStr = selectedDate.toISOString().split('T')[0];
@@ -371,25 +377,27 @@ const HistoryScreen: React.FC = () => {
 
   // Helper function to format date display
   const getDateDisplayText = () => {
-    if (isToday) return 'Today';
+    if (isToday) return t('history.today');
 
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-    if (selectedDateStr === yesterdayStr) return 'Yesterday';
+    if (selectedDateStr === yesterdayStr) return t('history.yesterday');
 
     // Check if date is within last week (last 7 days)
     const weekAgo = new Date(today);
     weekAgo.setDate(weekAgo.getDate() - 7);
 
     if (selectedDate > weekAgo && selectedDate < today) {
-      return selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+      return selectedDate.toLocaleDateString(currentLocale, {
+        weekday: 'long',
+      });
     }
 
     // For older dates, show the formatted date
-    return selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+    return selectedDate.toLocaleDateString(currentLocale, { weekday: 'long' });
   };
 
   const styles = getStyles(theme, insets.bottom, tabBarHeight);
@@ -404,7 +412,7 @@ const HistoryScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>History</Text>
+        <Text style={styles.title}>{t('history.history')}</Text>
       </View>
 
       {/* Date Navigation */}
@@ -421,13 +429,21 @@ const HistoryScreen: React.FC = () => {
             <>
               <Text style={styles.dateText}>{getDateDisplayText()}</Text>
               <Text style={styles.dateSubtext}>
-                {selectedDate.toLocaleDateString('en-GB').split('/').join('.')}
+                {selectedDate.toLocaleDateString(currentLocale, {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })}
               </Text>
             </>
           ) : (
             <>
               <Text style={styles.dateText}>
-                {selectedDate.toLocaleDateString('en-GB').split('/').join('.')}
+                {selectedDate.toLocaleDateString(currentLocale, {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })}
               </Text>
               <Text style={styles.dateSubtext}>{getDateDisplayText()}</Text>
             </>
@@ -453,15 +469,15 @@ const HistoryScreen: React.FC = () => {
       {/* Daily Summary */}
       <View style={styles.summaryCard}>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Total Intake</Text>
+          <Text style={styles.summaryLabel}>{t('history.totalIntake')}</Text>
           <Text style={styles.summaryValue}>
-            {convertAmount(totalIntake)} {unit}
+            {convertAmount(totalIntake)} {unitLabel}
           </Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Daily Goal</Text>
+          <Text style={styles.summaryLabel}>{t('history.dailyGoal')}</Text>
           <Text style={styles.summaryValue}>
-            {convertAmount(dailyGoalMl)} {unit}
+            {convertAmount(dailyGoalMl)} {unitLabel}
           </Text>
         </View>
         <View style={styles.progressBar}>
@@ -477,7 +493,10 @@ const HistoryScreen: React.FC = () => {
             ]}
           />
         </View>
-        <Text style={styles.progressText}>{progressPercent}% of goal</Text>
+        <Text style={styles.progressText}>
+          {progressPercent}
+          {t('common.ofGoal')}
+        </Text>
       </View>
 
       <View style={styles.listHeader}>
@@ -499,12 +518,12 @@ const HistoryScreen: React.FC = () => {
         {dayEvents.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyStateText}>
-              No water logged for this day
+              {t('history.noWaterLogged')}
             </Text>
             <Text style={styles.emptyStateSubtext}>
               {isToday
-                ? 'Start logging your water intake!'
-                : 'No data available'}
+                ? t('history.startLogging')
+                : t('history.noDataAvailable')}
             </Text>
           </View>
         ) : (
@@ -519,10 +538,11 @@ const HistoryScreen: React.FC = () => {
                 key={event.id}
                 event={event}
                 theme={theme}
-                unit={unit}
+                unitLabel={unitLabel}
                 convertAmount={convertAmount}
                 formatTime={formatTime}
                 onDelete={handleDeleteEvent}
+                t={t}
               />
             ))
         )}
@@ -555,7 +575,9 @@ const HistoryScreen: React.FC = () => {
                 onPress={e => e.stopPropagation()}
               >
                 <View style={styles.modalHeader}>
-                  <Text style={styles.modalTitle}>Add Water Intake</Text>
+                  <Text style={styles.modalTitle}>
+                    {t('history.addWaterIntake')}
+                  </Text>
                   <TouchableOpacity
                     onPress={closeAddModal}
                     style={styles.modalCloseButton}
@@ -593,7 +615,7 @@ const HistoryScreen: React.FC = () => {
                       <View style={styles.selectedDrinkHeader}>
                         <View>
                           <Text style={styles.selectedDrinkLabel}>
-                            Selected drink
+                            {t('history.selectedDrink')}
                           </Text>
                           <Text
                             style={[
@@ -611,7 +633,7 @@ const HistoryScreen: React.FC = () => {
                               { color: selectedDrinkType.color },
                             ]}
                           >
-                            Change
+                            {t('common.change')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -697,7 +719,8 @@ const HistoryScreen: React.FC = () => {
                               { color: theme.text },
                             ]}
                           >
-                            {container.sizeMl}ml
+                            {container.sizeMl}
+                            {t('common.ml')}
                           </Text>
                         </TouchableOpacity>
                       ))}
