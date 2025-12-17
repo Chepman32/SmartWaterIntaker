@@ -18,8 +18,8 @@
     "perDay": "Bawat araw",
     "ofGoal": "% naabot",
     "pint": "pinta",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Mabilis na pagdagdag",
+    "ofAmount": "mula sa {{amount}} {{unit}}",
     "hours": "oras",
     "minutes": "min",
     "minutesShort": "m"
@@ -30,7 +30,7 @@
     "stats": "Estadistika",
     "ai": "AI",
     "settings": "Mga Setting",
-    "notifications": "Notifications"
+    "notifications": "Mga Abiso"
   },
   "drinkTypes": {
     "water": "Tubig",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Idagdag ang pag-inom ng tubig",
     "chooseDrink": "Pumili ng inumin",
     "selectedDrink": "Napiling inumin",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Inumin",
+    "container": "Lalagyan"
   },
   "settings": {
     "measureUnit": "Yunit ng sukat",

@@ -18,8 +18,8 @@
     "lbs": "pound",
     "perDay": "Mỗi ngày",
     "ofGoal": "% đạt được",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Thêm nhanh",
+    "ofAmount": "trong {{amount}} {{unit}}",
     "hours": "giờ",
     "minutes": "phút",
     "minutesShort": "ph"
@@ -30,7 +30,7 @@
     "stats": "Thống kê",
     "ai": "AI",
     "settings": "Cài đặt",
-    "notifications": "Notifications"
+    "notifications": "Thông báo"
   },
   "drinkTypes": {
     "water": "Nước",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Thêm lượng nước uống",
     "chooseDrink": "Chọn đồ uống",
     "selectedDrink": "Đồ uống đã chọn",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Đồ uống",
+    "container": "Bình chứa"
   },
   "settings": {
     "measureUnit": "Đơn vị đo",

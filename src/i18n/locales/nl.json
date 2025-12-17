@@ -18,7 +18,7 @@
     "lbs": "pond",
     "perDay": "Per dag",
     "ofGoal": "% behaald",
-    "quickAdd": "Quick add",
+    "quickAdd": "Snel toevoegen",
     "ofAmount": "van {{amount}} {{unit}}",
     "hours": "u",
     "minutes": "min",
@@ -30,7 +30,7 @@
     "stats": "Statistieken",
     "ai": "AI",
     "settings": "Instellingen",
-    "notifications": "Notifications"
+    "notifications": "Meldingen"
   },
   "drinkTypes": {
     "water": "Water",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Voeg vochtinname toe",
     "chooseDrink": "Kies een drankje",
     "selectedDrink": "Geselecteerd drankje",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Drankje",
+    "container": "Houder"
   },
   "settings": {
     "measureUnit": "Maateenheid",
@@ -252,7 +252,7 @@
     "tumbler": "Thermosbeker",
     "pitcher": "Kan",
     "cup": "Kopje",
-    "container": "Container"
+    "container": "Houder"
   },
   "ai": {
     "title": "AI Hydratatie Coach",

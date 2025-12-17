@@ -18,7 +18,7 @@
     "lbs": "livres",
     "perDay": "Par jour",
     "ofGoal": "% atteint",
-    "quickAdd": "Quick add",
+    "quickAdd": "Ajout rapide",
     "ofAmount": "sur {{amount}} {{unit}}",
     "hours": "h",
     "minutes": "min",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Ajouter une consommation",
     "chooseDrink": "Choisir une boisson",
     "selectedDrink": "Boisson sélectionnée",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Boisson",
+    "container": "Contenant"
   },
   "settings": {
     "measureUnit": "Unité de mesure",

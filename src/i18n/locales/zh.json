@@ -18,7 +18,7 @@
     "lbs": "磅",
     "perDay": "每天",
     "ofGoal": "% 已完成",
-    "quickAdd": "Quick add",
+    "quickAdd": "快速添加",
     "ofAmount": "/ {{amount}} {{unit}}",
     "hours": "小时",
     "minutes": "分钟",
@@ -30,7 +30,7 @@
     "stats": "统计",
     "ai": "AI",
     "settings": "设置",
-    "notifications": "Notifications"
+    "notifications": "通知"
   },
   "drinkTypes": {
     "water": "水",
@@ -96,8 +96,8 @@
     "addWaterIntake": "添加饮水记录",
     "chooseDrink": "选择饮料",
     "selectedDrink": "已选饮料",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "饮品",
+    "container": "容器"
   },
   "settings": {
     "measureUnit": "计量单位",

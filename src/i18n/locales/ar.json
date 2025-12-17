@@ -18,7 +18,7 @@
     "lbs": "رطل",
     "perDay": "في اليوم",
     "ofGoal": "% مكتمل",
-    "quickAdd": "Quick add",
+    "quickAdd": "إضافة سريعة",
     "ofAmount": "من {{amount}} {{unit}}",
     "hours": "س",
     "minutes": "د",
@@ -30,7 +30,7 @@
     "stats": "الإحصائيات",
     "ai": "الذكاء الاصطناعي",
     "settings": "الإعدادات",
-    "notifications": "Notifications"
+    "notifications": "الإشعارات"
   },
   "drinkTypes": {
     "water": "ماء",
@@ -96,8 +96,8 @@
     "addWaterIntake": "إضافة استهلاك سوائل",
     "chooseDrink": "اختر مشروباً",
     "selectedDrink": "المشروب المحدد",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "مشروب",
+    "container": "وعاء"
   },
   "settings": {
     "measureUnit": "وحدة القياس",

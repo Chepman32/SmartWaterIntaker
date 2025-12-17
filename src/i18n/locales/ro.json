@@ -18,8 +18,8 @@
     "perDay": "Pe zi",
     "ofGoal": "% atins",
     "pint": "halbă",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Adăugare rapidă",
+    "ofAmount": "din {{amount}} {{unit}}",
     "hours": "ore",
     "minutes": "min",
     "minutesShort": "m"
@@ -30,7 +30,7 @@
     "stats": "Statistici",
     "ai": "AI",
     "settings": "Setări",
-    "notifications": "Notifications"
+    "notifications": "Notificări"
   },
   "drinkTypes": {
     "water": "Apă",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Adaugă aport de apă",
     "chooseDrink": "Alege băutură",
     "selectedDrink": "Băutură selectată",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Băutură",
+    "container": "Recipient"
   },
   "settings": {
     "measureUnit": "Unitate de măsură",

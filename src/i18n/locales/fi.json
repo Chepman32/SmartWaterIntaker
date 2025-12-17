@@ -18,7 +18,7 @@
     "perDay": "Päivässä",
     "ofGoal": "% saavutettu",
     "pint": "tuoppi",
-    "quickAdd": "Quick add",
+    "quickAdd": "Pikaluonti",
     "ofAmount": "/ {{amount}} {{unit}}",
     "hours": "t",
     "minutes": "min",
@@ -30,7 +30,7 @@
     "stats": "Tilastot",
     "ai": "AI",
     "settings": "Asetukset",
-    "notifications": "Notifications"
+    "notifications": "Ilmoitukset"
   },
   "drinkTypes": {
     "water": "Vesi",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Lisää nesteen saanti",
     "chooseDrink": "Valitse juoma",
     "selectedDrink": "Valittu juoma",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Juoma",
+    "container": "Astia"
   },
   "settings": {
     "measureUnit": "Mittayksikkö",

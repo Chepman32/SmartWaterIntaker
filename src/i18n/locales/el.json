@@ -18,8 +18,8 @@
     "perDay": "Ανά ημέρα",
     "ofGoal": "% επιτεύχθηκε",
     "pint": "πίντα",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Γρήγορη προσθήκη",
+    "ofAmount": "από {{amount}} {{unit}}",
     "hours": "ώ",
     "minutes": "λεπ",
     "minutesShort": "λ"
@@ -30,7 +30,7 @@
     "stats": "Στατιστικά",
     "ai": "AI",
     "settings": "Ρυθμίσεις",
-    "notifications": "Notifications"
+    "notifications": "Ειδοποιήσεις"
   },
   "drinkTypes": {
     "water": "Νερό",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Προσθήκη πρόσληψης νερού",
     "chooseDrink": "Επιλέξτε ποτό",
     "selectedDrink": "Επιλεγμένο ποτό",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Ποτό",
+    "container": "Δοχείο"
   },
   "settings": {
     "measureUnit": "Μονάδα μέτρησης",

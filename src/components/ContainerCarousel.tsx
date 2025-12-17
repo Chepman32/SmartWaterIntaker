@@ -39,18 +39,42 @@ export default function ContainerCarousel({
     (state: RootState) => state.settings.settings.haptics,
   );
 
+  // Helper to get translated container name
+  const getContainerName = (container: Container): string => {
+    const nameToKey: Record<string, string> = {
+      Cup: 'cup',
+      Glass: 'glass',
+      'Coffee Mug': 'cup',
+      'Water Bottle': 'waterBottle',
+      Bottle: 'bottle',
+      Tumbler: 'tumbler',
+      Pitcher: 'pitcher',
+    };
+    const key = nameToKey[container.name];
+    if (key) {
+      return t(`containers.${key}`, { defaultValue: container.name });
+    }
+    return container.name;
+  };
+
+  // Helper to get translated drink type name
+  const getDrinkTypeName = (drinkType: DrinkType): string => {
+    return t(`drinkTypes.${drinkType.id}`, { defaultValue: drinkType.name });
+  };
+
   const handleContainerPress = (container: Container) => {
     if (onContainerSelect) {
       onContainerSelect(container);
       return;
     }
 
+    const translatedName = getContainerName(container);
     dispatch(
       logIntakeEvent({
         amountMl: container.sizeMl,
         source: 'container',
         containerId: container.id,
-        note: `${container.name} (${container.sizeMl}${t('common.ml')})`,
+        note: `${translatedName} (${container.sizeMl}${t('common.ml')})`,
       }),
     );
 
@@ -77,7 +101,9 @@ export default function ContainerCarousel({
       <View style={styles.headerRow}>
         <Text style={[styles.title, { color: textColor }]}>
           {selectedDrinkType
-            ? `${selectedDrinkType.name} ${t('containers.favorites')}`
+            ? `${getDrinkTypeName(selectedDrinkType)} ${t(
+                'containers.favorites',
+              )}`
             : t('containers.favorites')}
         </Text>
         {selectedDrinkType && onChangeDrinkType && (
@@ -154,10 +180,11 @@ export default function ContainerCarousel({
               style={[styles.containerName, { color: textColor }]}
               numberOfLines={1}
             >
-              {container.name}
+              {getContainerName(container)}
             </Text>
             <Text style={[styles.containerSize, { color: textColor }]}>
-              {container.sizeMl}{t('common.ml')}
+              {container.sizeMl}
+              {t('common.ml')}
             </Text>
           </TouchableOpacity>
         ))}

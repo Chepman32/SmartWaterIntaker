@@ -19,7 +19,7 @@
     "perDay": "В день",
     "ofGoal": "% выполнено",
     "quickAdd": "Быстрое добавление",
-    "ofAmount": "/ {{amount}} {{unit}}",
+    "ofAmount": "из {{amount}} {{unit}}",
     "hours": "ч",
     "minutes": "мин",
     "minutesShort": "м"

@@ -18,8 +18,8 @@
     "lbs": "pon",
     "perDay": "Per hari",
     "ofGoal": "% tercapai",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Tambah cepat",
+    "ofAmount": "dari {{amount}} {{unit}}",
     "hours": "j",
     "minutes": "mnt",
     "minutesShort": "m"
@@ -30,7 +30,7 @@
     "stats": "Statistik",
     "ai": "AI",
     "settings": "Pengaturan",
-    "notifications": "Notifications"
+    "notifications": "Notifikasi"
   },
   "drinkTypes": {
     "water": "Air",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Tambah asupan air",
     "chooseDrink": "Pilih minuman",
     "selectedDrink": "Minuman dipilih",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Minuman",
+    "container": "Wadah"
   },
   "settings": {
     "measureUnit": "Satuan ukuran",

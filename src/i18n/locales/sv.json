@@ -18,7 +18,7 @@
     "lbs": "pund",
     "perDay": "Per dag",
     "ofGoal": "% uppnått",
-    "quickAdd": "Quick add",
+    "quickAdd": "Snabbt tillägg",
     "ofAmount": "av {{amount}} {{unit}}",
     "hours": "t",
     "minutes": "min",
@@ -30,7 +30,7 @@
     "stats": "Statistik",
     "ai": "AI",
     "settings": "Inställningar",
-    "notifications": "Notifications"
+    "notifications": "Aviseringar"
   },
   "drinkTypes": {
     "water": "Vatten",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Lägg till vattenintag",
     "chooseDrink": "Välj dryck",
     "selectedDrink": "Vald dryck",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Dryck",
+    "container": "Behållare"
   },
   "settings": {
     "measureUnit": "Måttenhet",

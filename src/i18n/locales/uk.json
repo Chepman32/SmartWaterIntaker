@@ -18,7 +18,7 @@
     "lbs": "фунти",
     "perDay": "На день",
     "ofGoal": "% виконано",
-    "quickAdd": "Quick add",
+    "quickAdd": "Швидке додавання",
     "ofAmount": "з {{amount}} {{unit}}",
     "hours": "год",
     "minutes": "хв",
@@ -30,7 +30,7 @@
     "stats": "Статистика",
     "ai": "ШІ",
     "settings": "Налаштування",
-    "notifications": "Notifications"
+    "notifications": "Сповіщення"
   },
   "drinkTypes": {
     "water": "Вода",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Додати споживання води",
     "chooseDrink": "Обрати напій",
     "selectedDrink": "Обраний напій",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Напій",
+    "container": "Ємність"
   },
   "settings": {
     "measureUnit": "Одиниця виміру",

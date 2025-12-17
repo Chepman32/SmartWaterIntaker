@@ -18,8 +18,8 @@
     "perDay": "Naponta",
     "ofGoal": "% teljesítve",
     "pint": "korsó",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Gyors hozzáadás",
+    "ofAmount": "/ {{amount}} {{unit}}",
     "hours": "ó",
     "minutes": "perc",
     "minutesShort": "p"
@@ -30,7 +30,7 @@
     "stats": "Statisztikák",
     "ai": "AI",
     "settings": "Beállítások",
-    "notifications": "Notifications"
+    "notifications": "Értesítések"
   },
   "drinkTypes": {
     "water": "Víz",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Folyadékbevitel hozzáadása",
     "chooseDrink": "Válasszon italt",
     "selectedDrink": "Kiválasztott ital",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Ital",
+    "container": "Edény"
   },
   "settings": {
     "measureUnit": "Mértékegység",

@@ -18,8 +18,8 @@
     "lbs": "ליברות",
     "perDay": "ליום",
     "ofGoal": "% הושג",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "הוספה מהירה",
+    "ofAmount": "מתוך {{amount}} {{unit}}",
     "hours": "ש׳",
     "minutes": "דק׳",
     "minutesShort": "ד׳"
@@ -30,7 +30,7 @@
     "stats": "סטטיסטיקות",
     "ai": "בינה מלאכותית",
     "settings": "הגדרות",
-    "notifications": "Notifications"
+    "notifications": "התראות"
   },
   "drinkTypes": {
     "water": "מים",
@@ -96,8 +96,8 @@
     "addWaterIntake": "הוסף צריכת מים",
     "chooseDrink": "בחר משקה",
     "selectedDrink": "משקה נבחר",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "משקה",
+    "container": "מיכל"
   },
   "settings": {
     "measureUnit": "יחידת מידה",

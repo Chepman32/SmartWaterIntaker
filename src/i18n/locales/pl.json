@@ -18,7 +18,7 @@
     "lbs": "funty",
     "perDay": "Dziennie",
     "ofGoal": "% osiągnięte",
-    "quickAdd": "Quick add",
+    "quickAdd": "Szybkie dodawanie",
     "ofAmount": "z {{amount}} {{unit}}",
     "hours": "godz",
     "minutes": "min",
@@ -30,7 +30,7 @@
     "stats": "Statystyki",
     "ai": "AI",
     "settings": "Ustawienia",
-    "notifications": "Notifications"
+    "notifications": "Powiadomienia"
   },
   "drinkTypes": {
     "water": "Woda",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Dodaj spożycie wody",
     "chooseDrink": "Wybierz napój",
     "selectedDrink": "Wybrany napój",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Napój",
+    "container": "Pojemnik"
   },
   "settings": {
     "measureUnit": "Jednostka miary",

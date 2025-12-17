@@ -18,8 +18,8 @@
     "lbs": "pound",
     "perDay": "Günlük",
     "ofGoal": "% tamamlandı",
-    "quickAdd": "Quick add",
-    "ofAmount": "/ {{amount}} {{unit}}",
+    "quickAdd": "Hızlı ekle",
+    "ofAmount": "{{amount}} {{unit}} içinden",
     "hours": "sa",
     "minutes": "dk",
     "minutesShort": "dk"
@@ -30,7 +30,7 @@
     "stats": "İstatistikler",
     "ai": "Yapay Zeka",
     "settings": "Ayarlar",
-    "notifications": "Notifications"
+    "notifications": "Bildirimler"
   },
   "drinkTypes": {
     "water": "Su",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Su alımı ekle",
     "chooseDrink": "İçecek seç",
     "selectedDrink": "Seçili içecek",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "İçecek",
+    "container": "Kap"
   },
   "settings": {
     "measureUnit": "Ölçü Birimi",

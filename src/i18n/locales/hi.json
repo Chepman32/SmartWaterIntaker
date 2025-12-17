@@ -18,8 +18,8 @@
     "lbs": "पाउंड",
     "perDay": "प्रति दिन",
     "ofGoal": "% पूर्ण",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "त्वरित जोड़ें",
+    "ofAmount": "{{amount}} {{unit}} में से",
     "hours": "घं",
     "minutes": "मिनट",
     "minutesShort": "मि"
@@ -30,7 +30,7 @@
     "stats": "आंकड़े",
     "ai": "AI",
     "settings": "सेटिंग्स",
-    "notifications": "Notifications"
+    "notifications": "सूचनाएं"
   },
   "drinkTypes": {
     "water": "पानी",
@@ -96,8 +96,8 @@
     "addWaterIntake": "पानी का सेवन जोड़ें",
     "chooseDrink": "पेय चुनें",
     "selectedDrink": "चयनित पेय",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "पेय",
+    "container": "कंटेनर"
   },
   "settings": {
     "measureUnit": "माप इकाई",

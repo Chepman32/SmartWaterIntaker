@@ -18,8 +18,8 @@
     "lbs": "ปอนด์",
     "perDay": "ต่อวัน",
     "ofGoal": "% สำเร็จ",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "เพิ่มเร็ว",
+    "ofAmount": "จาก {{amount}} {{unit}}",
     "hours": "ชม.",
     "minutes": "นาที",
     "minutesShort": "น."
@@ -30,7 +30,7 @@
     "stats": "สถิติ",
     "ai": "AI",
     "settings": "ตั้งค่า",
-    "notifications": "Notifications"
+    "notifications": "การแจ้งเตือน"
   },
   "drinkTypes": {
     "water": "น้ำ",
@@ -96,8 +96,8 @@
     "addWaterIntake": "เพิ่มการดื่มน้ำ",
     "chooseDrink": "เลือกเครื่องดื่ม",
     "selectedDrink": "เครื่องดื่มที่เลือก",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "เครื่องดื่ม",
+    "container": "ภาชนะ"
   },
   "settings": {
     "measureUnit": "หน่วยวัด",

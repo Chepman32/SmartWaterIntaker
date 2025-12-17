@@ -18,7 +18,7 @@
     "lbs": "Pfund",
     "perDay": "Pro Tag",
     "ofGoal": "% erreicht",
-    "quickAdd": "Quick add",
+    "quickAdd": "Schnell hinzufügen",
     "ofAmount": "von {{amount}} {{unit}}",
     "hours": "Std",
     "minutes": "Min",
@@ -30,7 +30,7 @@
     "stats": "Statistik",
     "ai": "KI",
     "settings": "Einstellungen",
-    "notifications": "Notifications"
+    "notifications": "Benachrichtigungen"
   },
   "drinkTypes": {
     "water": "Wasser",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Flüssigkeitsaufnahme hinzufügen",
     "chooseDrink": "Getränk wählen",
     "selectedDrink": "Ausgewähltes Getränk",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Getränk",
+    "container": "Behälter"
   },
   "settings": {
     "measureUnit": "Maßeinheit",

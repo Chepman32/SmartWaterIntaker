@@ -18,7 +18,7 @@
     "lbs": "파운드",
     "perDay": "하루",
     "ofGoal": "% 달성",
-    "quickAdd": "Quick add",
+    "quickAdd": "빠른 추가",
     "ofAmount": "/ {{amount}} {{unit}}",
     "hours": "시간",
     "minutes": "분",
@@ -30,7 +30,7 @@
     "stats": "통계",
     "ai": "AI",
     "settings": "설정",
-    "notifications": "Notifications"
+    "notifications": "알림"
   },
   "drinkTypes": {
     "water": "물",
@@ -96,8 +96,8 @@
     "addWaterIntake": "수분 섭취 기록",
     "chooseDrink": "음료 선택",
     "selectedDrink": "선택한 음료",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "음료",
+    "container": "용기"
   },
   "settings": {
     "measureUnit": "측정 단위",

@@ -18,8 +18,8 @@
     "perDay": "Denně",
     "ofGoal": "% dosaženo",
     "pint": "pinta",
-    "quickAdd": "Quick add",
-    "ofAmount": "of {{amount}} {{unit}}",
+    "quickAdd": "Rychlé přidání",
+    "ofAmount": "z {{amount}} {{unit}}",
     "hours": "hod",
     "minutes": "min",
     "minutesShort": "m"
@@ -30,7 +30,7 @@
     "stats": "Statistiky",
     "ai": "AI",
     "settings": "Nastavení",
-    "notifications": "Notifications"
+    "notifications": "Oznámení"
   },
   "drinkTypes": {
     "water": "Voda",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Přidat příjem vody",
     "chooseDrink": "Vyberte nápoj",
     "selectedDrink": "Vybraný nápoj",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Nápoj",
+    "container": "Nádoba"
   },
   "settings": {
     "measureUnit": "Měrná jednotka",

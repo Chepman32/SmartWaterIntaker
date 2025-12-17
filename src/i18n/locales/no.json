@@ -18,7 +18,7 @@
     "perDay": "Per dag",
     "ofGoal": "% oppnådd",
     "pint": "pint",
-    "quickAdd": "Quick add",
+    "quickAdd": "Hurtig tillegg",
     "ofAmount": "av {{amount}} {{unit}}",
     "hours": "t",
     "minutes": "min",
@@ -30,7 +30,7 @@
     "stats": "Statistikk",
     "ai": "AI",
     "settings": "Innstillinger",
-    "notifications": "Notifications"
+    "notifications": "Varsler"
   },
   "drinkTypes": {
     "water": "Vann",
@@ -96,8 +96,8 @@
     "addWaterIntake": "Legg til væskeinntak",
     "chooseDrink": "Velg drikke",
     "selectedDrink": "Valgt drikke",
-    "drink": "Drink",
-    "container": "Container"
+    "drink": "Drikke",
+    "container": "Beholder"
   },
   "settings": {
     "measureUnit": "Måleenhet",
