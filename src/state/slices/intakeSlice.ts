@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IntakeEvent } from '../../types/models';
 import { StorageService } from '../../services/storage';
+import { SoundService } from '../../services/SoundService';
 import type { RootState } from '../store';
 
 function getLocalDateString(date: Date): string {
@@ -91,7 +92,7 @@ export const logIntakeEvent =
       timestamp?: number;
     },
   ) =>
-  (dispatch: any) => {
+  (dispatch: any, getState: () => RootState) => {
     try {
       const timestamp = payload.timestamp ?? Date.now();
       const saved = StorageService.addIntakeEvent({
@@ -103,6 +104,12 @@ export const logIntakeEvent =
         note: payload.note,
       });
       dispatch(addEvent(saved));
+
+      // Play success sound if enabled
+      const soundsEnabled = getState().settings.settings.sounds;
+      if (soundsEnabled) {
+        SoundService.playSuccess();
+      }
     } catch (error) {
       console.warn('Failed to log intake event:', error);
       // Still dispatch the event to update UI even if storage fails
@@ -116,6 +123,12 @@ export const logIntakeEvent =
         note: payload.note,
       };
       dispatch(addEvent(fallbackEvent));
+
+      // Still play sound even if storage fails
+      const soundsEnabled = getState().settings.settings.sounds;
+      if (soundsEnabled) {
+        SoundService.playSuccess();
+      }
     }
   };
 
