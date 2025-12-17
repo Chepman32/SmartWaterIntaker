@@ -1,27 +1,50 @@
-import Sound from 'react-native-sound';
 import { Platform } from 'react-native';
 
-// Enable playback in silence mode on iOS
-Sound.setCategory('Playback');
+let Sound: any = null;
+let successSound: any = null;
+let soundInitialized = false;
 
-let successSound: Sound | null = null;
+const loadSoundModule = async (): Promise<boolean> => {
+  if (Sound !== null) {
+    return true;
+  }
 
-const initSuccessSound = (): Promise<Sound> => {
+  try {
+    Sound = require('react-native-sound').default;
+    Sound.setCategory('Playback');
+    soundInitialized = true;
+    return true;
+  } catch (error) {
+    console.warn('react-native-sound not available:', error);
+    return false;
+  }
+};
+
+const initSuccessSound = async (): Promise<any> => {
+  const loaded = await loadSoundModule();
+  if (!loaded || !Sound) {
+    throw new Error('Sound module not available');
+  }
+
   return new Promise((resolve, reject) => {
     if (successSound) {
       resolve(successSound);
       return;
     }
 
-    const sound = new Sound('success_83493.mp3', Sound.MAIN_BUNDLE, error => {
-      if (error) {
-        console.warn('Failed to load success sound:', error);
-        reject(error);
-        return;
-      }
-      successSound = sound;
-      resolve(sound);
-    });
+    const sound = new Sound(
+      'success_83493.mp3',
+      Sound.MAIN_BUNDLE,
+      (error: any) => {
+        if (error) {
+          console.warn('Failed to load success sound:', error);
+          reject(error);
+          return;
+        }
+        successSound = sound;
+        resolve(sound);
+      },
+    );
   });
 };
 

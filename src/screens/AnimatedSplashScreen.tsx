@@ -1,15 +1,5 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  Pressable,
-  useWindowDimensions,
-  Platform,
-  StatusBar,
-  FlatList,
-} from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { View, StyleSheet, Image, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
   runOnJS,
@@ -234,7 +224,9 @@ const particleImages: { [key: number]: any } = {
 const buildSegments = (totalPx: number, count: number) => {
   const base = Math.floor(totalPx / count);
   const remainder = totalPx - base * count;
-  const sizes = Array.from({ length: count }, (_, i) => (i < remainder ? base + 1 : base));
+  const sizes = Array.from({ length: count }, (_, i) =>
+    i < remainder ? base + 1 : base,
+  );
   const offsets = Array.from({ length: count }, () => 0);
   let acc = 0;
   for (let i = 0; i < count; i++) {
@@ -279,7 +271,11 @@ const Particle: React.FC<ParticleProps> = ({
 
   return (
     <Animated.View style={[styles.particleBase, { width, height }, style]}>
-      <Image source={particleImages[index]} style={styles.particleImage} resizeMode="stretch" />
+      <Image
+        source={particleImages[index]}
+        style={styles.particleImage}
+        resizeMode="stretch"
+      />
     </Animated.View>
   );
 };
@@ -288,7 +284,9 @@ type AnimatedSplashScreenProps = {
   onAnimationComplete: () => void;
 };
 
-const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({ onAnimationComplete }) => {
+const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
+  onAnimationComplete,
+}) => {
   const { width: screenW, height: screenH } = useWindowDimensions();
   const progress = useSharedValue(0);
 
@@ -312,7 +310,15 @@ const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({ onAnimation
       const initialX = Math.random() * Math.max(1, screenW - pieceW);
       const initialY = Math.random() * Math.max(1, screenH - pieceH);
 
-      data.push({ index: i, finalX, finalY, initialX, initialY, width: pieceW, height: pieceH });
+      data.push({
+        index: i,
+        finalX,
+        finalY,
+        initialX,
+        initialY,
+        width: pieceW,
+        height: pieceH,
+      });
     }
     return data;
   }, [centerX, centerY, screenW, screenH, scale]);
@@ -332,7 +338,7 @@ const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({ onAnimation
   }, [progress, onAnimationComplete]);
 
   return (
-    <View style={styles.splashContainer}>
+    <View style={styles.container}>
       {particles.map(p => (
         <Particle key={p.index} {...p} progress={progress} />
       ))}
@@ -340,142 +346,8 @@ const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({ onAnimation
   );
 };
 
-type OnboardingSlide = {
-  key: string;
-  title: string;
-  subtitle: string;
-};
-
-const SLIDES: OnboardingSlide[] = [
-  {
-    key: 's1',
-    title: 'Fast, accurate results',
-    subtitle: 'High-precision math with smooth, instant updates.',
-  },
-  {
-    key: 's2',
-    title: 'Works offline',
-    subtitle: 'No network required. Your data stays on device.',
-  },
-  {
-    key: 's3',
-    title: 'Stay in control',
-    subtitle: 'Tweak precision, rounding, and formats anytime.',
-  },
-];
-
-type OnboardingProps = {
-  onFinish: () => void;
-};
-
-const Onboarding: React.FC<OnboardingProps> = ({ onFinish }) => {
-  const { width: screenW, height: screenH } = useWindowDimensions();
-  const [phase, setPhase] = useState<'splash' | 'onboarding'>('splash');
-  const [page, setPage] = useState(0);
-
-  const overlayOpacity = useSharedValue(1);
-  const contentOpacity = useSharedValue(0);
-
-  const onSplashDone = useCallback(() => {
-    overlayOpacity.value = withTiming(0, { duration: 180, easing: Easing.out(Easing.cubic) });
-    contentOpacity.value = withTiming(1, { duration: 220, easing: Easing.out(Easing.cubic) }, () => {
-      runOnJS(setPhase)('onboarding');
-    });
-  }, [overlayOpacity, contentOpacity]);
-
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      StatusBar.setTranslucent(true);
-      StatusBar.setBackgroundColor('transparent');
-      StatusBar.setBarStyle('dark-content');
-    } else {
-      StatusBar.setBarStyle('dark-content');
-    }
-  }, []);
-
-  const splashStyle = useAnimatedStyle(() => ({ opacity: overlayOpacity.value }));
-  const onboardingStyle = useAnimatedStyle(() => ({ opacity: contentOpacity.value }));
-
-  const isLast = page === SLIDES.length - 1;
-
-  return (
-    <View style={styles.root}>
-      <Animated.View style={[StyleSheet.absoluteFill, splashStyle]} pointerEvents="none">
-        <AnimatedSplashScreen onAnimationComplete={onSplashDone} />
-      </Animated.View>
-
-      <Animated.View style={[styles.onboardingWrapper, onboardingStyle]} pointerEvents={phase === 'splash' ? 'none' : 'auto'}>
-        <View style={[styles.topSpacer, { height: Math.max(24, screenH * 0.08) }]} />
-        <View style={styles.iconRow}>
-          <View style={[styles.iconPreview, { width: ICON_SIZE, height: ICON_SIZE }]}>
-           ="contain"
-            />
-          </View>
-        </View>
-
-        <View style={styles.carousel}>
-          <FlatList
-            data={SLIDES}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.key}
-            onMomentumScrollEnd={e => {
-              const nextPage = Math.round(e.nativeEvent.contentOffset.x / screenW);
-              setPage(Math.max(0, Math.min(SLIDES.length - 1, nextPage)));
-            }}
-            renderItem={({ item }) => (
-              <View style={[styles.slide, { width: screenW }]}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.subtitle}>{item.subtitle}</Text>
-              </View>
-            )}
-          />
-        </View>
-
-        <View style={styles.footer}>
-          <View style={styles.dots}>
-            {SLIDES.map((_, i) => (
-              <View
-                key={String(i)}
-                style={[styles.dot, i === page ? styles.dotActive : styles.dotInactive]}
-              />
-            ))}
-          </View>
-
-          <View style={styles.actions}>
-            <Pressable
-              onPress={() => {
-                if (isLast) onFinish();
-              }}
-              style={({ pressed }) => [
-                styles.primaryButton,
-                pressed ? styles.primaryButtonPressed : null,
-              ]}
-            >
-              <Text style={styles.primaryButtonText}>{isLast ? 'Get Started' : 'Swipe to continue'}</Text>
-            </Pressable>
-
-            {!isLast ? (
-              <Pressable onPress={onFinish} style={styles.secondaryButton}>
-                <Text style={styles.secondaryButtonText}>Skip</Text>
-              </Pressable>
-            ) : null}
-          </View>
-
-          <View style={styles.bottomSpacer} />
-        </View>
-      </Animated.View>
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  splashContainer: {
+  container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
@@ -488,101 +360,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  onboardingWrapper: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  topSpacer: {
-    width: '100%',
-  },
-  iconRow: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 18,
-  },
-  iconPreview: {
-    borderRadius: 26,
-    overflow: 'hidden',
-  },
-  carousel: {
-    flex: 1,
-  },
-  slide: {
-    paddingHorizontal: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '800',
-    textAlign: 'center',
-    color: '#0B1220',
-    letterSpacing: -0.2,
-  },
-  subtitle: {
-    marginTop: 12,
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: 'center',
-    color: '#50607A',
-    paddingHorizontal: 10,
-  },
-  footer: {
-    paddingHorizontal: 22,
-    paddingBottom: 18,
-  },
-  dots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 14,
-  },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 999,
-  },
-  dotActive: {
-    backgroundColor: '#0B1220',
-    transform: [{ scale: 1.2 }],
-  },
-  dotInactive: {
-    backgroundColor: '#C9D3E2',
-  },
-  actions: {
-    gap: 10,
-  },
-  primaryButton: {
-    height: 54,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0B1220',
-  },
-  primaryButtonPressed: {
-    opacity: 0.85,
-  },
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  secondaryButton: {
-    height: 48,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(11, 18, 32, 0.06)',
-  },
-  secondaryButtonText: {
-    color: '#0B1220',
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  bottomSpacer: {
-    height: Platform.OS === 'ios' ? 12 : 6,
-  },
 });
 
-export default Onboarding;
+export default AnimatedSplashScreen;
