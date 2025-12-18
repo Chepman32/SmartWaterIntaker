@@ -127,7 +127,13 @@ function MainTabNavigator() {
   );
 }
 
-export default function AppNavigator() {
+type AppNavigatorProps = {
+  initialRoute?: keyof RootStackParamList;
+};
+
+export default function AppNavigator({
+  initialRoute = 'MainTabs',
+}: AppNavigatorProps) {
   const { t } = useTranslation();
   const { theme, mode } = useTheme();
 
@@ -164,6 +170,7 @@ export default function AppNavigator() {
       }}
     >
       <Stack.Navigator
+        initialRouteName={initialRoute}
         screenOptions={{
           headerStyle: {
             backgroundColor: theme.card,

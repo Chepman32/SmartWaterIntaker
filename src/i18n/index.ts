@@ -67,8 +67,14 @@ const resources = {
   fil: { translation: fil },
 };
 
+// Supported language codes
+export const SUPPORTED_LANGUAGES = Object.keys(resources);
+
 // Get device locale with regional variant support
-const getDeviceLocale = (): { languageCode: string; languageTag: string } => {
+export const getDeviceLocale = (): {
+  languageCode: string;
+  languageTag: string;
+} => {
   const locales = RNLocalize.getLocales();
   if (locales && locales.length > 0) {
     return {
@@ -80,7 +86,7 @@ const getDeviceLocale = (): { languageCode: string; languageTag: string } => {
 };
 
 // Find the best matching language from supported languages
-const findBestLanguageMatch = (
+export const findBestLanguageMatch = (
   languageCode: string,
   languageTag: string,
 ): string => {
@@ -108,6 +114,12 @@ const findBestLanguageMatch = (
 
   // Fallback to English
   return 'en';
+};
+
+// Get the detected device language (best match from supported languages)
+export const getDetectedDeviceLanguage = (): string => {
+  const { languageCode, languageTag } = getDeviceLocale();
+  return findBestLanguageMatch(languageCode, languageTag);
 };
 
 // Get stored language or fallback to device locale
