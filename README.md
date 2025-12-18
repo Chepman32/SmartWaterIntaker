@@ -96,4 +96,5 @@ To learn more about React Native, take a look at the following resources:
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 
-TODO: implement sound effects
+TODO: implement sound effect for goal reaching (there is a media file already)
+TODO: add a haptic feedback for the record deletion button
