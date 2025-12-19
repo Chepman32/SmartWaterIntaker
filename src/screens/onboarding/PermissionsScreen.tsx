@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Linking,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
@@ -96,13 +98,19 @@ export const PermissionsScreen: React.FC = () => {
             Alert.alert(
               'Notifications Disabled',
               'Please enable notifications in your device settings to receive hydration reminders.',
-              [{ text: 'OK' }],
+              [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Open Settings',
+                  onPress: () => Linking.openSettings(),
+                },
+              ],
             );
           }
           break;
 
         case 'health':
-          if (!HealthService.isAvailableOnPlatform()) {
+          if (Platform.OS !== 'ios') {
             Alert.alert(
               'Health Data',
               'Health data integration is currently only available on iOS.',
@@ -120,11 +128,18 @@ export const PermissionsScreen: React.FC = () => {
             );
             dispatch(updateProfile({ healthKitEnabled: true }));
           } else {
+            // HealthKit may not be available in simulator or permission denied
             Alert.alert(
               'Health Access',
               healthResult.error ||
                 'Unable to access Health data. You can enable this later in Settings.',
-              [{ text: 'OK' }],
+              [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Open Settings',
+                  onPress: () => Linking.openSettings(),
+                },
+              ],
             );
           }
           break;
