@@ -13,8 +13,10 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 import { Colors } from '../../constants/colors';
 import NotificationService from '../../services/NotificationService';
+import { updateProfile } from '../../state/slices/settingsSlice';
 
 type ReminderTime = {
   id: string;
@@ -34,6 +36,7 @@ const defaultReminders: ReminderTime[] = [
 
 export const RemindersScreen: React.FC = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
 
@@ -93,7 +96,6 @@ export const RemindersScreen: React.FC = () => {
 
   const handleContinue = async () => {
     if (notificationsEnabled) {
-      // TODO: Request notification permissions
       // TODO: Schedule notifications based on enabled reminders
       console.log(
         'Setting up notifications:',
@@ -101,8 +103,16 @@ export const RemindersScreen: React.FC = () => {
       );
     }
 
-    // Navigate to the main app
-    navigation.navigate('PermissionsScreen' as never);
+    // Mark onboarding as completed and navigate to main app
+    dispatch(updateProfile({
+      onboardingCompleted: true,
+      notificationsEnabled: notificationsEnabled,
+    }));
+
+    (navigation as any).reset({
+      index: 0,
+      routes: [{ name: 'MainTabs' }],
+    });
   };
 
   const handleBack = () => {
@@ -216,9 +226,7 @@ export const RemindersScreen: React.FC = () => {
           onPress={handleContinue}
           activeOpacity={0.8}
         >
-          <Text style={styles.continueButtonText}>
-            {notificationsEnabled ? 'Set Up Reminders' : 'Continue'}
-          </Text>
+          <Text style={styles.continueButtonText}>Get Started</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

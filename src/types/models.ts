@@ -23,7 +23,6 @@ export interface UserProfile {
   workEndTime?: string; // HH:mm format
   onboardingCompleted?: boolean;
   notificationsEnabled?: boolean;
-  healthKitEnabled?: boolean;
   createdAt: number;
   updatedAt: number;
 }

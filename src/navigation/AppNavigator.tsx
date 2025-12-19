@@ -22,7 +22,6 @@ import {
   ClimateScreen,
   GoalCalculationScreen,
   RemindersScreen,
-  PermissionsScreen,
 } from '../screens/onboarding';
 
 // Navigation types
@@ -40,7 +39,6 @@ export type RootStackParamList = {
   ClimateScreen: undefined;
   GoalCalculationScreen: undefined;
   RemindersScreen: undefined;
-  PermissionsScreen: undefined;
   About: undefined;
 };
 
@@ -221,11 +219,6 @@ export default function AppNavigator({
         <Stack.Screen
           name="RemindersScreen"
           component={RemindersScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="PermissionsScreen"
-          component={PermissionsScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
