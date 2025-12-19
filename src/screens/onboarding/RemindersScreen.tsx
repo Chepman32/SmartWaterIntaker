@@ -13,11 +13,12 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Colors } from '../../constants/colors';
 import NotificationService from '../../services/NotificationService';
 import { updateProfile } from '../../state/slices/settingsSlice';
+import { StorageService } from '../../services/storage';
 
 type ReminderTime = {
   id: string;
@@ -39,6 +40,7 @@ export const RemindersScreen: React.FC = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const profile = useSelector((state: any) => state.settings.profile);
   const isDark = useColorScheme() === 'dark';
   const theme = isDark ? Colors.dark : Colors.light;
 
@@ -106,12 +108,14 @@ export const RemindersScreen: React.FC = () => {
     }
 
     // Mark onboarding as completed and navigate to main app
-    dispatch(
-      updateProfile({
-        onboardingCompleted: true,
-        notificationsEnabled: notificationsEnabled,
-      }),
-    );
+    const updatedProfile = {
+      ...profile,
+      onboardingCompleted: true,
+      notificationsEnabled: notificationsEnabled,
+      updatedAt: Date.now(),
+    };
+    dispatch(updateProfile(updatedProfile));
+    StorageService.setProfile(updatedProfile);
 
     (navigation as any).reset({
       index: 0,
