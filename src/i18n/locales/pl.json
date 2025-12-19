@@ -115,7 +115,38 @@
     "language": "Język",
     "resetOnboarding": "Resetuj wprowadzenie",
     "resetOnboardingDesc": "Przejdź proces wprowadzenia ponownie",
-    "stayHydrated": "Pozostań nawodniony! 💧"
+    "stayHydrated": "Pozostań nawodniony! 💧",
+    "about": "O aplikacji",
+    "aboutDesc": "Informacje o aplikacji i źródła medyczne"
+  },
+  "about": {
+    "version": "Wersja",
+    "disclaimer": "Ta aplikacja dostarcza ogólne zalecenia dotyczące nawodnienia oparte na badaniach naukowych. Nie ma na celu zastąpienia profesjonalnej porady medycznej. Zawsze konsultuj się z lekarzem w celu uzyskania spersonalizowanych wskazówek.",
+    "medicalCitations": "Źródła Medyczne",
+    "citationsSubtitle": "Nasze zalecenia dotyczące nawodnienia opierają się na następujących recenzowanych źródłach naukowych:",
+    "calculationMethod": "Jak Obliczamy Twój Cel",
+    "calculationExplanation": "Twoje dzienne zalecenie spożycia wody jest obliczane przy użyciu podstawowej formuły 35ml na kilogram masy ciała, dostosowanej do poziomu aktywności i warunków klimatycznych. To podejście jest wspierane przez wiele organizacji zdrowotnych na całym świecie.",
+    "formula": "Formuła:",
+    "formulaText": "Podstawa (35ml × waga kg) × Aktywność × Klimat",
+    "footerNote": "Indywidualne zapotrzebowanie na wodę może się różnić. Czynniki takie jak stan zdrowia, leki i ciąża mogą wpływać na Twoje potrzeby nawodnienia.",
+    "citations": {
+      "baseIntake": {
+        "title": "Podstawowe Spożycie Wody (35ml/kg)",
+        "description": "Europejski Urząd ds. Bezpieczeństwa Żywności zaleca około 35ml wody na kilogram masy ciała jako podstawę odpowiedniego nawodnienia."
+      },
+      "activityAdjustment": {
+        "title": "Dostosowanie do Aktywności Fizycznej",
+        "description": "American College of Sports Medicine zaleca zwiększenie spożycia płynów o 20-40% podczas aktywności fizycznej, aby zrekompensować straty potu."
+      },
+      "climateAdjustment": {
+        "title": "Dostosowanie do Klimatu i Temperatury",
+        "description": "National Academies of Sciences zauważają, że gorący klimat i wysokie temperatury zwiększają zapotrzebowanie na wodę z powodu zwiększonego pocenia się."
+      },
+      "healthBenefits": {
+        "title": "Korzyści Zdrowotne Nawodnienia",
+        "description": "Odpowiednie nawodnienie wspiera funkcje poznawcze, wydolność fizyczną, zdrowie nerek i ogólne samopoczucie według badań Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

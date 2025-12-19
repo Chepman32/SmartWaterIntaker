@@ -115,7 +115,38 @@
     "language": "Dil",
     "resetOnboarding": "Tanıtımı Sıfırla",
     "resetOnboardingDesc": "Tanıtım sürecini tekrarla",
-    "stayHydrated": "Sıvı alımını ihmal etme! 💧"
+    "stayHydrated": "Sıvı alımını ihmal etme! 💧",
+    "about": "Hakkında",
+    "aboutDesc": "Uygulama bilgisi ve tıbbi kaynaklar"
+  },
+  "about": {
+    "version": "Sürüm",
+    "disclaimer": "Bu uygulama, bilimsel araştırmalara dayalı genel hidrasyon önerileri sunar. Profesyonel tıbbi tavsiyenin yerini almak için tasarlanmamıştır. Kişiselleştirilmiş rehberlik için her zaman bir sağlık uzmanına danışın.",
+    "medicalCitations": "Tıbbi Kaynaklar",
+    "citationsSubtitle": "Hidrasyon önerilerimiz aşağıdaki hakemli bilimsel kaynaklara dayanmaktadır:",
+    "calculationMethod": "Hedefinizi Nasıl Hesaplıyoruz",
+    "calculationExplanation": "Günlük su alımı öneriniz, vücut ağırlığının kilogramı başına 35ml temel formülü kullanılarak, aktivite düzeyinize ve iklim koşullarına göre ayarlanarak hesaplanır. Bu yaklaşım dünya çapında birçok sağlık kuruluşu tarafından desteklenmektedir.",
+    "formula": "Formül:",
+    "formulaText": "Temel (35ml × ağırlık kg) × Aktivite × İklim",
+    "footerNote": "Bireysel su ihtiyaçları değişebilir. Sağlık durumu, ilaçlar ve hamilelik gibi faktörler hidrasyon gereksinimlerinizi etkileyebilir.",
+    "citations": {
+      "baseIntake": {
+        "title": "Temel Su Alımı (35ml/kg)",
+        "description": "Avrupa Gıda Güvenliği Otoritesi, yeterli hidrasyon için temel olarak vücut ağırlığının kilogramı başına yaklaşık 35ml su önermektedir."
+      },
+      "activityAdjustment": {
+        "title": "Fiziksel Aktivite Ayarlaması",
+        "description": "Amerikan Spor Hekimliği Koleji, ter kayıplarını telafi etmek için fiziksel aktivite sırasında sıvı alımının %20-40 artırılmasını önermektedir."
+      },
+      "climateAdjustment": {
+        "title": "İklim ve Sıcaklık Ayarlaması",
+        "description": "Ulusal Bilimler Akademileri, sıcak iklimlerin ve yüksek sıcaklıkların artan terleme nedeniyle su gereksinimlerini artırdığını belirtmektedir."
+      },
+      "healthBenefits": {
+        "title": "Hidrasyonun Sağlık Faydaları",
+        "description": "Mayo Clinic araştırmalarına göre uygun hidrasyon, bilişsel işlevi, fiziksel performansı, böbrek sağlığını ve genel refahı destekler."
+      }
+    }
   },
   "onboarding": {
     "units": {

@@ -115,7 +115,38 @@
     "language": "Bahasa",
     "resetOnboarding": "Set semula pengenalan",
     "resetOnboardingDesc": "Lalui proses pengenalan semula",
-    "stayHydrated": "Kekal terhidrat! 💧"
+    "stayHydrated": "Kekal terhidrat! 💧",
+    "about": "Perihal",
+    "aboutDesc": "Maklumat aplikasi dan sumber perubatan"
+  },
+  "about": {
+    "version": "Versi",
+    "disclaimer": "Aplikasi ini menyediakan cadangan penghidratan umum berdasarkan penyelidikan saintifik. Ia tidak bertujuan untuk menggantikan nasihat perubatan profesional. Sentiasa berunding dengan profesional kesihatan untuk panduan yang diperibadikan.",
+    "medicalCitations": "Sumber Perubatan",
+    "citationsSubtitle": "Cadangan penghidratan kami berdasarkan sumber saintifik yang disemak rakan sebaya berikut:",
+    "calculationMethod": "Cara Kami Mengira Sasaran Anda",
+    "calculationExplanation": "Cadangan pengambilan air harian anda dikira menggunakan formula asas 35ml setiap kilogram berat badan, diselaraskan mengikut tahap aktiviti dan keadaan iklim anda. Pendekatan ini disokong oleh pelbagai organisasi kesihatan di seluruh dunia.",
+    "formula": "Formula:",
+    "formulaText": "Asas (35ml × berat kg) × Aktiviti × Iklim",
+    "footerNote": "Keperluan air individu mungkin berbeza. Faktor seperti keadaan kesihatan, ubat-ubatan, dan kehamilan boleh mempengaruhi keperluan penghidratan anda.",
+    "citations": {
+      "baseIntake": {
+        "title": "Pengambilan Air Asas (35ml/kg)",
+        "description": "Pihak Berkuasa Keselamatan Makanan Eropah mengesyorkan kira-kira 35ml air setiap kilogram berat badan sebagai asas untuk penghidratan yang mencukupi."
+      },
+      "activityAdjustment": {
+        "title": "Pelarasan Aktiviti Fizikal",
+        "description": "American College of Sports Medicine mengesyorkan peningkatan pengambilan cecair sebanyak 20-40% semasa aktiviti fizikal untuk mengimbangi kehilangan peluh."
+      },
+      "climateAdjustment": {
+        "title": "Pelarasan Iklim dan Suhu",
+        "description": "National Academies of Sciences menyatakan bahawa iklim panas dan suhu tinggi meningkatkan keperluan air disebabkan peningkatan peluh."
+      },
+      "healthBenefits": {
+        "title": "Manfaat Kesihatan Penghidratan",
+        "description": "Penghidratan yang betul menyokong fungsi kognitif, prestasi fizikal, kesihatan buah pinggang, dan kesejahteraan umum menurut penyelidikan Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

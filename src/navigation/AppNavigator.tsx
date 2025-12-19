@@ -10,6 +10,7 @@ import HistoryScreen from '../screens/HistoryScreen';
 import StatisticsScreen from '../screens/StatisticsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import AboutScreen from '../screens/AboutScreen';
 import AIScreen from '../screens/AIScreen';
 import { Colors } from '../constants/colors';
 import { useThemeColors, useTheme } from '../hooks/useThemeColors';
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   GoalCalculationScreen: undefined;
   RemindersScreen: undefined;
   PermissionsScreen: undefined;
+  About: undefined;
 };
 
 export type MainTabParamList = {
@@ -235,6 +237,11 @@ export default function AppNavigator({
           name="Settings"
           component={SettingsScreen}
           options={{ title: t('tabs.settings') }}
+        />
+        <Stack.Screen
+          name="About"
+          component={AboutScreen}
+          options={{ title: t('settings.about') }}
         />
         {/* TODO: Add modal screens like LogWater, ContainerEditor */}
       </Stack.Navigator>

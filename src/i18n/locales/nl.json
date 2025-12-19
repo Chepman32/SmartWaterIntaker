@@ -115,7 +115,38 @@
     "language": "Taal",
     "resetOnboarding": "Introductie opnieuw",
     "resetOnboardingDesc": "Introductieproces opnieuw doorlopen",
-    "stayHydrated": "Blijf gehydrateerd! 💧"
+    "stayHydrated": "Blijf gehydrateerd! 💧",
+    "about": "Over",
+    "aboutDesc": "App-info en medische bronnen"
+  },
+  "about": {
+    "version": "Versie",
+    "disclaimer": "Deze app biedt algemene hydratatie-aanbevelingen op basis van wetenschappelijk onderzoek. Het is niet bedoeld als vervanging voor professioneel medisch advies. Raadpleeg altijd een zorgverlener voor persoonlijk advies.",
+    "medicalCitations": "Medische Bronnen",
+    "citationsSubtitle": "Onze hydratatie-aanbevelingen zijn gebaseerd op de volgende peer-reviewed wetenschappelijke bronnen:",
+    "calculationMethod": "Hoe We Uw Doel Berekenen",
+    "calculationExplanation": "Uw dagelijkse waterinname-aanbeveling wordt berekend met een basisformule van 35ml per kilogram lichaamsgewicht, aangepast aan uw activiteitsniveau en klimaatomstandigheden. Deze aanpak wordt ondersteund door meerdere gezondheidsorganisaties wereldwijd.",
+    "formula": "Formule:",
+    "formulaText": "Basis (35ml × gewicht kg) × Activiteit × Klimaat",
+    "footerNote": "Individuele waterbehoeften kunnen variëren. Factoren zoals gezondheidstoestand, medicijnen en zwangerschap kunnen uw hydratatiebehoefte beïnvloeden.",
+    "citations": {
+      "baseIntake": {
+        "title": "Basis Waterinname (35ml/kg)",
+        "description": "De Europese Autoriteit voor Voedselveiligheid beveelt ongeveer 35ml water per kilogram lichaamsgewicht aan als basis voor adequate hydratatie."
+      },
+      "activityAdjustment": {
+        "title": "Aanpassing voor Fysieke Activiteit",
+        "description": "Het American College of Sports Medicine beveelt aan om de vochtinname tijdens fysieke activiteit met 20-40% te verhogen om zweetverlies te compenseren."
+      },
+      "climateAdjustment": {
+        "title": "Klimaat- en Temperatuuraanpassing",
+        "description": "De National Academies of Sciences merken op dat warme klimaten en hoge temperaturen de waterbehoefte verhogen door toegenomen transpiratie."
+      },
+      "healthBenefits": {
+        "title": "Gezondheidsvoordelen van Hydratatie",
+        "description": "Goede hydratatie ondersteunt cognitieve functies, fysieke prestaties, nierengezondheid en algemeen welzijn volgens onderzoek van de Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

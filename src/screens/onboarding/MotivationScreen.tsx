@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ImageSourcePropType,
+  ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -98,10 +99,6 @@ export const MotivationScreen: React.FC = () => {
     navigation.navigate('DailyRoutineScreen' as never);
   };
 
-  const handleSkip = () => {
-    navigation.navigate('DailyRoutineScreen' as never);
-  };
-
   const handleBack = () => {
     navigation.goBack();
   };
@@ -112,17 +109,11 @@ export const MotivationScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          style={styles.skipButton}
-          onPress={handleSkip}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.content}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <Text style={styles.title}>{t('onboarding.motivation.title')}</Text>
           <Text style={styles.subtitle}>
@@ -182,36 +173,38 @@ export const MotivationScreen: React.FC = () => {
             );
           })}
         </View>
-      </View>
+      </ScrollView>
 
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={handleBack}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.backButtonText}>{t('common.back')}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.continueButton,
-            !isValid && styles.continueButtonDisabled,
-          ]}
-          onPress={handleContinue}
-          disabled={!isValid}
-          activeOpacity={0.8}
-        >
-          <Text
-            style={[
-              styles.continueButtonText,
-              !isValid && styles.continueButtonTextDisabled,
-            ]}
+      <SafeAreaView edges={['bottom']} style={styles.footerSafeArea}>
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={handleBack}
+            activeOpacity={0.7}
           >
-            {t('common.continue')}
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.backButtonText}>{t('common.back')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.continueButton,
+              !isValid && styles.continueButtonDisabled,
+            ]}
+            onPress={handleContinue}
+            disabled={!isValid}
+            activeOpacity={0.8}
+          >
+            <Text
+              style={[
+                styles.continueButtonText,
+                !isValid && styles.continueButtonTextDisabled,
+              ]}
+            >
+              {t('common.continue')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     </SafeAreaView>
   );
 };
@@ -222,26 +215,13 @@ const getStyles = (theme: any) =>
       flex: 1,
       backgroundColor: theme.background,
     },
-    topBar: {
-      paddingHorizontal: 24,
-      paddingTop: 12,
-      alignItems: 'flex-start',
-    },
-    skipButton: {
-      alignSelf: 'flex-start',
-      paddingVertical: 8,
-      paddingHorizontal: 12,
-    },
-    skipButtonText: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      fontWeight: '500',
+    scrollView: {
+      flex: 1,
     },
     content: {
-      flex: 1,
       paddingHorizontal: 24,
-      paddingTop: 40,
-      paddingBottom: 15,
+      paddingTop: 24,
+      paddingBottom: 20,
     },
     header: {
       marginBottom: 5,
@@ -336,12 +316,16 @@ const getStyles = (theme: any) =>
       fontSize: 16,
       fontWeight: '600',
     },
+    footerSafeArea: {
+      backgroundColor: theme.background,
+    },
     footer: {
       paddingHorizontal: 24,
-      paddingBottom: 40,
-      paddingTop: 20,
+      paddingBottom: 16,
+      paddingTop: 16,
       flexDirection: 'row',
       gap: 12,
+      backgroundColor: theme.background,
     },
     backButton: {
       flex: 1,

@@ -115,7 +115,38 @@
     "language": "Jazyk",
     "resetOnboarding": "Resetovat úvod",
     "resetOnboardingDesc": "Projít úvodním procesem znovu",
-    "stayHydrated": "Zůstaňte hydratovaní! 💧"
+    "stayHydrated": "Zůstaňte hydratovaní! 💧",
+    "about": "O aplikaci",
+    "aboutDesc": "Informace o aplikaci a lékařské zdroje"
+  },
+  "about": {
+    "version": "Verze",
+    "disclaimer": "Tato aplikace poskytuje obecná doporučení pro hydrataci založená na vědeckém výzkumu. Není určena k nahrazení odborné lékařské rady. Vždy se poraďte se zdravotnickým odborníkem pro personalizované pokyny.",
+    "medicalCitations": "Lékařské Zdroje",
+    "citationsSubtitle": "Naše doporučení pro hydrataci jsou založena na následujících recenzovaných vědeckých zdrojích:",
+    "calculationMethod": "Jak Vypočítáváme Váš Cíl",
+    "calculationExplanation": "Vaše denní doporučení příjmu vody je vypočítáno pomocí základního vzorce 35ml na kilogram tělesné hmotnosti, upraveného podle úrovně aktivity a klimatických podmínek. Tento přístup je podporován mnoha zdravotnickými organizacemi po celém světě.",
+    "formula": "Vzorec:",
+    "formulaText": "Základ (35ml × váha kg) × Aktivita × Klima",
+    "footerNote": "Individuální potřeby vody se mohou lišit. Faktory jako zdravotní stav, léky a těhotenství mohou ovlivnit vaše požadavky na hydrataci.",
+    "citations": {
+      "baseIntake": {
+        "title": "Základní Příjem Vody (35ml/kg)",
+        "description": "Evropský úřad pro bezpečnost potravin doporučuje přibližně 35ml vody na kilogram tělesné hmotnosti jako základ pro adekvátní hydrataci."
+      },
+      "activityAdjustment": {
+        "title": "Úprava pro Fyzickou Aktivitu",
+        "description": "American College of Sports Medicine doporučuje zvýšit příjem tekutin o 20-40% během fyzické aktivity k vyrovnání ztrát pocením."
+      },
+      "climateAdjustment": {
+        "title": "Úprava pro Klima a Teplotu",
+        "description": "National Academies of Sciences poznamenávají, že horká klima a vysoké teploty zvyšují potřebu vody kvůli zvýšenému pocení."
+      },
+      "healthBenefits": {
+        "title": "Zdravotní Přínosy Hydratace",
+        "description": "Správná hydratace podporuje kognitivní funkce, fyzický výkon, zdraví ledvin a celkovou pohodu podle výzkumu Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

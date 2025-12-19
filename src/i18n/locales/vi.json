@@ -115,7 +115,38 @@
     "language": "Ngôn ngữ",
     "resetOnboarding": "Đặt lại giới thiệu",
     "resetOnboardingDesc": "Thực hiện lại quá trình giới thiệu",
-    "stayHydrated": "Giữ đủ nước! 💧"
+    "stayHydrated": "Giữ đủ nước! 💧",
+    "about": "Giới thiệu",
+    "aboutDesc": "Thông tin ứng dụng và nguồn y khoa"
+  },
+  "about": {
+    "version": "Phiên bản",
+    "disclaimer": "Ứng dụng này cung cấp các khuyến nghị bổ sung nước chung dựa trên nghiên cứu khoa học. Nó không nhằm thay thế lời khuyên y tế chuyên nghiệp. Luôn tham khảo ý kiến chuyên gia y tế để được hướng dẫn cá nhân hóa.",
+    "medicalCitations": "Nguồn Y Khoa",
+    "citationsSubtitle": "Các khuyến nghị bổ sung nước của chúng tôi dựa trên các nguồn khoa học được bình duyệt sau:",
+    "calculationMethod": "Cách Chúng Tôi Tính Mục Tiêu Của Bạn",
+    "calculationExplanation": "Khuyến nghị lượng nước uống hàng ngày được tính bằng công thức cơ bản 35ml trên mỗi kg cân nặng, điều chỉnh theo mức độ hoạt động và điều kiện khí hậu. Phương pháp này được hỗ trợ bởi nhiều tổ chức y tế trên toàn thế giới.",
+    "formula": "Công thức:",
+    "formulaText": "Cơ bản (35ml × cân nặng kg) × Hoạt động × Khí hậu",
+    "footerNote": "Nhu cầu nước của mỗi người có thể khác nhau. Các yếu tố như tình trạng sức khỏe, thuốc và thai kỳ có thể ảnh hưởng đến nhu cầu bổ sung nước của bạn.",
+    "citations": {
+      "baseIntake": {
+        "title": "Lượng Nước Cơ Bản (35ml/kg)",
+        "description": "Cơ quan An toàn Thực phẩm Châu Âu khuyến nghị khoảng 35ml nước trên mỗi kg cân nặng làm cơ sở cho việc bổ sung nước đầy đủ."
+      },
+      "activityAdjustment": {
+        "title": "Điều Chỉnh Theo Hoạt Động Thể Chất",
+        "description": "Hiệp hội Y học Thể thao Hoa Kỳ khuyến nghị tăng lượng chất lỏng 20-40% trong khi hoạt động thể chất để bù đắp lượng mồ hôi mất đi."
+      },
+      "climateAdjustment": {
+        "title": "Điều Chỉnh Theo Khí Hậu và Nhiệt Độ",
+        "description": "Viện Hàn lâm Khoa học Quốc gia lưu ý rằng khí hậu nóng và nhiệt độ cao làm tăng nhu cầu nước do đổ mồ hôi nhiều hơn."
+      },
+      "healthBenefits": {
+        "title": "Lợi Ích Sức Khỏe Của Việc Bổ Sung Nước",
+        "description": "Bổ sung nước đúng cách hỗ trợ chức năng nhận thức, hiệu suất thể chất, sức khỏe thận và sức khỏe tổng thể theo nghiên cứu của Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

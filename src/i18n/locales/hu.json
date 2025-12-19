@@ -115,7 +115,38 @@
     "language": "Nyelv",
     "resetOnboarding": "Bemutató visszaállítása",
     "resetOnboardingDesc": "Bemutató folyamat újra végigvitele",
-    "stayHydrated": "Maradjon hidratált! 💧"
+    "stayHydrated": "Maradjon hidratált! 💧",
+    "about": "Névjegy",
+    "aboutDesc": "Alkalmazás információ és orvosi források"
+  },
+  "about": {
+    "version": "Verzió",
+    "disclaimer": "Ez az alkalmazás általános hidratálási ajánlásokat nyújt tudományos kutatások alapján. Nem helyettesíti a szakorvosi tanácsadást. Személyre szabott útmutatásért mindig forduljon egészségügyi szakemberhez.",
+    "medicalCitations": "Orvosi Források",
+    "citationsSubtitle": "Hidratálási ajánlásaink a következő lektorált tudományos forrásokon alapulnak:",
+    "calculationMethod": "Hogyan Számítjuk Ki a Célját",
+    "calculationExplanation": "Napi vízfogyasztási ajánlása egy alapképlet alapján kerül kiszámításra: 35ml testsúlykilogrammonként, az aktivitási szinthez és az éghajlati viszonyokhoz igazítva. Ezt a megközelítést világszerte számos egészségügyi szervezet támogatja.",
+    "formula": "Képlet:",
+    "formulaText": "Alap (35ml × súly kg) × Aktivitás × Éghajlat",
+    "footerNote": "Az egyéni vízigény változhat. Olyan tényezők, mint az egészségi állapot, gyógyszerek és terhesség befolyásolhatják hidratálási igényeit.",
+    "citations": {
+      "baseIntake": {
+        "title": "Alap Vízfogyasztás (35ml/kg)",
+        "description": "Az Európai Élelmiszerbiztonsági Hatóság körülbelül 35ml vizet javasol testsúlykilogrammonként a megfelelő hidratálás alapjaként."
+      },
+      "activityAdjustment": {
+        "title": "Fizikai Aktivitás Korrekció",
+        "description": "Az American College of Sports Medicine azt javasolja, hogy fizikai aktivitás során 20-40%-kal növeljük a folyadékbevitelt az izzadással járó veszteségek pótlására."
+      },
+      "climateAdjustment": {
+        "title": "Éghajlat és Hőmérséklet Korrekció",
+        "description": "A National Academies of Sciences megjegyzi, hogy a meleg éghajlat és a magas hőmérséklet növeli a vízigényt a fokozott izzadás miatt."
+      },
+      "healthBenefits": {
+        "title": "A Hidratálás Egészségügyi Előnyei",
+        "description": "A megfelelő hidratálás támogatja a kognitív funkciókat, a fizikai teljesítményt, a vesék egészségét és az általános jólétet a Mayo Clinic kutatásai szerint."
+      }
+    }
   },
   "onboarding": {
     "units": {

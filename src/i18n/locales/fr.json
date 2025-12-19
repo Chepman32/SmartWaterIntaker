@@ -115,7 +115,38 @@
     "language": "Langue",
     "resetOnboarding": "Réinitialiser l'accueil",
     "resetOnboardingDesc": "Recommencer le processus d'accueil",
-    "stayHydrated": "Restez hydraté ! 💧"
+    "stayHydrated": "Restez hydraté ! 💧",
+    "about": "À propos",
+    "aboutDesc": "Infos app et sources médicales"
+  },
+  "about": {
+    "version": "Version",
+    "disclaimer": "Cette application fournit des recommandations générales d'hydratation basées sur la recherche scientifique. Elle ne remplace pas les conseils médicaux professionnels. Consultez toujours un professionnel de santé pour des conseils personnalisés.",
+    "medicalCitations": "Sources Médicales",
+    "citationsSubtitle": "Nos recommandations d'hydratation sont basées sur les sources scientifiques suivantes évaluées par des pairs :",
+    "calculationMethod": "Comment Nous Calculons Votre Objectif",
+    "calculationExplanation": "Votre recommandation quotidienne d'apport en eau est calculée selon une formule de base de 35ml par kilogramme de poids corporel, ajustée en fonction de votre niveau d'activité et des conditions climatiques. Cette approche est soutenue par plusieurs organisations de santé dans le monde.",
+    "formula": "Formule :",
+    "formulaText": "Base (35ml × poids kg) × Activité × Climat",
+    "footerNote": "Les besoins individuels en eau peuvent varier. Des facteurs tels que l'état de santé, les médicaments et la grossesse peuvent affecter vos besoins en hydratation.",
+    "citations": {
+      "baseIntake": {
+        "title": "Apport de Base en Eau (35ml/kg)",
+        "description": "L'Autorité européenne de sécurité des aliments recommande environ 35ml d'eau par kilogramme de poids corporel comme base pour une hydratation adéquate."
+      },
+      "activityAdjustment": {
+        "title": "Ajustement pour l'Activité Physique",
+        "description": "L'American College of Sports Medicine recommande d'augmenter l'apport en liquides de 20 à 40% pendant l'activité physique pour compenser les pertes par transpiration."
+      },
+      "climateAdjustment": {
+        "title": "Ajustement Climat et Température",
+        "description": "Les National Academies of Sciences notent que les climats chauds et les températures élevées augmentent les besoins en eau en raison d'une transpiration accrue."
+      },
+      "healthBenefits": {
+        "title": "Bienfaits de l'Hydratation sur la Santé",
+        "description": "Une bonne hydratation soutient les fonctions cognitives, les performances physiques, la santé rénale et le bien-être général selon les recherches de la Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

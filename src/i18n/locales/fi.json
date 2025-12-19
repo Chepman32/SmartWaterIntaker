@@ -115,7 +115,38 @@
     "language": "Kieli",
     "resetOnboarding": "Nollaa perehdytys",
     "resetOnboardingDesc": "Käy läpi perehdytysprosessi uudelleen",
-    "stayHydrated": "Pysy nesteytyneenä! 💧"
+    "stayHydrated": "Pysy nesteytyneenä! 💧",
+    "about": "Tietoja",
+    "aboutDesc": "Sovellustiedot ja lääketieteelliset lähteet"
+  },
+  "about": {
+    "version": "Versio",
+    "disclaimer": "Tämä sovellus tarjoaa yleisiä nesteytyssuosituksia tieteelliseen tutkimukseen perustuen. Se ei ole tarkoitettu korvaamaan ammattimaista lääketieteellistä neuvontaa. Konsultoi aina terveydenhuollon ammattilaista henkilökohtaista ohjausta varten.",
+    "medicalCitations": "Lääketieteelliset Lähteet",
+    "citationsSubtitle": "Nesteytyssuosituksemme perustuvat seuraaviin vertaisarvioituihin tieteellisiin lähteisiin:",
+    "calculationMethod": "Miten Laskemme Tavoitteesi",
+    "calculationExplanation": "Päivittäinen vedensaantisuosituksesi lasketaan peruskaavalla 35ml painokiloa kohti, mukautettuna aktiivisuustasosi ja ilmasto-olosuhteiden mukaan. Tätä lähestymistapaa tukevat useat terveysjärjestöt maailmanlaajuisesti.",
+    "formula": "Kaava:",
+    "formulaText": "Perus (35ml × paino kg) × Aktiivisuus × Ilmasto",
+    "footerNote": "Yksilölliset vedentarpeet voivat vaihdella. Tekijät kuten terveydentila, lääkitys ja raskaus voivat vaikuttaa nestetarpeisiisi.",
+    "citations": {
+      "baseIntake": {
+        "title": "Perus Vedensaanti (35ml/kg)",
+        "description": "Euroopan elintarviketurvallisuusviranomainen suosittelee noin 35ml vettä painokiloa kohti riittävän nesteytyksen perustaksi."
+      },
+      "activityAdjustment": {
+        "title": "Fyysisen Aktiivisuuden Säätö",
+        "description": "American College of Sports Medicine suosittelee nesteen saannin lisäämistä 20-40% fyysisen aktiivisuuden aikana hikoilun aiheuttamien menetysten korvaamiseksi."
+      },
+      "climateAdjustment": {
+        "title": "Ilmasto- ja Lämpötilasäätö",
+        "description": "National Academies of Sciences huomauttaa, että kuumat ilmastot ja korkeat lämpötilat lisäävät vedentarvetta lisääntyneen hikoilun vuoksi."
+      },
+      "healthBenefits": {
+        "title": "Nesteytyksen Terveyshyödyt",
+        "description": "Oikea nesteytys tukee kognitiivista toimintaa, fyysistä suorituskykyä, munuaisten terveyttä ja yleistä hyvinvointia Mayo Clinicin tutkimuksen mukaan."
+      }
+    }
   },
   "onboarding": {
     "units": {

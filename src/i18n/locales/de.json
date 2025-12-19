@@ -115,7 +115,38 @@
     "language": "Sprache",
     "resetOnboarding": "Einführung zurücksetzen",
     "resetOnboardingDesc": "Einführung erneut durchlaufen",
-    "stayHydrated": "Bleib hydriert! 💧"
+    "stayHydrated": "Bleib hydriert! 💧",
+    "about": "Über",
+    "aboutDesc": "App-Info und medizinische Quellen"
+  },
+  "about": {
+    "version": "Version",
+    "disclaimer": "Diese App bietet allgemeine Hydratationsempfehlungen basierend auf wissenschaftlicher Forschung. Sie ersetzt keine professionelle medizinische Beratung. Konsultieren Sie immer einen Arzt für personalisierte Empfehlungen.",
+    "medicalCitations": "Medizinische Quellen",
+    "citationsSubtitle": "Unsere Hydratationsempfehlungen basieren auf folgenden wissenschaftlich geprüften Quellen:",
+    "calculationMethod": "Wie wir Ihr Ziel berechnen",
+    "calculationExplanation": "Ihre empfohlene tägliche Wasserzufuhr wird mit einer Basisformel von 35ml pro Kilogramm Körpergewicht berechnet, angepasst an Ihr Aktivitätsniveau und Klimabedingungen. Dieser Ansatz wird von mehreren Gesundheitsorganisationen weltweit unterstützt.",
+    "formula": "Formel:",
+    "formulaText": "Basis (35ml × Gewicht kg) × Aktivität × Klima",
+    "footerNote": "Der individuelle Wasserbedarf kann variieren. Faktoren wie Gesundheitszustand, Medikamente und Schwangerschaft können Ihren Hydratationsbedarf beeinflussen.",
+    "citations": {
+      "baseIntake": {
+        "title": "Basis-Wasserzufuhr (35ml/kg)",
+        "description": "Die Europäische Behörde für Lebensmittelsicherheit empfiehlt etwa 35ml Wasser pro Kilogramm Körpergewicht als Basis für eine angemessene Hydratation."
+      },
+      "activityAdjustment": {
+        "title": "Anpassung für körperliche Aktivität",
+        "description": "Das American College of Sports Medicine empfiehlt, die Flüssigkeitszufuhr während körperlicher Aktivität um 20-40% zu erhöhen, um Schweißverluste auszugleichen."
+      },
+      "climateAdjustment": {
+        "title": "Klima- und Temperaturanpassung",
+        "description": "Die National Academies of Sciences weisen darauf hin, dass heißes Klima und hohe Temperaturen den Wasserbedarf durch verstärktes Schwitzen erhöhen."
+      },
+      "healthBenefits": {
+        "title": "Gesundheitsvorteile der Hydratation",
+        "description": "Richtige Hydratation unterstützt kognitive Funktionen, körperliche Leistung, Nierengesundheit und allgemeines Wohlbefinden laut Mayo Clinic Forschung."
+      }
+    }
   },
   "onboarding": {
     "units": {

@@ -115,7 +115,38 @@
     "language": "Bahasa",
     "resetOnboarding": "Reset pengenalan",
     "resetOnboardingDesc": "Ulangi proses pengenalan",
-    "stayHydrated": "Tetap terhidrasi! 💧"
+    "stayHydrated": "Tetap terhidrasi! 💧",
+    "about": "Tentang",
+    "aboutDesc": "Info aplikasi dan sumber medis"
+  },
+  "about": {
+    "version": "Versi",
+    "disclaimer": "Aplikasi ini memberikan rekomendasi hidrasi umum berdasarkan penelitian ilmiah. Ini tidak dimaksudkan untuk menggantikan saran medis profesional. Selalu konsultasikan dengan tenaga kesehatan untuk panduan yang dipersonalisasi.",
+    "medicalCitations": "Sumber Medis",
+    "citationsSubtitle": "Rekomendasi hidrasi kami didasarkan pada sumber ilmiah peer-reviewed berikut:",
+    "calculationMethod": "Cara Kami Menghitung Target Anda",
+    "calculationExplanation": "Rekomendasi asupan air harian Anda dihitung menggunakan formula dasar 35ml per kilogram berat badan, disesuaikan dengan tingkat aktivitas dan kondisi iklim Anda. Pendekatan ini didukung oleh berbagai organisasi kesehatan di seluruh dunia.",
+    "formula": "Rumus:",
+    "formulaText": "Dasar (35ml × berat kg) × Aktivitas × Iklim",
+    "footerNote": "Kebutuhan air individu dapat bervariasi. Faktor seperti kondisi kesehatan, obat-obatan, dan kehamilan dapat mempengaruhi kebutuhan hidrasi Anda.",
+    "citations": {
+      "baseIntake": {
+        "title": "Asupan Air Dasar (35ml/kg)",
+        "description": "Otoritas Keamanan Pangan Eropa merekomendasikan sekitar 35ml air per kilogram berat badan sebagai dasar untuk hidrasi yang memadai."
+      },
+      "activityAdjustment": {
+        "title": "Penyesuaian Aktivitas Fisik",
+        "description": "American College of Sports Medicine merekomendasikan peningkatan asupan cairan sebesar 20-40% selama aktivitas fisik untuk mengkompensasi kehilangan keringat."
+      },
+      "climateAdjustment": {
+        "title": "Penyesuaian Iklim dan Suhu",
+        "description": "National Academies of Sciences mencatat bahwa iklim panas dan suhu tinggi meningkatkan kebutuhan air karena peningkatan keringat."
+      },
+      "healthBenefits": {
+        "title": "Manfaat Kesehatan dari Hidrasi",
+        "description": "Hidrasi yang tepat mendukung fungsi kognitif, kinerja fisik, kesehatan ginjal, dan kesejahteraan umum menurut penelitian Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

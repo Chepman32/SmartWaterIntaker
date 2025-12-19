@@ -115,7 +115,38 @@
     "language": "Lingua",
     "resetOnboarding": "Reimposta introduzione",
     "resetOnboardingDesc": "Ripeti il processo di introduzione",
-    "stayHydrated": "Rimani idratato! 💧"
+    "stayHydrated": "Rimani idratato! 💧",
+    "about": "Informazioni",
+    "aboutDesc": "Info app e fonti mediche"
+  },
+  "about": {
+    "version": "Versione",
+    "disclaimer": "Questa app fornisce raccomandazioni generali sull'idratazione basate sulla ricerca scientifica. Non intende sostituire il consiglio medico professionale. Consulta sempre un professionista sanitario per indicazioni personalizzate.",
+    "medicalCitations": "Fonti Mediche",
+    "citationsSubtitle": "Le nostre raccomandazioni sull'idratazione si basano sulle seguenti fonti scientifiche peer-reviewed:",
+    "calculationMethod": "Come Calcoliamo il Tuo Obiettivo",
+    "calculationExplanation": "La tua raccomandazione giornaliera di assunzione d'acqua è calcolata usando una formula base di 35ml per chilogrammo di peso corporeo, adattata al tuo livello di attività e alle condizioni climatiche. Questo approccio è supportato da molteplici organizzazioni sanitarie in tutto il mondo.",
+    "formula": "Formula:",
+    "formulaText": "Base (35ml × peso kg) × Attività × Clima",
+    "footerNote": "Le esigenze idriche individuali possono variare. Fattori come condizioni di salute, farmaci e gravidanza possono influenzare i tuoi requisiti di idratazione.",
+    "citations": {
+      "baseIntake": {
+        "title": "Assunzione Base di Acqua (35ml/kg)",
+        "description": "L'Autorità Europea per la Sicurezza Alimentare raccomanda circa 35ml di acqua per chilogrammo di peso corporeo come base per un'adeguata idratazione."
+      },
+      "activityAdjustment": {
+        "title": "Adeguamento per Attività Fisica",
+        "description": "L'American College of Sports Medicine raccomanda di aumentare l'assunzione di liquidi del 20-40% durante l'attività fisica per compensare le perdite di sudore."
+      },
+      "climateAdjustment": {
+        "title": "Adeguamento Clima e Temperatura",
+        "description": "Le National Academies of Sciences notano che i climi caldi e le alte temperature aumentano il fabbisogno idrico a causa dell'aumento della traspirazione."
+      },
+      "healthBenefits": {
+        "title": "Benefici dell'Idratazione per la Salute",
+        "description": "Una corretta idratazione supporta le funzioni cognitive, le prestazioni fisiche, la salute renale e il benessere generale secondo le ricerche della Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

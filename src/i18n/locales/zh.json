@@ -115,7 +115,38 @@
     "language": "语言",
     "resetOnboarding": "重置引导",
     "resetOnboardingDesc": "重新开始引导流程",
-    "stayHydrated": "保持水分！💧"
+    "stayHydrated": "保持水分！💧",
+    "about": "关于",
+    "aboutDesc": "应用信息和医学依据"
+  },
+  "about": {
+    "version": "版本",
+    "disclaimer": "本应用基于科学研究提供一般性的水分补充建议。它不能替代专业医疗建议。如需个性化指导，请咨询医疗专业人员。",
+    "medicalCitations": "医学依据",
+    "citationsSubtitle": "我们的水分补充建议基于以下经同行评审的科学来源：",
+    "calculationMethod": "目标计算方法",
+    "calculationExplanation": "您的每日饮水建议量使用每公斤体重35毫升的基础公式计算，并根据您的活动水平和气候条件进行调整。这种方法得到了全球多个健康组织的支持。",
+    "formula": "公式：",
+    "formulaText": "基础值 (35ml × 体重kg) × 活动量 × 气候",
+    "footerNote": "个人的水分需求可能有所不同。健康状况、药物和怀孕等因素可能会影响您的水分补充需求。",
+    "citations": {
+      "baseIntake": {
+        "title": "基础饮水量 (35ml/kg)",
+        "description": "欧洲食品安全局建议每公斤体重约35毫升水作为充足水分补充的基准。"
+      },
+      "activityAdjustment": {
+        "title": "体力活动调整",
+        "description": "美国运动医学会建议在体力活动期间将液体摄入量增加20-40%，以补偿出汗损失。"
+      },
+      "climateAdjustment": {
+        "title": "气候和温度调整",
+        "description": "美国国家科学院指出，炎热的气候和高温会因出汗增加而增加水分需求。"
+      },
+      "healthBenefits": {
+        "title": "水分补充的健康益处",
+        "description": "根据梅奥诊所的研究，适当的水分补充支持认知功能、身体表现、肾脏健康和整体健康。"
+      }
+    }
   },
   "onboarding": {
     "units": {

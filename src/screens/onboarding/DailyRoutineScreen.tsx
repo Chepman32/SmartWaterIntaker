@@ -17,7 +17,9 @@ import { useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { updateProfile } from '../../state/slices/settingsSlice';
 import { Colors } from '../../constants/colors';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 
 export const DailyRoutineScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -98,7 +100,11 @@ export const DailyRoutineScreen: React.FC = () => {
   }, [showWorkEndPicker]);
 
   const formatTime = (date: Date): string => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
   };
 
   const formatTimeToHHMM = (date: Date): string => {
@@ -107,7 +113,10 @@ export const DailyRoutineScreen: React.FC = () => {
     return `${hours}:${minutes}`;
   };
 
-  const handleWakeUpChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+  const handleWakeUpChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => {
     if (Platform.OS === 'android') {
       setShowWakeUpPicker(false);
     }
@@ -116,7 +125,10 @@ export const DailyRoutineScreen: React.FC = () => {
     }
   };
 
-  const handleBedTimeChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+  const handleBedTimeChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => {
     if (Platform.OS === 'android') {
       setShowBedTimePicker(false);
     }
@@ -125,7 +137,10 @@ export const DailyRoutineScreen: React.FC = () => {
     }
   };
 
-  const handleWorkStartChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+  const handleWorkStartChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => {
     if (Platform.OS === 'android') {
       setShowWorkStartPicker(false);
     }
@@ -134,7 +149,10 @@ export const DailyRoutineScreen: React.FC = () => {
     }
   };
 
-  const handleWorkEndChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+  const handleWorkEndChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => {
     if (Platform.OS === 'android') {
       setShowWorkEndPicker(false);
     }
@@ -195,11 +213,6 @@ export const DailyRoutineScreen: React.FC = () => {
     navigation.navigate('WeightActivityScreen' as never);
   };
 
-  const handleSkip = () => {
-    closeAllPickers();
-    navigation.navigate('WeightActivityScreen' as never);
-  };
-
   const handleBack = () => {
     closeAllPickers();
     navigation.goBack();
@@ -209,12 +222,6 @@ export const DailyRoutineScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.skipButton} onPress={handleSkip} activeOpacity={0.7}>
-          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
-        </TouchableOpacity>
-      </View>
-
       <ScrollView
         style={styles.content}
         showsVerticalScrollIndicator={false}
@@ -229,13 +236,17 @@ export const DailyRoutineScreen: React.FC = () => {
 
         {/* Wake Up Time */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.wakeUpTime')}</Text>
+          <Text style={styles.sectionTitle}>
+            {t('onboarding.dailyRoutine.wakeUpTime')}
+          </Text>
           <TouchableOpacity
             style={styles.timeButton}
             onPress={toggleWakeUpPicker}
             activeOpacity={0.7}
           >
-            <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.wakeUpLabel')}</Text>
+            <Text style={styles.timeLabel}>
+              {t('onboarding.dailyRoutine.wakeUpLabel')}
+            </Text>
             <Text style={styles.timeValue}>{formatTime(wakeUpTime)}</Text>
           </TouchableOpacity>
           {(showWakeUpPicker || wakeUpPickerAnim._value > 0) && (
@@ -262,13 +273,17 @@ export const DailyRoutineScreen: React.FC = () => {
 
         {/* Bed Time */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.bedTime')}</Text>
+          <Text style={styles.sectionTitle}>
+            {t('onboarding.dailyRoutine.bedTime')}
+          </Text>
           <TouchableOpacity
             style={styles.timeButton}
             onPress={toggleBedTimePicker}
             activeOpacity={0.7}
           >
-            <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.bedTimeLabel')}</Text>
+            <Text style={styles.timeLabel}>
+              {t('onboarding.dailyRoutine.bedTimeLabel')}
+            </Text>
             <Text style={styles.timeValue}>{formatTime(bedTime)}</Text>
           </TouchableOpacity>
           {(showBedTimePicker || bedTimePickerAnim._value > 0) && (
@@ -297,7 +312,9 @@ export const DailyRoutineScreen: React.FC = () => {
         <View style={styles.section}>
           <View style={styles.toggleContainer}>
             <View style={styles.toggleInfo}>
-              <Text style={styles.toggleTitle}>{t('onboarding.dailyRoutine.workSchedule')}</Text>
+              <Text style={styles.toggleTitle}>
+                {t('onboarding.dailyRoutine.workSchedule')}
+              </Text>
               <Text style={styles.toggleSubtitle}>
                 {t('onboarding.dailyRoutine.workScheduleDesc')}
               </Text>
@@ -315,14 +332,20 @@ export const DailyRoutineScreen: React.FC = () => {
         {hasWorkSchedule && (
           <>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.workStartTime')}</Text>
+              <Text style={styles.sectionTitle}>
+                {t('onboarding.dailyRoutine.workStartTime')}
+              </Text>
               <TouchableOpacity
                 style={styles.timeButton}
                 onPress={toggleWorkStartPicker}
                 activeOpacity={0.7}
               >
-                <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.workStartLabel')}</Text>
-                <Text style={styles.timeValue}>{formatTime(workStartTime)}</Text>
+                <Text style={styles.timeLabel}>
+                  {t('onboarding.dailyRoutine.workStartLabel')}
+                </Text>
+                <Text style={styles.timeValue}>
+                  {formatTime(workStartTime)}
+                </Text>
               </TouchableOpacity>
               {(showWorkStartPicker || workStartPickerAnim._value > 0) && (
                 <Animated.View
@@ -347,13 +370,17 @@ export const DailyRoutineScreen: React.FC = () => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>{t('onboarding.dailyRoutine.workEndTime')}</Text>
+              <Text style={styles.sectionTitle}>
+                {t('onboarding.dailyRoutine.workEndTime')}
+              </Text>
               <TouchableOpacity
                 style={styles.timeButton}
                 onPress={toggleWorkEndPicker}
                 activeOpacity={0.7}
               >
-                <Text style={styles.timeLabel}>{t('onboarding.dailyRoutine.workEndLabel')}</Text>
+                <Text style={styles.timeLabel}>
+                  {t('onboarding.dailyRoutine.workEndLabel')}
+                </Text>
                 <Text style={styles.timeValue}>{formatTime(workEndTime)}</Text>
               </TouchableOpacity>
               {(showWorkEndPicker || workEndPickerAnim._value > 0) && (
@@ -381,7 +408,9 @@ export const DailyRoutineScreen: React.FC = () => {
         )}
 
         <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>{t('onboarding.dailyRoutine.smartScheduling')}</Text>
+          <Text style={styles.infoTitle}>
+            {t('onboarding.dailyRoutine.smartScheduling')}
+          </Text>
           <Text style={styles.infoText}>
             {t('onboarding.dailyRoutine.smartSchedulingDesc')}
           </Text>
@@ -409,149 +438,135 @@ export const DailyRoutineScreen: React.FC = () => {
   );
 };
 
-const getStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  topBar: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    alignItems: 'flex-start',
-  },
-  skipButton: {
-    alignSelf: 'flex-start',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  skipButtonText: {
-    fontSize: 16,
-    color: theme.textSecondary,
-    fontWeight: '500',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-  },
-  header: {
-    paddingTop: 40,
-    marginBottom: 32,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: theme.text,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: theme.textSecondary,
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: theme.text,
-    marginBottom: 12,
-  },
-  timeButton: {
-    backgroundColor: theme.surface,
-    borderRadius: 12,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: theme.border,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  timeLabel: {
-    fontSize: 16,
-    color: theme.textSecondary,
-  },
-  timeValue: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: theme.primary,
-    fontFamily: 'monospace',
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: theme.surface,
-    borderRadius: 12,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: theme.border,
-  },
-  toggleInfo: {
-    flex: 1,
-    marginRight: 16,
-  },
-  toggleTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: theme.text,
-    marginBottom: 4,
-  },
-  toggleSubtitle: {
-    fontSize: 14,
-    color: theme.textSecondary,
-  },
-  infoCard: {
-    backgroundColor: theme.surface,
-    borderRadius: 12,
-    padding: 20,
-    marginTop: 8,
-    marginBottom: 24,
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: theme.text,
-    marginBottom: 8,
-  },
-  infoText: {
-    fontSize: 14,
-    color: theme.textSecondary,
-    lineHeight: 20,
-  },
-  footer: {
-    paddingHorizontal: 24,
-    paddingBottom: 40,
-    paddingTop: 20,
-    flexDirection: 'row',
-    gap: 12,
-  },
-  backButton: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: theme.border,
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: theme.textSecondary,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  continueButton: {
-    flex: 2,
-    backgroundColor: theme.primary,
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  continueButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-});
+const getStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    content: {
+      flex: 1,
+      paddingHorizontal: 24,
+    },
+    header: {
+      paddingTop: 24,
+      marginBottom: 32,
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: '700',
+      color: theme.text,
+      marginBottom: 12,
+      textAlign: 'center',
+    },
+    subtitle: {
+      fontSize: 16,
+      color: theme.textSecondary,
+      textAlign: 'center',
+      lineHeight: 24,
+    },
+    section: {
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 12,
+    },
+    timeButton: {
+      backgroundColor: theme.surface,
+      borderRadius: 12,
+      padding: 20,
+      borderWidth: 1,
+      borderColor: theme.border,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    timeLabel: {
+      fontSize: 16,
+      color: theme.textSecondary,
+    },
+    timeValue: {
+      fontSize: 24,
+      fontWeight: '600',
+      color: theme.primary,
+      fontFamily: 'monospace',
+    },
+    toggleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: theme.surface,
+      borderRadius: 12,
+      padding: 20,
+      borderWidth: 1,
+      borderColor: theme.border,
+    },
+    toggleInfo: {
+      flex: 1,
+      marginRight: 16,
+    },
+    toggleTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 4,
+    },
+    toggleSubtitle: {
+      fontSize: 14,
+      color: theme.textSecondary,
+    },
+    infoCard: {
+      backgroundColor: theme.surface,
+      borderRadius: 12,
+      padding: 20,
+      marginTop: 8,
+      marginBottom: 24,
+    },
+    infoTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 8,
+    },
+    infoText: {
+      fontSize: 14,
+      color: theme.textSecondary,
+      lineHeight: 20,
+    },
+    footer: {
+      paddingHorizontal: 24,
+      paddingBottom: 40,
+      paddingTop: 20,
+      flexDirection: 'row',
+      gap: 12,
+    },
+    backButton: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderColor: theme.border,
+      borderRadius: 12,
+      paddingVertical: 16,
+      alignItems: 'center',
+    },
+    backButtonText: {
+      color: theme.textSecondary,
+      fontSize: 18,
+      fontWeight: '600',
+    },
+    continueButton: {
+      flex: 2,
+      backgroundColor: theme.primary,
+      borderRadius: 12,
+      paddingVertical: 16,
+      alignItems: 'center',
+    },
+    continueButtonText: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: '600',
+    },
+  });

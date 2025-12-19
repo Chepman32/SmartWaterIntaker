@@ -115,7 +115,38 @@
     "language": "Limbă",
     "resetOnboarding": "Resetează introducerea",
     "resetOnboardingDesc": "Treci din nou prin procesul de introducere",
-    "stayHydrated": "Rămâi hidratat! 💧"
+    "stayHydrated": "Rămâi hidratat! 💧",
+    "about": "Despre",
+    "aboutDesc": "Informații aplicație și surse medicale"
+  },
+  "about": {
+    "version": "Versiune",
+    "disclaimer": "Această aplicație oferă recomandări generale de hidratare bazate pe cercetări științifice. Nu este destinată să înlocuiască sfatul medical profesional. Consultați întotdeauna un profesionist în domeniul sănătății pentru îndrumare personalizată.",
+    "medicalCitations": "Surse Medicale",
+    "citationsSubtitle": "Recomandările noastre de hidratare se bazează pe următoarele surse științifice evaluate de experți:",
+    "calculationMethod": "Cum Calculăm Obiectivul Tău",
+    "calculationExplanation": "Recomandarea zilnică de consum de apă este calculată folosind o formulă de bază de 35ml per kilogram de greutate corporală, ajustată pentru nivelul de activitate și condițiile climatice. Această abordare este susținută de multiple organizații de sănătate din întreaga lume.",
+    "formula": "Formula:",
+    "formulaText": "Bază (35ml × greutate kg) × Activitate × Climat",
+    "footerNote": "Nevoile individuale de apă pot varia. Factori precum starea de sănătate, medicamentele și sarcina pot afecta cerințele tale de hidratare.",
+    "citations": {
+      "baseIntake": {
+        "title": "Consum de Bază de Apă (35ml/kg)",
+        "description": "Autoritatea Europeană pentru Siguranța Alimentară recomandă aproximativ 35ml de apă per kilogram de greutate corporală ca bază pentru o hidratare adecvată."
+      },
+      "activityAdjustment": {
+        "title": "Ajustare pentru Activitate Fizică",
+        "description": "American College of Sports Medicine recomandă creșterea consumului de lichide cu 20-40% în timpul activității fizice pentru a compensa pierderile prin transpirație."
+      },
+      "climateAdjustment": {
+        "title": "Ajustare pentru Climat și Temperatură",
+        "description": "National Academies of Sciences notează că climatele calde și temperaturile ridicate cresc necesarul de apă din cauza transpirației crescute."
+      },
+      "healthBenefits": {
+        "title": "Beneficiile Hidratării pentru Sănătate",
+        "description": "Hidratarea corespunzătoare susține funcția cognitivă, performanța fizică, sănătatea rinichilor și bunăstarea generală conform cercetărilor Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

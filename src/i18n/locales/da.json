@@ -115,7 +115,38 @@
     "language": "Sprog",
     "resetOnboarding": "Nulstil introduktion",
     "resetOnboardingDesc": "Gennemgå introduktionen igen",
-    "stayHydrated": "Forbliv hydreret! 💧"
+    "stayHydrated": "Forbliv hydreret! 💧",
+    "about": "Om",
+    "aboutDesc": "App-info og medicinske kilder"
+  },
+  "about": {
+    "version": "Version",
+    "disclaimer": "Denne app giver generelle hydreringsanbefalinger baseret på videnskabelig forskning. Den er ikke beregnet til at erstatte professionel medicinsk rådgivning. Konsulter altid en sundhedsperson for personlig vejledning.",
+    "medicalCitations": "Medicinske Kilder",
+    "citationsSubtitle": "Vores hydreringsanbefalinger er baseret på følgende peer-reviewed videnskabelige kilder:",
+    "calculationMethod": "Hvordan Vi Beregner Dit Mål",
+    "calculationExplanation": "Din daglige vandindtag-anbefaling beregnes med en basisformel på 35ml per kilogram kropsvægt, justeret for dit aktivitetsniveau og klimaforhold. Denne tilgang understøttes af flere sundhedsorganisationer verden over.",
+    "formula": "Formel:",
+    "formulaText": "Basis (35ml × vægt kg) × Aktivitet × Klima",
+    "footerNote": "Individuelle vandbehov kan variere. Faktorer som helbredstilstand, medicin og graviditet kan påvirke dine hydreringsbehov.",
+    "citations": {
+      "baseIntake": {
+        "title": "Basis Vandindtag (35ml/kg)",
+        "description": "Den Europæiske Fødevaresikkerhedsautoritet anbefaler cirka 35ml vand per kilogram kropsvægt som basis for tilstrækkelig hydrering."
+      },
+      "activityAdjustment": {
+        "title": "Justering for Fysisk Aktivitet",
+        "description": "American College of Sports Medicine anbefaler at øge væskeindtaget med 20-40% under fysisk aktivitet for at kompensere for svedtab."
+      },
+      "climateAdjustment": {
+        "title": "Klima- og Temperaturjustering",
+        "description": "National Academies of Sciences bemærker, at varme klimaer og høje temperaturer øger vandbehovet på grund af øget svedproduktion."
+      },
+      "healthBenefits": {
+        "title": "Sundhedsfordele ved Hydrering",
+        "description": "Korrekt hydrering understøtter kognitiv funktion, fysisk præstation, nyresundhed og generelt velvære ifølge Mayo Clinic-forskning."
+      }
+    }
   },
   "onboarding": {
     "units": {

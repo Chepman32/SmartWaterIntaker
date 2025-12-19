@@ -52,10 +52,6 @@ export const ClimateScreen: React.FC = () => {
     navigation.navigate('GoalCalculationScreen' as never);
   };
 
-  const handleSkip = () => {
-    navigation.navigate('GoalCalculationScreen' as never);
-  };
-
   const handleBack = () => {
     navigation.goBack();
   };
@@ -64,16 +60,6 @@ export const ClimateScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          style={styles.skipButton}
-          onPress={handleSkip}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.title}>{t('onboarding.climate.title')}</Text>
@@ -152,14 +138,7 @@ export const ClimateScreen: React.FC = () => {
 const getStyles = (theme: any) =>
   StyleSheet.create({
     container: { flex: 1, backgroundColor: theme.background },
-    topBar: { paddingHorizontal: 24, paddingTop: 12, alignItems: 'flex-start' },
-    skipButton: { paddingVertical: 8, paddingHorizontal: 12 },
-    skipButtonText: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      fontWeight: '500',
-    },
-    content: { flex: 1, paddingHorizontal: 24, paddingTop: 40 },
+    content: { flex: 1, paddingHorizontal: 24, paddingTop: 24 },
     header: { marginBottom: 32 },
     title: {
       fontSize: 32,

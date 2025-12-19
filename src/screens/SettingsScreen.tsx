@@ -46,6 +46,10 @@ const SettingsScreen: React.FC = () => {
   const theme = useThemeColors();
   const { t } = useTranslation();
 
+  const navigateToAbout = () => {
+    navigation.navigate('About');
+  };
+
   const { settings, profile } = useSelector(
     (state: RootState) => state.settings,
   );
@@ -109,6 +113,14 @@ const SettingsScreen: React.FC = () => {
       type: 'toggle',
       value: settings.sounds,
       onToggle: value => dispatch(setSounds(value)),
+    },
+    {
+      id: 'about',
+      title: t('settings.about'),
+      subtitle: t('settings.aboutDesc'),
+      icon: 'information-circle',
+      type: 'navigation',
+      onPress: navigateToAbout,
     },
   ];
 

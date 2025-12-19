@@ -76,10 +76,6 @@ export const WeightActivityScreen: React.FC = () => {
     navigation.navigate('ClimateScreen' as never);
   };
 
-  const handleSkip = () => {
-    navigation.navigate('ClimateScreen' as never);
-  };
-
   const handleBack = () => {
     navigation.goBack();
   };
@@ -120,16 +116,6 @@ export const WeightActivityScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          style={styles.skipButton}
-          onPress={handleSkip}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.skipButtonText}>{t('common.skip')}</Text>
-        </TouchableOpacity>
-      </View>
-
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>
@@ -203,27 +189,12 @@ const getStyles = (theme: any) =>
       flex: 1,
       backgroundColor: theme.background,
     },
-    topBar: {
-      paddingHorizontal: 24,
-      paddingTop: 12,
-      alignItems: 'flex-start',
-    },
-    skipButton: {
-      alignSelf: 'flex-start',
-      paddingVertical: 8,
-      paddingHorizontal: 12,
-    },
-    skipButtonText: {
-      fontSize: 16,
-      color: theme.textSecondary,
-      fontWeight: '500',
-    },
     content: {
       flex: 1,
       paddingHorizontal: 24,
     },
     header: {
-      paddingTop: 40,
+      paddingTop: 24,
       marginBottom: 32,
     },
     title: {

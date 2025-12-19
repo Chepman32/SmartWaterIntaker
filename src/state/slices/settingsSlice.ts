@@ -40,6 +40,7 @@ const loadInitialProfile = (): UserProfile => {
     climate: stored?.climate ?? 'temperate',
     createdAt: stored?.createdAt ?? now,
     updatedAt: stored?.updatedAt ?? now,
+    onboardingCompleted: stored?.onboardingCompleted ?? false,
   };
 };
 

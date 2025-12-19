@@ -115,7 +115,38 @@
     "language": "Wika",
     "resetOnboarding": "I-reset ang panimula",
     "resetOnboardingDesc": "Dumaan muli sa proseso ng panimula",
-    "stayHydrated": "Manatiling hydrated! 💧"
+    "stayHydrated": "Manatiling hydrated! 💧",
+    "about": "Tungkol sa",
+    "aboutDesc": "Impormasyon ng app at mga medikal na sanggunian"
+  },
+  "about": {
+    "version": "Bersyon",
+    "disclaimer": "Ang app na ito ay nagbibigay ng pangkalahatang rekomendasyon sa hydration batay sa siyentipikong pananaliksik. Hindi ito nilalayong palitan ang propesyonal na medikal na payo. Laging kumonsulta sa isang healthcare professional para sa personalized na gabay.",
+    "medicalCitations": "Mga Medikal na Sanggunian",
+    "citationsSubtitle": "Ang aming mga rekomendasyon sa hydration ay batay sa mga sumusunod na peer-reviewed na siyentipikong sanggunian:",
+    "calculationMethod": "Paano Namin Kinakalkula ang Iyong Layunin",
+    "calculationExplanation": "Ang iyong pang-araw-araw na rekomendasyon sa pag-inom ng tubig ay kinakalkula gamit ang base formula na 35ml bawat kilogram ng timbang ng katawan, na inaayos para sa iyong antas ng aktibidad at kondisyon ng klima. Ang pamamaraang ito ay sinusuportahan ng maraming organisasyon ng kalusugan sa buong mundo.",
+    "formula": "Formula:",
+    "formulaText": "Base (35ml × timbang kg) × Aktibidad × Klima",
+    "footerNote": "Ang mga indibidwal na pangangailangan sa tubig ay maaaring mag-iba. Ang mga salik tulad ng kondisyon ng kalusugan, gamot, at pagbubuntis ay maaaring makaapekto sa iyong mga pangangailangan sa hydration.",
+    "citations": {
+      "baseIntake": {
+        "title": "Base na Pag-inom ng Tubig (35ml/kg)",
+        "description": "Ang European Food Safety Authority ay nagrerekomenda ng humigit-kumulang 35ml ng tubig bawat kilogram ng timbang ng katawan bilang baseline para sa sapat na hydration."
+      },
+      "activityAdjustment": {
+        "title": "Pagsasaayos para sa Pisikal na Aktibidad",
+        "description": "Ang American College of Sports Medicine ay nagrerekomenda ng pagtaas ng fluid intake ng 20-40% sa panahon ng pisikal na aktibidad upang mabawi ang pagkawala ng pawis."
+      },
+      "climateAdjustment": {
+        "title": "Pagsasaayos para sa Klima at Temperatura",
+        "description": "Ang National Academies of Sciences ay nagsasaad na ang mainit na klima at mataas na temperatura ay nagpapataas ng pangangailangan sa tubig dahil sa pagtaas ng pagpapawis."
+      },
+      "healthBenefits": {
+        "title": "Mga Benepisyo sa Kalusugan ng Hydration",
+        "description": "Ang wastong hydration ay sumusuporta sa cognitive function, pisikal na pagganap, kalusugan ng bato, at pangkalahatang kagalingan ayon sa pananaliksik ng Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {

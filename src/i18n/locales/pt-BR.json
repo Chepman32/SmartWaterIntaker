@@ -115,7 +115,38 @@
     "language": "Idioma",
     "resetOnboarding": "Reiniciar introdução",
     "resetOnboardingDesc": "Refazer o processo de introdução",
-    "stayHydrated": "Mantenha-se hidratado! 💧"
+    "stayHydrated": "Mantenha-se hidratado! 💧",
+    "about": "Sobre",
+    "aboutDesc": "Info do app e fontes médicas"
+  },
+  "about": {
+    "version": "Versão",
+    "disclaimer": "Este aplicativo fornece recomendações gerais de hidratação baseadas em pesquisa científica. Não pretende substituir aconselhamento médico profissional. Sempre consulte um profissional de saúde para orientação personalizada.",
+    "medicalCitations": "Fontes Médicas",
+    "citationsSubtitle": "Nossas recomendações de hidratação são baseadas nas seguintes fontes científicas revisadas por pares:",
+    "calculationMethod": "Como Calculamos Sua Meta",
+    "calculationExplanation": "Sua recomendação diária de ingestão de água é calculada usando uma fórmula base de 35ml por quilograma de peso corporal, ajustada para seu nível de atividade e condições climáticas. Esta abordagem é apoiada por múltiplas organizações de saúde em todo o mundo.",
+    "formula": "Fórmula:",
+    "formulaText": "Base (35ml × peso kg) × Atividade × Clima",
+    "footerNote": "As necessidades individuais de água podem variar. Fatores como condições de saúde, medicamentos e gravidez podem afetar seus requisitos de hidratação.",
+    "citations": {
+      "baseIntake": {
+        "title": "Ingestão Base de Água (35ml/kg)",
+        "description": "A Autoridade Europeia para a Segurança dos Alimentos recomenda aproximadamente 35ml de água por quilograma de peso corporal como base para hidratação adequada."
+      },
+      "activityAdjustment": {
+        "title": "Ajuste para Atividade Física",
+        "description": "O American College of Sports Medicine recomenda aumentar a ingestão de líquidos em 20-40% durante atividade física para compensar perdas por suor."
+      },
+      "climateAdjustment": {
+        "title": "Ajuste de Clima e Temperatura",
+        "description": "As National Academies of Sciences observam que climas quentes e altas temperaturas aumentam os requisitos de água devido ao aumento da transpiração."
+      },
+      "healthBenefits": {
+        "title": "Benefícios da Hidratação para a Saúde",
+        "description": "A hidratação adequada apoia a função cognitiva, desempenho físico, saúde renal e bem-estar geral de acordo com pesquisas da Mayo Clinic."
+      }
+    }
   },
   "onboarding": {
     "units": {
