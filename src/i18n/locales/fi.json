@@ -168,14 +168,17 @@
       "moderateActivity": "Kohtalainen aktiivisuus",
       "moderateActivityDesc": "Kevyt liikunta 1-3 päivää/viikko",
       "highActivity": "Korkea aktiivisuus",
-      "highActivityDesc": "Intensiivinen liikunta 4+ päivää/viikko",
-      "climate": "Ilmasto",
-      "coolClimate": "Viileä ilmasto",
-      "coolClimateDesc": "Keskilämpötila alle 20°C (68°F)",
-      "temperateClimate": "Lauhkea ilmasto",
-      "temperateClimateDesc": "Keskilämpötila 20-25°C (68-77°F)",
-      "hotClimate": "Kuuma ilmasto",
-      "hotClimateDesc": "Keskilämpötila yli 25°C (77°F)"
+      "highActivityDesc": "Intensiivinen liikunta 4+ päivää/viikko"
+    },
+    "climate": {
+      "title": "Ilmastosi",
+      "subtitle": "Ilmasto vaikuttaa kehon vedentarpeeseen.",
+      "cool": "Viileä ilmasto",
+      "coolDesc": "Keskilämpötila alle 20°C (68°F)",
+      "temperate": "Lauhkea ilmasto",
+      "temperateDesc": "Keskilämpötila 20-25°C (68-77°F)",
+      "hot": "Kuuma ilmasto",
+      "hotDesc": "Keskilämpötila yli 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Päivittäinen tavoitteesi",

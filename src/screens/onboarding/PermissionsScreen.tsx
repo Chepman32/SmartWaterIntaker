@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
@@ -13,6 +14,8 @@ import { useDispatch } from 'react-redux';
 import { Colors } from '../../constants/colors';
 import { updateProfile } from '../../state/slices/settingsSlice';
 import { StorageService } from '../../services/storage';
+import NotificationService from '../../services/NotificationService';
+import HealthService from '../../services/HealthService';
 
 type Permission = {
   id: string;
@@ -51,24 +54,89 @@ export const PermissionsScreen: React.FC = () => {
 
   const [permissionStates, setPermissionStates] =
     useState<Permission[]>(permissions);
+  const [isRequesting, setIsRequesting] = useState<string | null>(null);
+
+  // Check initial permission states on mount
+  useEffect(() => {
+    checkInitialPermissions();
+  }, []);
+
+  const checkInitialPermissions = async () => {
+    try {
+      const notificationStatus = await NotificationService.checkPermissions();
+      if (notificationStatus.granted) {
+        setPermissionStates(prev =>
+          prev.map(p =>
+            p.id === 'notifications' ? { ...p, granted: true } : p,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error('Failed to check initial permissions:', error);
+    }
+  };
 
   const requestPermission = async (permissionId: string) => {
-    // TODO: Implement actual permission requests
-    switch (permissionId) {
-      case 'notifications':
-        // Request notification permissions
-        console.log('Requesting notification permissions');
-        break;
-      case 'health':
-        // Request HealthKit permissions
-        console.log('Requesting HealthKit permissions');
-        break;
-    }
+    setIsRequesting(permissionId);
 
-    // Simulate permission granted for demo
-    setPermissionStates(prev =>
-      prev.map(p => (p.id === permissionId ? { ...p, granted: true } : p)),
-    );
+    try {
+      switch (permissionId) {
+        case 'notifications':
+          const notificationResult =
+            await NotificationService.requestPermissions();
+          if (notificationResult.granted) {
+            setPermissionStates(prev =>
+              prev.map(p =>
+                p.id === permissionId ? { ...p, granted: true } : p,
+              ),
+            );
+            // Save notification preference
+            dispatch(updateProfile({ notificationsEnabled: true }));
+          } else if (!notificationResult.canAskAgain) {
+            Alert.alert(
+              'Notifications Disabled',
+              'Please enable notifications in your device settings to receive hydration reminders.',
+              [{ text: 'OK' }],
+            );
+          }
+          break;
+
+        case 'health':
+          if (!HealthService.isAvailableOnPlatform()) {
+            Alert.alert(
+              'Health Data',
+              'Health data integration is currently only available on iOS.',
+              [{ text: 'OK' }],
+            );
+            break;
+          }
+
+          const healthResult = await HealthService.requestPermissions();
+          if (healthResult.granted) {
+            setPermissionStates(prev =>
+              prev.map(p =>
+                p.id === permissionId ? { ...p, granted: true } : p,
+              ),
+            );
+            dispatch(updateProfile({ healthKitEnabled: true }));
+          } else {
+            Alert.alert(
+              'Health Access',
+              healthResult.error ||
+                'Unable to access Health data. You can enable this later in Settings.',
+              [{ text: 'OK' }],
+            );
+          }
+          break;
+      }
+    } catch (error) {
+      console.error(`Failed to request ${permissionId} permission:`, error);
+      Alert.alert('Error', 'Failed to request permission. Please try again.', [
+        { text: 'OK' },
+      ]);
+    } finally {
+      setIsRequesting(null);
+    }
   };
 
   const completeOnboarding = () => {
@@ -143,7 +211,7 @@ export const PermissionsScreen: React.FC = () => {
                   permission.granted && styles.permissionButtonGranted,
                 ]}
                 onPress={() => requestPermission(permission.id)}
-                disabled={permission.granted}
+                disabled={permission.granted || isRequesting === permission.id}
                 activeOpacity={0.7}
               >
                 <Text
@@ -152,7 +220,11 @@ export const PermissionsScreen: React.FC = () => {
                     permission.granted && styles.permissionButtonTextGranted,
                   ]}
                 >
-                  {permission.granted ? 'Enabled ✓' : 'Enable'}
+                  {isRequesting === permission.id
+                    ? 'Enabling...'
+                    : permission.granted
+                    ? 'Enabled ✓'
+                    : 'Enable'}
                 </Text>
               </TouchableOpacity>
             </View>

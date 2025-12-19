@@ -18,6 +18,7 @@ import {
   MotivationScreen,
   DailyRoutineScreen,
   WeightActivityScreen,
+  ClimateScreen,
   GoalCalculationScreen,
   RemindersScreen,
   PermissionsScreen,
@@ -35,6 +36,7 @@ export type RootStackParamList = {
   MotivationScreen: undefined;
   DailyRoutineScreen: undefined;
   WeightActivityScreen: undefined;
+  ClimateScreen: undefined;
   GoalCalculationScreen: undefined;
   RemindersScreen: undefined;
   PermissionsScreen: undefined;
@@ -202,6 +204,11 @@ export default function AppNavigator({
         <Stack.Screen
           name="WeightActivityScreen"
           component={WeightActivityScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ClimateScreen"
+          component={ClimateScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

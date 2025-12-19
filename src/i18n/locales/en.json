@@ -168,14 +168,17 @@
       "moderateActivity": "Moderate Activity",
       "moderateActivityDesc": "Light exercise 1-3 days per week",
       "highActivity": "High Activity",
-      "highActivityDesc": "Intense exercise 4+ days per week",
-      "climate": "Climate",
-      "coolClimate": "Cool Climate",
-      "coolClimateDesc": "Average temperature below 20°C (68°F)",
-      "temperateClimate": "Temperate Climate",
-      "temperateClimateDesc": "Average temperature 20-25°C (68-77°F)",
-      "hotClimate": "Hot Climate",
-      "hotClimateDesc": "Average temperature above 25°C (77°F)"
+      "highActivityDesc": "Intense exercise 4+ days per week"
+    },
+    "climate": {
+      "title": "Your Climate",
+      "subtitle": "Climate affects how much water your body needs.",
+      "cool": "Cool Climate",
+      "coolDesc": "Average temperature below 20°C (68°F)",
+      "temperate": "Temperate Climate",
+      "temperateDesc": "Average temperature 20-25°C (68-77°F)",
+      "hot": "Hot Climate",
+      "hotDesc": "Average temperature above 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Your Daily Goal",

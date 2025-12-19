@@ -168,14 +168,17 @@
       "moderateActivity": "Střední aktivita",
       "moderateActivityDesc": "Lehké cvičení 1-3 dny/týden",
       "highActivity": "Vysoká aktivita",
-      "highActivityDesc": "Intenzivní cvičení 4+ dny/týden",
-      "climate": "Klima",
-      "coolClimate": "Chladné klima",
-      "coolClimateDesc": "Průměrná teplota pod 20°C (68°F)",
-      "temperateClimate": "Mírné klima",
-      "temperateClimateDesc": "Průměrná teplota 20-25°C (68-77°F)",
-      "hotClimate": "Horké klima",
-      "hotClimateDesc": "Průměrná teplota nad 25°C (77°F)"
+      "highActivityDesc": "Intenzivní cvičení 4+ dny/týden"
+    },
+    "climate": {
+      "title": "Vaše klima",
+      "subtitle": "Klima ovlivňuje potřebu vody vašeho těla.",
+      "cool": "Chladné klima",
+      "coolDesc": "Průměrná teplota pod 20°C (68°F)",
+      "temperate": "Mírné klima",
+      "temperateDesc": "Průměrná teplota 20-25°C (68-77°F)",
+      "hot": "Horké klima",
+      "hotDesc": "Průměrná teplota nad 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Váš denní cíl",

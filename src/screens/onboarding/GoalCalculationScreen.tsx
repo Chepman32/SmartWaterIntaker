@@ -89,9 +89,9 @@ export const GoalCalculationScreen: React.FC = () => {
   };
 
   const climateLabelMap: Record<string, string> = {
-    cool: t('onboarding.weightActivity.coolClimate'),
-    temperate: t('onboarding.weightActivity.temperateClimate'),
-    hot: t('onboarding.weightActivity.hotClimate'),
+    cool: t('onboarding.climate.cool'),
+    temperate: t('onboarding.climate.temperate'),
+    hot: t('onboarding.climate.hot'),
   };
 
   useEffect(() => {

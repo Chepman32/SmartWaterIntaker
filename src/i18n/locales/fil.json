@@ -168,14 +168,17 @@
       "moderateActivity": "Katamtamang aktibidad",
       "moderateActivityDesc": "Magaan na ehersisyo 1-3 araw/linggo",
       "highActivity": "Mataas na aktibidad",
-      "highActivityDesc": "Matinding ehersisyo 4+ araw/linggo",
-      "climate": "Klima",
-      "coolClimate": "Malamig na klima",
-      "coolClimateDesc": "Average na temperatura sa ibaba ng 20°C (68°F)",
-      "temperateClimate": "Katamtamang klima",
-      "temperateClimateDesc": "Average na temperatura 20-25°C (68-77°F)",
-      "hotClimate": "Mainit na klima",
-      "hotClimateDesc": "Average na temperatura sa itaas ng 25°C (77°F)"
+      "highActivityDesc": "Matinding ehersisyo 4+ araw/linggo"
+    },
+    "climate": {
+      "title": "Ang iyong klima",
+      "subtitle": "Ang klima ay nakakaapekto sa pangangailangan ng tubig ng katawan.",
+      "cool": "Malamig na klima",
+      "coolDesc": "Average na temperatura sa ibaba ng 20°C (68°F)",
+      "temperate": "Katamtamang klima",
+      "temperateDesc": "Average na temperatura 20-25°C (68-77°F)",
+      "hot": "Mainit na klima",
+      "hotDesc": "Average na temperatura sa itaas ng 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Ang iyong araw-araw na layunin",

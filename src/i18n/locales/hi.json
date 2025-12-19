@@ -168,14 +168,17 @@
       "moderateActivity": "मध्यम गतिविधि",
       "moderateActivityDesc": "हल्का व्यायाम 1-3 दिन/सप्ताह",
       "highActivity": "उच्च गतिविधि",
-      "highActivityDesc": "तीव्र व्यायाम 4+ दिन/सप्ताह",
-      "climate": "जलवायु",
-      "coolClimate": "ठंडी जलवायु",
-      "coolClimateDesc": "औसत तापमान 20°C (68°F) से कम",
-      "temperateClimate": "समशीतोष्ण जलवायु",
-      "temperateClimateDesc": "औसत तापमान 20-25°C (68-77°F)",
-      "hotClimate": "गर्म जलवायु",
-      "hotClimateDesc": "औसत तापमान 25°C (77°F) से अधिक"
+      "highActivityDesc": "तीव्र व्यायाम 4+ दिन/सप्ताह"
+    },
+    "climate": {
+      "title": "आपकी जलवायु",
+      "subtitle": "जलवायु शरीर की पानी की जरूरत को प्रभावित करती है।",
+      "cool": "ठंडी जलवायु",
+      "coolDesc": "औसत तापमान 20°C (68°F) से कम",
+      "temperate": "समशीतोष्ण जलवायु",
+      "temperateDesc": "औसत तापमान 20-25°C (68-77°F)",
+      "hot": "गर्म जलवायु",
+      "hotDesc": "औसत तापमान 25°C (77°F) से अधिक"
     },
     "goalCalculation": {
       "title": "आपका दैनिक लक्ष्य",

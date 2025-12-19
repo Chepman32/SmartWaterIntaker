@@ -168,14 +168,17 @@
       "moderateActivity": "نشاط متوسط",
       "moderateActivityDesc": "تمارين خفيفة 1-3 أيام/أسبوع",
       "highActivity": "نشاط عالٍ",
-      "highActivityDesc": "تمارين مكثفة 4+ أيام/أسبوع",
-      "climate": "المناخ",
-      "coolClimate": "مناخ بارد",
-      "coolClimateDesc": "متوسط درجة حرارة أقل من 20°م (68°ف)",
-      "temperateClimate": "مناخ معتدل",
-      "temperateClimateDesc": "متوسط درجة حرارة 20-25°م (68-77°ف)",
-      "hotClimate": "مناخ حار",
-      "hotClimateDesc": "متوسط درجة حرارة أعلى من 25°م (77°ف)"
+      "highActivityDesc": "تمارين مكثفة 4+ أيام/أسبوع"
+    },
+    "climate": {
+      "title": "مناخك",
+      "subtitle": "يؤثر المناخ على احتياجات جسمك من الماء.",
+      "cool": "مناخ بارد",
+      "coolDesc": "متوسط درجة حرارة أقل من 20°م (68°ف)",
+      "temperate": "مناخ معتدل",
+      "temperateDesc": "متوسط درجة حرارة 20-25°م (68-77°ف)",
+      "hot": "مناخ حار",
+      "hotDesc": "متوسط درجة حرارة أعلى من 25°م (77°ف)"
     },
     "goalCalculation": {
       "title": "هدفك اليومي",

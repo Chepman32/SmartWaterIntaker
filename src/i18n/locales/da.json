@@ -168,14 +168,17 @@
       "moderateActivity": "Moderat aktivitet",
       "moderateActivityDesc": "Let motion 1-3 dage/uge",
       "highActivity": "Høj aktivitet",
-      "highActivityDesc": "Intensiv motion 4+ dage/uge",
-      "climate": "Klima",
-      "coolClimate": "Køligt klima",
-      "coolClimateDesc": "Gennemsnitstemperatur under 20°C (68°F)",
-      "temperateClimate": "Tempereret klima",
-      "temperateClimateDesc": "Gennemsnitstemperatur 20-25°C (68-77°F)",
-      "hotClimate": "Varmt klima",
-      "hotClimateDesc": "Gennemsnitstemperatur over 25°C (77°F)"
+      "highActivityDesc": "Intensiv motion 4+ dage/uge"
+    },
+    "climate": {
+      "title": "Dit klima",
+      "subtitle": "Klimaet påvirker kroppens vandbehov.",
+      "cool": "Køligt klima",
+      "coolDesc": "Gennemsnitstemperatur under 20°C (68°F)",
+      "temperate": "Tempereret klima",
+      "temperateDesc": "Gennemsnitstemperatur 20-25°C (68-77°F)",
+      "hot": "Varmt klima",
+      "hotDesc": "Gennemsnitstemperatur over 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Dit daglige mål",

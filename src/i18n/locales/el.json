@@ -168,14 +168,17 @@
       "moderateActivity": "Μέτρια δραστηριότητα",
       "moderateActivityDesc": "Ελαφριά άσκηση 1-3 ημέρες/εβδομάδα",
       "highActivity": "Υψηλή δραστηριότητα",
-      "highActivityDesc": "Έντονη άσκηση 4+ ημέρες/εβδομάδα",
-      "climate": "Κλίμα",
-      "coolClimate": "Δροσερό κλίμα",
-      "coolClimateDesc": "Μέση θερμοκρασία κάτω από 20°C (68°F)",
-      "temperateClimate": "Εύκρατο κλίμα",
-      "temperateClimateDesc": "Μέση θερμοκρασία 20-25°C (68-77°F)",
-      "hotClimate": "Ζεστό κλίμα",
-      "hotClimateDesc": "Μέση θερμοκρασία πάνω από 25°C (77°F)"
+      "highActivityDesc": "Έντονη άσκηση 4+ ημέρες/εβδομάδα"
+    },
+    "climate": {
+      "title": "Το κλίμα σας",
+      "subtitle": "Το κλίμα επηρεάζει τις ανάγκες του σώματος σε νερό.",
+      "cool": "Δροσερό κλίμα",
+      "coolDesc": "Μέση θερμοκρασία κάτω από 20°C (68°F)",
+      "temperate": "Εύκρατο κλίμα",
+      "temperateDesc": "Μέση θερμοκρασία 20-25°C (68-77°F)",
+      "hot": "Ζεστό κλίμα",
+      "hotDesc": "Μέση θερμοκρασία πάνω από 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Ο ημερήσιος στόχος σας",

@@ -168,14 +168,17 @@
       "moderateActivity": "Gematigde activiteit",
       "moderateActivityDesc": "Lichte oefening 1-3 dagen/week",
       "highActivity": "Hoge activiteit",
-      "highActivityDesc": "Intensieve oefening 4+ dagen/week",
-      "climate": "Klimaat",
-      "coolClimate": "Koel klimaat",
-      "coolClimateDesc": "Gemiddelde temperatuur onder 20°C (68°F)",
-      "temperateClimate": "Gematigd klimaat",
-      "temperateClimateDesc": "Gemiddelde temperatuur 20-25°C (68-77°F)",
-      "hotClimate": "Heet klimaat",
-      "hotClimateDesc": "Gemiddelde temperatuur boven 25°C (77°F)"
+      "highActivityDesc": "Intensieve oefening 4+ dagen/week"
+    },
+    "climate": {
+      "title": "Je klimaat",
+      "subtitle": "Klimaat beïnvloedt hoeveel water je lichaam nodig heeft.",
+      "cool": "Koel klimaat",
+      "coolDesc": "Gemiddelde temperatuur onder 20°C (68°F)",
+      "temperate": "Gematigd klimaat",
+      "temperateDesc": "Gemiddelde temperatuur 20-25°C (68-77°F)",
+      "hot": "Heet klimaat",
+      "hotDesc": "Gemiddelde temperatuur boven 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Je dagelijks doel",

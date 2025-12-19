@@ -35,6 +35,10 @@
 	<string>We use your photo library to let you choose images for your containers and hydration reminders.</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>We use notifications to remind you to stay hydrated.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We read your water intake data from Apple Health to show your hydration history.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We save your water intake to Apple Health so you can track hydration alongside other health metrics.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

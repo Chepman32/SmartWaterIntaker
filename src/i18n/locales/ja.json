@@ -168,14 +168,17 @@
       "moderateActivity": "中程度の活動",
       "moderateActivityDesc": "週1〜3日の軽い運動",
       "highActivity": "高活動",
-      "highActivityDesc": "週4日以上の激しい運動",
-      "climate": "気候",
-      "coolClimate": "涼しい気候",
-      "coolClimateDesc": "平均気温20°C（68°F）未満",
-      "temperateClimate": "温暖な気候",
-      "temperateClimateDesc": "平均気温20〜25°C（68〜77°F）",
-      "hotClimate": "暑い気候",
-      "hotClimateDesc": "平均気温25°C（77°F）以上"
+      "highActivityDesc": "週4日以上の激しい運動"
+    },
+    "climate": {
+      "title": "あなたの気候",
+      "subtitle": "気候は体の水分必要量に影響します。",
+      "cool": "涼しい気候",
+      "coolDesc": "平均気温20°C（68°F）未満",
+      "temperate": "温暖な気候",
+      "temperateDesc": "平均気温20〜25°C（68〜77°F）",
+      "hot": "暑い気候",
+      "hotDesc": "平均気温25°C（77°F）以上"
     },
     "goalCalculation": {
       "title": "あなたの1日の目標",

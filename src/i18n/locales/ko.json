@@ -168,14 +168,17 @@
       "moderateActivity": "보통 활동량",
       "moderateActivityDesc": "주 1~3일 가벼운 운동",
       "highActivity": "높은 활동량",
-      "highActivityDesc": "주 4일 이상 격렬한 운동",
-      "climate": "기후",
-      "coolClimate": "서늘한 기후",
-      "coolClimateDesc": "평균 기온 20°C (68°F) 미만",
-      "temperateClimate": "온화한 기후",
-      "temperateClimateDesc": "평균 기온 20~25°C (68~77°F)",
-      "hotClimate": "더운 기후",
-      "hotClimateDesc": "평균 기온 25°C (77°F) 이상"
+      "highActivityDesc": "주 4일 이상 격렬한 운동"
+    },
+    "climate": {
+      "title": "기후 환경",
+      "subtitle": "기후는 신체의 수분 필요량에 영향을 줍니다.",
+      "cool": "서늘한 기후",
+      "coolDesc": "평균 기온 20°C (68°F) 미만",
+      "temperate": "온화한 기후",
+      "temperateDesc": "평균 기온 20~25°C (68~77°F)",
+      "hot": "더운 기후",
+      "hotDesc": "평균 기온 25°C (77°F) 이상"
     },
     "goalCalculation": {
       "title": "일일 목표",

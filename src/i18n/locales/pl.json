@@ -168,14 +168,17 @@
       "moderateActivity": "Umiarkowana aktywność",
       "moderateActivityDesc": "Lekkie ćwiczenia 1-3 dni/tydzień",
       "highActivity": "Wysoka aktywność",
-      "highActivityDesc": "Intensywne ćwiczenia 4+ dni/tydzień",
-      "climate": "Klimat",
-      "coolClimate": "Chłodny klimat",
-      "coolClimateDesc": "Średnia temperatura poniżej 20°C (68°F)",
-      "temperateClimate": "Umiarkowany klimat",
-      "temperateClimateDesc": "Średnia temperatura 20-25°C (68-77°F)",
-      "hotClimate": "Gorący klimat",
-      "hotClimateDesc": "Średnia temperatura powyżej 25°C (77°F)"
+      "highActivityDesc": "Intensywne ćwiczenia 4+ dni/tydzień"
+    },
+    "climate": {
+      "title": "Twój klimat",
+      "subtitle": "Klimat wpływa na zapotrzebowanie organizmu na wodę.",
+      "cool": "Chłodny klimat",
+      "coolDesc": "Średnia temperatura poniżej 20°C (68°F)",
+      "temperate": "Umiarkowany klimat",
+      "temperateDesc": "Średnia temperatura 20-25°C (68-77°F)",
+      "hot": "Gorący klimat",
+      "hotDesc": "Średnia temperatura powyżej 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Twój dzienny cel",

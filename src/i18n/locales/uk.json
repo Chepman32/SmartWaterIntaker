@@ -168,14 +168,17 @@
       "moderateActivity": "Помірна активність",
       "moderateActivityDesc": "Легкі вправи 1-3 дні/тиждень",
       "highActivity": "Висока активність",
-      "highActivityDesc": "Інтенсивні вправи 4+ дні/тиждень",
-      "climate": "Клімат",
-      "coolClimate": "Прохолодний клімат",
-      "coolClimateDesc": "Середня температура нижче 20°C (68°F)",
-      "temperateClimate": "Помірний клімат",
-      "temperateClimateDesc": "Середня температура 20-25°C (68-77°F)",
-      "hotClimate": "Жаркий клімат",
-      "hotClimateDesc": "Середня температура вище 25°C (77°F)"
+      "highActivityDesc": "Інтенсивні вправи 4+ дні/тиждень"
+    },
+    "climate": {
+      "title": "Ваш клімат",
+      "subtitle": "Клімат впливає на потребу організму у воді.",
+      "cool": "Прохолодний клімат",
+      "coolDesc": "Середня температура нижче 20°C (68°F)",
+      "temperate": "Помірний клімат",
+      "temperateDesc": "Середня температура 20-25°C (68-77°F)",
+      "hot": "Жаркий клімат",
+      "hotDesc": "Середня температура вище 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Ваша денна мета",

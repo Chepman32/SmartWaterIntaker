@@ -168,14 +168,17 @@
       "moderateActivity": "Aktivitas sedang",
       "moderateActivityDesc": "Olahraga ringan 1-3 hari/minggu",
       "highActivity": "Aktivitas tinggi",
-      "highActivityDesc": "Olahraga intensif 4+ hari/minggu",
-      "climate": "Iklim",
-      "coolClimate": "Iklim sejuk",
-      "coolClimateDesc": "Suhu rata-rata di bawah 20°C (68°F)",
-      "temperateClimate": "Iklim sedang",
-      "temperateClimateDesc": "Suhu rata-rata 20-25°C (68-77°F)",
-      "hotClimate": "Iklim panas",
-      "hotClimateDesc": "Suhu rata-rata di atas 25°C (77°F)"
+      "highActivityDesc": "Olahraga intensif 4+ hari/minggu"
+    },
+    "climate": {
+      "title": "Iklim Anda",
+      "subtitle": "Iklim mempengaruhi kebutuhan air tubuh.",
+      "cool": "Iklim sejuk",
+      "coolDesc": "Suhu rata-rata di bawah 20°C (68°F)",
+      "temperate": "Iklim sedang",
+      "temperateDesc": "Suhu rata-rata 20-25°C (68-77°F)",
+      "hot": "Iklim panas",
+      "hotDesc": "Suhu rata-rata di atas 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Target harian Anda",

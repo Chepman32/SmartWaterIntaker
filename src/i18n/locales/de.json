@@ -168,14 +168,17 @@
       "moderateActivity": "Mäßige Aktivität",
       "moderateActivityDesc": "Leichte Bewegung 1-3 Tage/Woche",
       "highActivity": "Hohe Aktivität",
-      "highActivityDesc": "Intensives Training 4+ Tage/Woche",
-      "climate": "Klima",
-      "coolClimate": "Kühles Klima",
-      "coolClimateDesc": "Durchschnittstemperatur unter 20°C (68°F)",
-      "temperateClimate": "Gemäßigtes Klima",
-      "temperateClimateDesc": "Durchschnittstemperatur 20-25°C (68-77°F)",
-      "hotClimate": "Heißes Klima",
-      "hotClimateDesc": "Durchschnittstemperatur über 25°C (77°F)"
+      "highActivityDesc": "Intensives Training 4+ Tage/Woche"
+    },
+    "climate": {
+      "title": "Dein Klima",
+      "subtitle": "Das Klima beeinflusst den Wasserbedarf deines Körpers.",
+      "cool": "Kühles Klima",
+      "coolDesc": "Durchschnittstemperatur unter 20°C (68°F)",
+      "temperate": "Gemäßigtes Klima",
+      "temperateDesc": "Durchschnittstemperatur 20-25°C (68-77°F)",
+      "hot": "Heißes Klima",
+      "hotDesc": "Durchschnittstemperatur über 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Dein Tagesziel",

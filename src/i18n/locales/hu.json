@@ -168,14 +168,17 @@
       "moderateActivity": "Közepes aktivitás",
       "moderateActivityDesc": "Könnyű gyakorlat 1-3 nap/hét",
       "highActivity": "Magas aktivitás",
-      "highActivityDesc": "Intenzív gyakorlat 4+ nap/hét",
-      "climate": "Éghajlat",
-      "coolClimate": "Hűvös éghajlat",
-      "coolClimateDesc": "Átlaghőmérséklet 20°C (68°F) alatt",
-      "temperateClimate": "Mérsékelt éghajlat",
-      "temperateClimateDesc": "Átlaghőmérséklet 20-25°C (68-77°F)",
-      "hotClimate": "Forró éghajlat",
-      "hotClimateDesc": "Átlaghőmérséklet 25°C (77°F) felett"
+      "highActivityDesc": "Intenzív gyakorlat 4+ nap/hét"
+    },
+    "climate": {
+      "title": "Az Ön éghajlata",
+      "subtitle": "Az éghajlat befolyásolja a test vízigényét.",
+      "cool": "Hűvös éghajlat",
+      "coolDesc": "Átlaghőmérséklet 20°C (68°F) alatt",
+      "temperate": "Mérsékelt éghajlat",
+      "temperateDesc": "Átlaghőmérséklet 20-25°C (68-77°F)",
+      "hot": "Forró éghajlat",
+      "hotDesc": "Átlaghőmérséklet 25°C (77°F) felett"
     },
     "goalCalculation": {
       "title": "Napi célja",

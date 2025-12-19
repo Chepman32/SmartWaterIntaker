@@ -168,14 +168,17 @@
       "moderateActivity": "Moderat aktivitet",
       "moderateActivityDesc": "Lett trening 1-3 dager/uke",
       "highActivity": "Høy aktivitet",
-      "highActivityDesc": "Intensiv trening 4+ dager/uke",
-      "climate": "Klima",
-      "coolClimate": "Kjølig klima",
-      "coolClimateDesc": "Gjennomsnittstemperatur under 20°C (68°F)",
-      "temperateClimate": "Temperert klima",
-      "temperateClimateDesc": "Gjennomsnittstemperatur 20-25°C (68-77°F)",
-      "hotClimate": "Varmt klima",
-      "hotClimateDesc": "Gjennomsnittstemperatur over 25°C (77°F)"
+      "highActivityDesc": "Intensiv trening 4+ dager/uke"
+    },
+    "climate": {
+      "title": "Ditt klima",
+      "subtitle": "Klimaet påvirker kroppens vannbehov.",
+      "cool": "Kjølig klima",
+      "coolDesc": "Gjennomsnittstemperatur under 20°C (68°F)",
+      "temperate": "Temperert klima",
+      "temperateDesc": "Gjennomsnittstemperatur 20-25°C (68-77°F)",
+      "hot": "Varmt klima",
+      "hotDesc": "Gjennomsnittstemperatur over 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Ditt daglige mål",

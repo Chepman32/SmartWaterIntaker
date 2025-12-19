@@ -168,14 +168,17 @@
       "moderateActivity": "Hoạt động vừa phải",
       "moderateActivityDesc": "Tập thể dục nhẹ 1-3 ngày/tuần",
       "highActivity": "Hoạt động cao",
-      "highActivityDesc": "Tập thể dục cường độ cao 4+ ngày/tuần",
-      "climate": "Khí hậu",
-      "coolClimate": "Khí hậu mát mẻ",
-      "coolClimateDesc": "Nhiệt độ trung bình dưới 20°C (68°F)",
-      "temperateClimate": "Khí hậu ôn hòa",
-      "temperateClimateDesc": "Nhiệt độ trung bình 20-25°C (68-77°F)",
-      "hotClimate": "Khí hậu nóng",
-      "hotClimateDesc": "Nhiệt độ trung bình trên 25°C (77°F)"
+      "highActivityDesc": "Tập thể dục cường độ cao 4+ ngày/tuần"
+    },
+    "climate": {
+      "title": "Khí hậu của bạn",
+      "subtitle": "Khí hậu ảnh hưởng đến nhu cầu nước của cơ thể.",
+      "cool": "Khí hậu mát mẻ",
+      "coolDesc": "Nhiệt độ trung bình dưới 20°C (68°F)",
+      "temperate": "Khí hậu ôn hòa",
+      "temperateDesc": "Nhiệt độ trung bình 20-25°C (68-77°F)",
+      "hot": "Khí hậu nóng",
+      "hotDesc": "Nhiệt độ trung bình trên 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Mục tiêu hàng ngày",

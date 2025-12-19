@@ -168,14 +168,17 @@
       "moderateActivity": "Actividad moderada",
       "moderateActivityDesc": "Ejercicio ligero 1-3 días/semana",
       "highActivity": "Actividad alta",
-      "highActivityDesc": "Ejercicio intenso 4+ días/semana",
-      "climate": "Clima",
-      "coolClimate": "Clima fresco",
-      "coolClimateDesc": "Temperatura promedio bajo 20°C (68°F)",
-      "temperateClimate": "Clima templado",
-      "temperateClimateDesc": "Temperatura promedio 20-25°C (68-77°F)",
-      "hotClimate": "Clima caluroso",
-      "hotClimateDesc": "Temperatura promedio sobre 25°C (77°F)"
+      "highActivityDesc": "Ejercicio intenso 4+ días/semana"
+    },
+    "climate": {
+      "title": "Tu clima",
+      "subtitle": "El clima afecta la cantidad de agua que tu cuerpo necesita.",
+      "cool": "Clima fresco",
+      "coolDesc": "Temperatura promedio bajo 20°C (68°F)",
+      "temperate": "Clima templado",
+      "temperateDesc": "Temperatura promedio 20-25°C (68-77°F)",
+      "hot": "Clima caluroso",
+      "hotDesc": "Temperatura promedio sobre 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "Tu meta diaria",

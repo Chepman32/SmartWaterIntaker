@@ -168,14 +168,17 @@
       "moderateActivity": "中等活动量",
       "moderateActivityDesc": "每周轻度运动 1-3 天",
       "highActivity": "高活动量",
-      "highActivityDesc": "每周剧烈运动 4 天以上",
-      "climate": "气候",
-      "coolClimate": "凉爽气候",
-      "coolClimateDesc": "平均气温低于 20°C (68°F)",
-      "temperateClimate": "温和气候",
-      "temperateClimateDesc": "平均气温 20-25°C (68-77°F)",
-      "hotClimate": "炎热气候",
-      "hotClimateDesc": "平均气温高于 25°C (77°F)"
+      "highActivityDesc": "每周剧烈运动 4 天以上"
+    },
+    "climate": {
+      "title": "您的气候",
+      "subtitle": "气候会影响身体对水分的需求。",
+      "cool": "凉爽气候",
+      "coolDesc": "平均气温低于 20°C (68°F)",
+      "temperate": "温和气候",
+      "temperateDesc": "平均气温 20-25°C (68-77°F)",
+      "hot": "炎热气候",
+      "hotDesc": "平均气温高于 25°C (77°F)"
     },
     "goalCalculation": {
       "title": "您的每日目标",

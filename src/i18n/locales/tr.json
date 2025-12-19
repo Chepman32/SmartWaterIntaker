@@ -168,14 +168,17 @@
       "moderateActivity": "Orta Aktivite",
       "moderateActivityDesc": "Hafif egzersiz 1-3 gün/hafta",
       "highActivity": "Yüksek Aktivite",
-      "highActivityDesc": "Yoğun egzersiz 4+ gün/hafta",
-      "climate": "İklim",
-      "coolClimate": "Serin İklim",
-      "coolClimateDesc": "Ortalama sıcaklık 20°C (68°F) altında",
-      "temperateClimate": "Ilıman İklim",
-      "temperateClimateDesc": "Ortalama sıcaklık 20-25°C (68-77°F)",
-      "hotClimate": "Sıcak İklim",
-      "hotClimateDesc": "Ortalama sıcaklık 25°C (77°F) üzerinde"
+      "highActivityDesc": "Yoğun egzersiz 4+ gün/hafta"
+    },
+    "climate": {
+      "title": "İkliminiz",
+      "subtitle": "İklim, vücudunuzun su ihtiyacını etkiler.",
+      "cool": "Serin İklim",
+      "coolDesc": "Ortalama sıcaklık 20°C (68°F) altında",
+      "temperate": "Ilıman İklim",
+      "temperateDesc": "Ortalama sıcaklık 20-25°C (68-77°F)",
+      "hot": "Sıcak İklim",
+      "hotDesc": "Ortalama sıcaklık 25°C (77°F) üzerinde"
     },
     "goalCalculation": {
       "title": "Günlük Hedefiniz",
