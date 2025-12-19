@@ -14,27 +14,29 @@ import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Colors } from '../../constants/colors';
 import NotificationService from '../../services/NotificationService';
 import { updateProfile } from '../../state/slices/settingsSlice';
 
 type ReminderTime = {
   id: string;
-  label: string;
+  labelKey: string;
   time: string;
   enabled: boolean;
 };
 
 const defaultReminders: ReminderTime[] = [
-  { id: '1', label: 'Morning Start', time: '08:00', enabled: true },
-  { id: '2', label: 'Mid Morning', time: '10:30', enabled: true },
-  { id: '3', label: 'Lunch Time', time: '12:30', enabled: true },
-  { id: '4', label: 'Afternoon', time: '15:00', enabled: true },
-  { id: '5', label: 'Evening', time: '18:00', enabled: true },
-  { id: '6', label: 'Before Bed', time: '21:00', enabled: false },
+  { id: '1', labelKey: 'morningStart', time: '08:00', enabled: true },
+  { id: '2', labelKey: 'midMorning', time: '10:30', enabled: true },
+  { id: '3', labelKey: 'lunchTime', time: '12:30', enabled: true },
+  { id: '4', labelKey: 'afternoon', time: '15:00', enabled: true },
+  { id: '5', labelKey: 'evening', time: '18:00', enabled: true },
+  { id: '6', labelKey: 'beforeBed', time: '21:00', enabled: false },
 ];
 
 export const RemindersScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isDark = useColorScheme() === 'dark';
@@ -65,12 +67,12 @@ export const RemindersScreen: React.FC = () => {
         setNotificationsEnabled(true);
       } else if (!result.canAskAgain) {
         Alert.alert(
-          'Notifications Disabled',
-          'Please enable notifications in your device settings to receive hydration reminders.',
+          t('notifications.permissionRequiredTitle'),
+          t('notifications.permissionRequiredMessage'),
           [
-            { text: 'Cancel', style: 'cancel' },
+            { text: t('common.cancel'), style: 'cancel' },
             {
-              text: 'Open Settings',
+              text: t('notifications.settingsButton'),
               onPress: () => Linking.openSettings(),
             },
           ],
@@ -104,10 +106,12 @@ export const RemindersScreen: React.FC = () => {
     }
 
     // Mark onboarding as completed and navigate to main app
-    dispatch(updateProfile({
-      onboardingCompleted: true,
-      notificationsEnabled: notificationsEnabled,
-    }));
+    dispatch(
+      updateProfile({
+        onboardingCompleted: true,
+        notificationsEnabled: notificationsEnabled,
+      }),
+    );
 
     (navigation as any).reset({
       index: 0,
@@ -125,18 +129,20 @@ export const RemindersScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>Stay Hydrated</Text>
+          <Text style={styles.title}>{t('onboarding.reminders.title')}</Text>
           <Text style={styles.subtitle}>
-            Set up gentle reminders to help you reach your daily goal.
+            {t('onboarding.reminders.subtitle')}
           </Text>
         </View>
 
         <View style={styles.notificationToggle}>
           <View style={styles.toggleRow}>
             <View style={styles.toggleInfo}>
-              <Text style={styles.toggleTitle}>Enable Notifications</Text>
+              <Text style={styles.toggleTitle}>
+                {t('onboarding.reminders.enableNotifications')}
+              </Text>
               <Text style={styles.toggleSubtitle}>
-                Get reminded throughout the day
+                {t('onboarding.reminders.enableNotificationsDesc')}
               </Text>
             </View>
             <Switch
@@ -152,9 +158,11 @@ export const RemindersScreen: React.FC = () => {
 
         {notificationsEnabled && (
           <View style={styles.remindersContainer}>
-            <Text style={styles.sectionTitle}>Reminder Times</Text>
+            <Text style={styles.sectionTitle}>
+              {t('onboarding.reminders.reminderTimes')}
+            </Text>
             <Text style={styles.sectionSubtitle}>
-              Choose when you'd like to be reminded to drink water.
+              {t('onboarding.reminders.reminderTimesDesc')}
             </Text>
 
             <View style={styles.remindersList}>
@@ -175,7 +183,7 @@ export const RemindersScreen: React.FC = () => {
                         reminder.enabled && styles.reminderLabelActive,
                       ]}
                     >
-                      {reminder.label}
+                      {t(`onboarding.reminders.${reminder.labelKey}`)}
                     </Text>
                     <Text
                       style={[
@@ -202,10 +210,11 @@ export const RemindersScreen: React.FC = () => {
             </View>
 
             <View style={styles.smartRemindersInfo}>
-              <Text style={styles.smartTitle}>🧠 Smart Reminders</Text>
+              <Text style={styles.smartTitle}>
+                {t('onboarding.reminders.smartReminders')}
+              </Text>
               <Text style={styles.smartSubtitle}>
-                We'll adjust reminder timing based on your usage patterns and
-                skip notifications when you're already staying hydrated.
+                {t('onboarding.reminders.smartRemindersDesc')}
               </Text>
             </View>
           </View>
@@ -218,7 +227,7 @@ export const RemindersScreen: React.FC = () => {
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Text style={styles.backButtonText}>Back</Text>
+          <Text style={styles.backButtonText}>{t('common.back')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -226,7 +235,9 @@ export const RemindersScreen: React.FC = () => {
           onPress={handleContinue}
           activeOpacity={0.8}
         >
-          <Text style={styles.continueButtonText}>Get Started</Text>
+          <Text style={styles.continueButtonText}>
+            {t('onboarding.permissions.getStarted')}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
