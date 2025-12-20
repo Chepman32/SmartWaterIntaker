@@ -47,18 +47,21 @@ export const RemindersScreen: React.FC = () => {
   const [reminders, setReminders] = useState<ReminderTime[]>(defaultReminders);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
+  const [shouldAutoProceed, setShouldAutoProceed] = useState(false);
 
-  // Check initial permission status
+  // Request notification permissions on mount
   useEffect(() => {
-    checkNotificationPermission();
+    requestNotificationPermissionOnMount();
   }, []);
 
-  const checkNotificationPermission = async () => {
-    const status = await NotificationService.checkPermissions();
-    if (status.granted) {
+  const requestNotificationPermissionOnMount = async () => {
+    const result = await NotificationService.requestPermissions();
+    if (result.granted) {
       setPermissionGranted(true);
       setNotificationsEnabled(true);
+      setShouldAutoProceed(true);
     }
+    // If denied/blocked: user proceeds manually with Begin button
   };
 
   const handleNotificationToggle = async (value: boolean) => {
@@ -122,6 +125,13 @@ export const RemindersScreen: React.FC = () => {
       routes: [{ name: 'MainTabs' }],
     });
   };
+
+  // Auto-proceed to next screen when permission is granted on mount
+  useEffect(() => {
+    if (shouldAutoProceed) {
+      handleContinue();
+    }
+  }, [shouldAutoProceed]);
 
   const handleBack = () => {
     navigation.goBack();
