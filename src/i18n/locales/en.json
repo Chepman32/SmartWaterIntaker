@@ -123,28 +123,28 @@
     "version": "Version",
     "disclaimer": "This app provides general hydration recommendations based on scientific research. It is not intended to replace professional medical advice. Always consult a healthcare provider for personalized guidance.",
     "medicalCitations": "Medical Citations",
-    "citationsSubtitle": "Our hydration recommendations are based on the following peer-reviewed scientific sources:",
+    "citationsSubtitle": "Our hydration guidance references the sources below. Tap any source to read it.",
     "calculationMethod": "How We Calculate Your Goal",
-    "calculationExplanation": "Your daily water intake recommendation is calculated using a base formula of 35ml per kilogram of body weight, adjusted for your activity level and climate conditions. This approach is supported by multiple health organizations worldwide.",
+    "calculationExplanation": "We start with a weight-based baseline and then adjust for activity and climate. The sources below discuss adequate intake ranges and increased needs with exercise or heat; we use simple multipliers to reflect those factors.",
     "formula": "Formula:",
     "formulaText": "Base (35ml × weight kg) × Activity × Climate",
     "footerNote": "Individual water needs may vary. Factors such as health conditions, medications, and pregnancy may affect your hydration requirements.",
     "citations": {
       "baseIntake": {
-        "title": "Base Water Intake (35ml/kg)",
-        "description": "The European Food Safety Authority recommends approximately 35ml of water per kilogram of body weight as a baseline for adequate hydration."
+        "title": "Dietary Reference Values for Water (EFSA)",
+        "description": "Provides Adequate Intake values for total water by age, sex, and life stage from the European Food Safety Authority."
       },
       "activityAdjustment": {
-        "title": "Physical Activity Adjustment",
-        "description": "The American College of Sports Medicine recommends increasing fluid intake by 20-40% during physical activity to compensate for sweat losses."
+        "title": "Exercise and Fluid Replacement (ACSM)",
+        "description": "ACSM position stand discussing fluid needs during exercise, sweat losses, and environmental heat."
       },
       "climateAdjustment": {
-        "title": "Climate & Temperature Adjustment",
-        "description": "The National Academies of Sciences notes that hot climates and high temperatures increase water requirements due to increased perspiration."
+        "title": "Dietary Reference Intakes for Water (NASEM)",
+        "description": "Institute of Medicine report summarizing total water intake recommendations and factors that increase needs such as heat and physical activity."
       },
       "healthBenefits": {
-        "title": "Health Benefits of Hydration",
-        "description": "Proper hydration supports cognitive function, physical performance, kidney health, and overall well-being according to Mayo Clinic research."
+        "title": "Water: How much should you drink? (Mayo Clinic)",
+        "description": "Overview of hydration benefits and general daily fluid intake guidance for healthy adults."
       }
     }
   },

@@ -47,7 +47,7 @@ const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
 
   const navigateToAbout = () => {
-    navigation.navigate('About');
+    navigation.navigate('About', { source: 'settings' });
   };
 
   const { settings, profile } = useSelector(

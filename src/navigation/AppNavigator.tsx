@@ -39,7 +39,7 @@ export type RootStackParamList = {
   ClimateScreen: undefined;
   GoalCalculationScreen: undefined;
   RemindersScreen: undefined;
-  About: undefined;
+  About: { source?: 'settings' | 'ai' };
 };
 
 export type MainTabParamList = {
@@ -234,7 +234,15 @@ export default function AppNavigator({
         <Stack.Screen
           name="About"
           component={AboutScreen}
-          options={{ title: t('settings.about') }}
+          options={({ route }) => ({
+            title: t('settings.about'),
+            headerBackTitle:
+              route.params?.source === 'ai'
+                ? t('tabs.ai')
+                : route.params?.source === 'settings'
+                ? t('tabs.settings')
+                : undefined,
+          })}
         />
         {/* TODO: Add modal screens like LogWater, ContainerEditor */}
       </Stack.Navigator>

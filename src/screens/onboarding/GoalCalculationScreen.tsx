@@ -124,6 +124,10 @@ export const GoalCalculationScreen: React.FC = () => {
     navigation.goBack();
   };
 
+  const handleOpenCitations = () => {
+    navigation.navigate('About' as never);
+  };
+
   const styles = getStyles(theme);
 
   return (
@@ -216,6 +220,15 @@ export const GoalCalculationScreen: React.FC = () => {
             {'\n'}
             {t('onboarding.goalCalculation.climateImpact')}
           </Text>
+          <TouchableOpacity
+            style={styles.citationsLink}
+            onPress={handleOpenCitations}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.citationsLinkText}>
+              {t('about.medicalCitations')}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -356,6 +369,16 @@ const getStyles = (theme: any) =>
       fontSize: 14,
       color: theme.textSecondary,
       lineHeight: 20,
+    },
+    citationsLink: {
+      marginTop: 12,
+      alignSelf: 'flex-start',
+    },
+    citationsLinkText: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: theme.primary,
+      textDecorationLine: 'underline',
     },
     footer: {
       paddingHorizontal: 24,

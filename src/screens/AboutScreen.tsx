@@ -47,7 +47,7 @@ const AboutScreen: React.FC = () => {
       id: 'climate-adjustment',
       title: t('about.citations.climateAdjustment.title'),
       description: t('about.citations.climateAdjustment.description'),
-      source: 'National Academies of Sciences',
+      source: 'National Academies of Sciences, Engineering, and Medicine',
       url: 'https://nap.nationalacademies.org/catalog/10925/dietary-reference-intakes-for-water-potassium-sodium-chloride-and-sulfate',
     },
     {

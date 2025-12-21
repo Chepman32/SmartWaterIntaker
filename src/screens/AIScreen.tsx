@@ -1,7 +1,15 @@
 import React, { useMemo } from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import { RootState } from '../state/store';
 import { useThemeColors } from '../hooks/useThemeColors';
 import {
@@ -55,6 +63,7 @@ const formatVolume = (
 const AIScreen: React.FC = () => {
   const { t } = useTranslation();
   const theme = useThemeColors();
+  const navigation = useNavigation();
   const { events, dailyGoalMl, todayTotalMl } = useSelector(
     (state: RootState) => state.intake,
   );
@@ -227,6 +236,26 @@ const AIScreen: React.FC = () => {
             </View>
           </View>
         </View>
+
+        <TouchableOpacity
+          style={[
+            styles.citationsCard,
+            { backgroundColor: theme.card, borderColor: theme.border },
+          ]}
+          onPress={() =>
+            navigation.navigate('About' as never, { source: 'ai' })
+          }
+          activeOpacity={0.7}
+        >
+          <Text style={[styles.citationsTitle, { color: theme.text }]}>
+            {t('about.medicalCitations')}
+          </Text>
+          <Text
+            style={[styles.citationsSubtitle, { color: theme.textSecondary }]}
+          >
+            {t('about.citationsSubtitle')}
+          </Text>
+        </TouchableOpacity>
 
         <View style={styles.statGrid}>
           {statCards.map(card => (
@@ -443,6 +472,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+  },
+  citationsCard: {
+    borderRadius: 18,
+    borderWidth: 1,
+    padding: 16,
+    marginBottom: 20,
+  },
+  citationsTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  citationsSubtitle: {
+    fontSize: 13,
+    lineHeight: 18,
   },
   metaItem: {
     flex: 1,
